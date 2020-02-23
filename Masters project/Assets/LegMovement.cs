@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LegMovement : MonoBehaviour
 {
-    public float maxDist = 1f, maxDistSprint = 2f;
+    public float maxDist = 1f, maxDistSprint = 2f, minDistBetweenFeet = 0.5f;
     public Transform frontJoint, backJoint;
     public GameObject foot1, foot2, foot3, foot4;
     public LayerMask groundMask;
@@ -15,12 +15,15 @@ public class LegMovement : MonoBehaviour
     private Vector2 oldPos, newPos;
     public bool sprinting = false;
 
+    private float idleTimer = 0;
+    public bool idle;
+
     // Start is called before the first frame update
     void Start()
     {
         oldPos = transform.position;
-        feet.Add(new Foot(foot1, frontJoint, foot1.GetComponent<LineRenderer>())); feet.Add(new Foot(foot2, frontJoint, foot2.GetComponent<LineRenderer>()));
-        feet.Add(new Foot(foot3, backJoint, foot3.GetComponent<LineRenderer>())); feet.Add(new Foot(foot4, backJoint, foot4.GetComponent<LineRenderer>()));
+        feet.Add(new Foot(foot1, frontJoint, true, foot1.GetComponent<LineRenderer>())); feet.Add(new Foot(foot2, frontJoint, true, foot2.GetComponent<LineRenderer>()));
+        feet.Add(new Foot(foot3, backJoint, false, foot3.GetComponent<LineRenderer>())); feet.Add(new Foot(foot4, backJoint, false, foot4.GetComponent<LineRenderer>()));
     }
 
     // Update is called once per frame
@@ -33,8 +36,17 @@ public class LegMovement : MonoBehaviour
         UpdateJointHeight(backJoint, foot3, foot4);
 
         velocity = CalculateVelocity();
-
-       
+        
+        if (velocity.x == 0)
+        {
+            idleTimer += Time.deltaTime;
+            idle = (idleTimer > 2);
+        }
+        else
+        {
+            idleTimer = 0;
+            idle = false;
+        }
 
         foreach(Foot f in feet)
         {
@@ -42,16 +54,24 @@ public class LegMovement : MonoBehaviour
             f.lr.SetPosition(1, f.joint.position);
             if (!f.isMoving)
             {
-                if (FootIsTooFar(f))
+                if (OtherFootIsBehind(f))
                 {
                     f.oldPos = f.newPos;
                     f.newPos = NewFootPosition(f);
                     f.isMoving = true;
                     f.t = 0;
                 }
+                else if (idle)
+                {
+                    Idle(f);
+                }
             }
             else
             {
+                if (TooCloseToOtherFoot(f))
+                {
+                    RepickNewFootPosition(f);
+                }
                 MoveFoot(f, f.t);
                 f.t += Time.deltaTime / (sprinting ? secondsToMoveFoot/2 : secondsToMoveFoot);
                 if (f.t >= 1)
@@ -74,7 +94,38 @@ public class LegMovement : MonoBehaviour
     public void UpdateJointHeight(Transform joint, GameObject f1, GameObject f2)
     {
         float avgY = (f1.transform.position.y + f2.transform.position.y) / 2;
-        joint.position = new Vector2(joint.position.x, avgY + maxDist / 4);
+        joint.position = new Vector2(joint.position.x, avgY + maxDist / 3);
+    }
+
+    public bool OtherFootIsBehind(Foot foot)
+    {
+        Foot otherFoot = null;
+        bool footIsLeft = (foot.foot.transform.position - foot.joint.position).x < 0;
+        bool otherFootIsLeft = false;
+        bool fwdIsLeft = velocity.x < 0;
+        bool output = false;
+
+        foreach (Foot f in feet)
+        {
+            if (f.isFront == foot.isFront && f != foot)
+                otherFoot = f;
+        }
+
+        otherFootIsLeft = (otherFoot.foot.transform.position - otherFoot.joint.position).x < 0;
+
+        bool bothFeetBehind = (footIsLeft && otherFootIsLeft && !fwdIsLeft) || (!footIsLeft && !otherFootIsLeft && fwdIsLeft);
+        float dist = foot.foot.transform.position.x - foot.joint.position.x;
+        float distOther = otherFoot.foot.transform.position.x - otherFoot.joint.position.x;
+
+        if (bothFeetBehind)
+        {
+            if (Mathf.Abs(dist) > Mathf.Abs(distOther) && !otherFoot.isMoving)
+            {
+                output = true;
+            }
+        }
+
+        return output;
     }
 
     public bool FootIsTooFar(Foot foot)
@@ -92,7 +143,7 @@ public class LegMovement : MonoBehaviour
         }
         else
         {
-            output = (foot.joint.position - foot.foot.transform.position).sqrMagnitude > Mathf.Pow((sprinting ? maxDistSprint : maxDist) * 0.5f, 2);
+            output = (foot.joint.position - foot.foot.transform.position).sqrMagnitude > Mathf.Pow((sprinting ? maxDistSprint * 1.1f : maxDist * 1.1f) * 0.5f, 2);
         }
 
         if (velocity.x != 0)
@@ -110,13 +161,66 @@ public class LegMovement : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             Vector2 dir = new Vector2(Mathf.Lerp(1 * leftMod, 0, 0 + (float)i / 10), Mathf.Lerp(0, -1, 0 + (float)i / 10));
-;           hit = Physics2D.Raycast(foot.joint.position, dir, (sprinting ? maxDistSprint : maxDist), groundMask);
+;           hit = Physics2D.Raycast(foot.joint.position, dir, (sprinting ? maxDistSprint*0.9f : maxDist*0.9f), groundMask);
             if (hit.collider)
             {
                 output = hit.point;
                 break;
             }
         }
+        return output;
+    }
+
+    public void RepickNewFootPosition(Foot foot)
+    {
+        Vector2 newPos = foot.newPos;
+        Foot otherFoot = null;
+        RaycastHit2D hit;
+        Vector2 dir;
+        foreach (Foot f in feet)
+        {
+            if (f.isFront == foot.isFront && f != foot)
+                otherFoot = f;
+        }
+        if (otherFoot != null)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                newPos = foot.newPos + Random.insideUnitCircle * (2 * minDistBetweenFeet);
+                dir = (newPos - (Vector2)foot.joint.position).normalized;
+                hit = Physics2D.Raycast(foot.joint.position, dir, maxDist, groundMask);
+                if (hit.collider)
+                {
+                    if ((hit.point - otherFoot.newPos).sqrMagnitude > minDistBetweenFeet * minDistBetweenFeet)
+                    {
+                        newPos = hit.point;
+                        break;
+                    }
+                }
+            }
+        }
+        foot.newPos = newPos;
+    }
+
+    public bool TooCloseToOtherFoot(Foot foot)
+    {
+        bool output = false;
+        Foot otherFoot = null;
+        foreach(Foot f in feet)
+        {
+            if (f.isFront == foot.isFront && f != foot)
+                otherFoot = f;
+        }
+
+        if (otherFoot != null)
+        {
+            if ((foot.newPos - otherFoot.newPos).sqrMagnitude < minDistBetweenFeet * minDistBetweenFeet)
+            {
+                if (foot.t < otherFoot.t)
+                    output = true;
+            }
+        }
+
         return output;
     }
 
@@ -133,6 +237,30 @@ public class LegMovement : MonoBehaviour
         }
         foot.foot.transform.position = Vector2.Lerp(foot.oldPos, foot.newPos, t) + new Vector2(0, yBonus);
     }
+
+    public void Idle(Foot foot)
+    {
+        Vector2 groundPos = Vector2.zero;
+        RaycastHit2D hit = Physics2D.Raycast(foot.joint.position, Vector2.down, Mathf.Infinity, groundMask);
+        if (hit.collider)
+        {
+            groundPos = hit.point;
+        }
+        Vector2 newPos = groundPos + Random.insideUnitCircle * minDistBetweenFeet * 2;
+        Vector2 dir = (newPos - (Vector2)foot.joint.position).normalized;
+        hit = Physics2D.Raycast(foot.joint.position, dir, maxDist, groundMask);
+        //if (hit.collider)
+        //{
+        //    newPos = hit.point;
+        //}
+        //else
+        //{
+            newPos = groundPos;
+        //}
+        foot.oldPos = foot.newPos;
+        foot.newPos = newPos;
+        foot.isMoving = true;
+    }
 }
 
 public class Foot
@@ -143,12 +271,14 @@ public class Foot
     public Vector2 newPos, oldPos;
     public float t = 0;
     public LineRenderer lr;
+    public bool isFront;
 
-    public Foot(GameObject _foot, Transform _joint, LineRenderer _lr)
+    public Foot(GameObject _foot, Transform _joint, bool _isFront, LineRenderer _lr)
     {
         foot = _foot;
         joint = _joint;
         newPos = foot.transform.position;
+        isFront = _isFront;
         lr = _lr;
     }
 }
