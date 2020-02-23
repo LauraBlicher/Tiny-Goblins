@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: 8a9d0b74ea0537641a4e7cbb6a6baed7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 468259382425228072
+    second: Hane spritesheet_0
+  - first:
+      213: -450661333116427232
+    second: Hane spritesheet_1
+  - first:
+      213: -5023164489807720733
+    second: Hane spritesheet_2
+  - first:
+      213: -6678566519372067057
+    second: Hane spritesheet_3
+  - first:
+      213: -1704945779455965754
+    second: Hane spritesheet_4
+  - first:
+      213: -1549656486781577917
+    second: Hane spritesheet_5
+  - first:
+      213: -1019557887709023588
+    second: Hane spritesheet_6
+  - first:
+      213: -7212334159234667562
+    second: Hane spritesheet_7
+  - first:
+      213: -8084476860419336934
+    second: Hane spritesheet_8
+  - first:
+      213: 5707047406315211286
+    second: Hane spritesheet_9
+  - first:
+      213: 5905405022982912550
+    second: Hane spritesheet_10
+  - first:
+      213: -3591611616590597418
+    second: Hane spritesheet_11
+  - first:
+      213: 1974306247071176992
+    second: Hane spritesheet_12
+  - first:
+      213: 4856006992955542319
+    second: Hane spritesheet_13
+  - first:
+      213: -358214378101335975
+    second: Hane spritesheet_14
+  - first:
+      213: -7294512883395296161
+    second: Hane spritesheet_15
+  - first:
+      213: -8220604672372671797
+    second: Hane spritesheet_16
+  - first:
+      213: 8059714656316136898
+    second: Hane spritesheet_17
+  - first:
+      213: 3747332886431866323
+    second: Hane spritesheet_18
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Hane spritesheet_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 956
+        width: 46
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82313386d679f7600800000000000000
+      internalID: 468259382425228072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 767
+        width: 218
+        height: 233
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 024679db7edeeb9f0800000000000000
+      internalID: -450661333116427232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 653
+        width: 213
+        height: 347
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ee87a8a2822a4ab0800000000000000
+      internalID: -5023164489807720733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_3
+      rect:
+        serializedVersion: 2
+        x: 518
+        y: 763
+        width: 258
+        height: 237
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0fc20c9227f053a0800000000000000
+      internalID: -6678566519372067057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_4
+      rect:
+        serializedVersion: 2
+        x: 794
+        y: 710
+        width: 75
+        height: 290
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c5c936c8d0d658e0800000000000000
+      internalID: -1704945779455965754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_5
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 710
+        width: 99
+        height: 289
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 345118db2a38e7ae0800000000000000
+      internalID: -1549656486781577917
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 831
+        width: 62
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c92f723c08dc9d1f0800000000000000
+      internalID: -1019557887709023588
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 711
+        width: 94
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6dbe6657b44a8eb90800000000000000
+      internalID: -7212334159234667562
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_8
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 322
+        width: 233
+        height: 327
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1517dbf02b2ecf80800000000000000
+      internalID: -8084476860419336934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_9
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 584
+        width: 78
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61a8bb9f061833f40800000000000000
+      internalID: 5707047406315211286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_10
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 584
+        width: 98
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62a34b9849634f150800000000000000
+      internalID: 5905405022982912550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_11
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 480
+        width: 144
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d273fd8348082ec0800000000000000
+      internalID: -3591611616590597418
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_12
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 7
+        width: 292
+        height: 295
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02913864215266b10800000000000000
+      internalID: 1974306247071176992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_13
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 36
+        width: 170
+        height: 236
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2b8de1c1a0046340800000000000000
+      internalID: 4856006992955542319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_14
+      rect:
+        serializedVersion: 2
+        x: 708
+        y: 172
+        width: 169
+        height: 301
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 95815d7cbed570bf0800000000000000
+      internalID: -358214378101335975
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_15
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 147
+        width: 107
+        height: 330
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5486b73e2fa4ca90800000000000000
+      internalID: -7294512883395296161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_16
+      rect:
+        serializedVersion: 2
+        x: 591
+        y: 44
+        width: 203
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bca7f48ea9b8aed80800000000000000
+      internalID: -8220604672372671797
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_17
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 312
+        width: 233
+        height: 341
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cd9bb817cbd9df60800000000000000
+      internalID: 8059714656316136898
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Hane spritesheet_18
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 43
+        width: 182
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3dd19eee763310430800000000000000
+      internalID: 3747332886431866323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
