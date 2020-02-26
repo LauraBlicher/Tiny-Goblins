@@ -4,26 +4,57 @@ using UnityEngine;
 
 public class LegMovement : MonoBehaviour
 {
+    // REWRITE  - legs never stretch beyond their max length
+    //          - Run makes both legs let go
+    //          - More modular, so the number of legs can be asigned
+    //          - Legs hold their infomation, including length
+    //          - Each joint knows its down dir
+    public List<GameObject> footGameObjects = new List<GameObject>();
+    public List<GameObject> jointGameObjects = new List<GameObject>();
     public float maxDist = 1f, maxDistSprint = 2f, minDistBetweenFeet = 0.5f;
     public Transform frontJoint, backJoint;
     public GameObject foot1, foot2, foot3, foot4;
     public LayerMask groundMask;
     public List<Foot> feet = new List<Foot>();
+    public float legLiftHeight = 1f, legLiftOverObject = .5f;
     public float secondsToMoveFoot = 1f;
     public float movementSpeed = 1f, sprintSpeed = 2f;
     public Vector2 velocity;
     private Vector2 oldPos, newPos;
     public bool sprinting = false;
 
+    public AnimationCurve curve;
+
     private float idleTimer = 0;
     public bool idle;
+
+    public AnimationCurve displayXCurve;
+
+    private List<PathNode> path = new List<PathNode>();
 
     // Start is called before the first frame update
     void Start()
     {
         oldPos = transform.position;
-        feet.Add(new Foot(foot1, frontJoint, true, foot1.GetComponent<LineRenderer>())); feet.Add(new Foot(foot2, frontJoint, true, foot2.GetComponent<LineRenderer>()));
-        feet.Add(new Foot(foot3, backJoint, false, foot3.GetComponent<LineRenderer>())); feet.Add(new Foot(foot4, backJoint, false, foot4.GetComponent<LineRenderer>()));
+
+        int index = 0;
+        bool flag = false;
+        for (int i = 0; i < footGameObjects.Count; i++)
+        {
+            feet.Add(new Foot(index, footGameObjects[i], jointGameObjects[i].transform, footGameObjects[i].GetComponent<LineRenderer>()));
+            if (!flag)
+            {
+                flag = !flag;
+            }
+            else
+            {
+                flag = !flag;
+                index++;
+            }
+            print(feet[i].index);
+        }
+        //feet.Add(new Foot(foot1, frontJoint, true, foot1.GetComponent<LineRenderer>())); feet.Add(new Foot(foot2, frontJoint, true, foot2.GetComponent<LineRenderer>()));
+        //feet.Add(new Foot(foot3, backJoint, false, foot3.GetComponent<LineRenderer>())); feet.Add(new Foot(foot4, backJoint, false, foot4.GetComponent<LineRenderer>()));
     }
 
     // Update is called once per frame
@@ -32,8 +63,7 @@ public class LegMovement : MonoBehaviour
         sprinting = Input.GetKey(KeyCode.LeftShift);
         transform.Translate(new Vector2(Input.GetAxis("Horizontal") * (sprinting ? sprintSpeed : movementSpeed) * Time.deltaTime, 0));
 
-        UpdateJointHeight(frontJoint, foot1, foot2);
-        UpdateJointHeight(backJoint, foot3, foot4);
+        UpdateJointHeight();
 
         velocity = CalculateVelocity();
         
@@ -54,16 +84,17 @@ public class LegMovement : MonoBehaviour
             f.lr.SetPosition(1, f.joint.position);
             if (!f.isMoving)
             {
-                if (OtherFootIsBehind(f))
+                if (OtherFootIsBehind(f) || FootIsTooFar(f))
                 {
-                    f.oldPos = f.newPos;
+                    f.oldPos = f.foot.transform.position; // f.newPos;
                     f.newPos = NewFootPosition(f);
+                    CreatePath(f);
                     f.isMoving = true;
                     f.t = 0;
                 }
                 else if (idle)
                 {
-                    Idle(f);
+                    //Idle(f);
                 }
             }
             else
@@ -91,10 +122,25 @@ public class LegMovement : MonoBehaviour
         return output;
     }
 
-    public void UpdateJointHeight(Transform joint, GameObject f1, GameObject f2)
+    public void UpdateJointHeight()
     {
-        float avgY = (f1.transform.position.y + f2.transform.position.y) / 2;
-        joint.position = new Vector2(joint.position.x, avgY + maxDist / 3);
+        Vector2 lowestPoint = Vector2.zero;
+        lowestPoint = feet[0].foot.transform.position;
+        for (int i = 0; i < feet.Count; i++)
+        {
+            for (int j = 0; j < feet.Count; j++)
+            {
+                if(feet[j].foot.transform.position.y < lowestPoint.y)
+                {
+                    lowestPoint = feet[j].foot.transform.position;
+                }
+            }
+        }
+        foreach (Foot f in feet)
+        {
+            Vector2 newPos = new Vector2(f.joint.position.x, lowestPoint.y + maxDist * 0.8f);
+            f.joint.position = newPos;
+        }
     }
 
     public bool OtherFootIsBehind(Foot foot)
@@ -107,7 +153,7 @@ public class LegMovement : MonoBehaviour
 
         foreach (Foot f in feet)
         {
-            if (f.isFront == foot.isFront && f != foot)
+            if (f.index == foot.index && f != foot)
                 otherFoot = f;
         }
 
@@ -143,7 +189,7 @@ public class LegMovement : MonoBehaviour
         }
         else
         {
-            output = (foot.joint.position - foot.foot.transform.position).sqrMagnitude > Mathf.Pow((sprinting ? maxDistSprint * 1.1f : maxDist * 1.1f) * 0.5f, 2);
+            output = (foot.joint.position - foot.foot.transform.position).sqrMagnitude > Mathf.Pow((sprinting ? maxDistSprint * 1.1f : maxDist * 1.1f) * 0.9f, 2);
         }
 
         if (velocity.x != 0)
@@ -160,8 +206,10 @@ public class LegMovement : MonoBehaviour
         RaycastHit2D hit;
         for (int i = 0; i < 10; i++)
         {
-            Vector2 dir = new Vector2(Mathf.Lerp(1 * leftMod, 0, 0 + (float)i / 10), Mathf.Lerp(0, -1, 0 + (float)i / 10));
-;           hit = Physics2D.Raycast(foot.joint.position, dir, (sprinting ? maxDistSprint*0.9f : maxDist*0.9f), groundMask);
+            Vector2 dir; // = new Vector2(Mathf.Lerp(1 * leftMod, 0, 0 + (float)i / 10), Mathf.Lerp(0, -1, 0 + (float)i / 10));
+            dir = sprinting ? Quaternion.Euler(0, 0, 45 *-leftMod) * Vector3.right * leftMod : Quaternion.Euler(0, 0, 55 * -leftMod) * Vector3.right * leftMod;
+            hit = Physics2D.Raycast(foot.joint.position, dir, Mathf.Infinity, groundMask); // Physics2D.Raycast(foot.joint.position, dir, (sprinting ? maxDistSprint*0.9f : maxDist*0.9f), groundMask);
+            Debug.DrawRay(foot.joint.position, dir * 10);
             if (hit.collider)
             {
                 output = hit.point;
@@ -179,7 +227,7 @@ public class LegMovement : MonoBehaviour
         Vector2 dir;
         foreach (Foot f in feet)
         {
-            if (f.isFront == foot.isFront && f != foot)
+            if (f.index == foot.index && f != foot)
                 otherFoot = f;
         }
         if (otherFoot != null)
@@ -208,7 +256,7 @@ public class LegMovement : MonoBehaviour
         Foot otherFoot = null;
         foreach(Foot f in feet)
         {
-            if (f.isFront == foot.isFront && f != foot)
+            if (f.index == foot.index && f != foot)
                 otherFoot = f;
         }
 
@@ -224,18 +272,120 @@ public class LegMovement : MonoBehaviour
         return output;
     }
 
+    public void CreatePath(Foot foot)
+    {
+        path.Clear();
+        foot.path.Clear();
+        path.Add(new PathNode(foot.oldPos, 0));
+        foot.x = new AnimationCurve();
+        foot.y = new AnimationCurve();
+
+        Vector2 dirToDestination, newDir, oldPoint = foot.oldPos, newPoint;
+        float distToDestination;
+        RaycastHit2D hit;
+        int iterations = 0, maxIterations = 1000;
+        while (Physics2D.Raycast(path[path.Count-1].point, (foot.newPos - path[path.Count-1].point).normalized, Vector2.Distance(path[path.Count-1].point, foot.newPos), groundMask))
+        {
+            iterations++;
+            if (iterations >= maxIterations || path[path.Count-1].point == foot.newPos)
+                break;
+            dirToDestination = (foot.newPos - path[path.Count - 1].point).normalized;
+            distToDestination = Vector2.Distance(path[path.Count - 1].point, foot.newPos);
+            hit = Physics2D.Raycast(path[path.Count - 1].point, dirToDestination, distToDestination, groundMask);
+            if (hit.collider)
+            {
+                newPoint = hit.point;
+                for (int i = 0; i < 100; i++)
+                {
+                    oldPoint = newPoint;
+                    newDir = Quaternion.Euler(0, 0, 5f) * dirToDestination;
+                    hit = Physics2D.Raycast(path[path.Count - 1].point, dirToDestination, distToDestination, groundMask);
+                    if (hit.collider)
+                    {
+                        if ((hit.point - foot.newPos).sqrMagnitude > 0.01f)
+                            newPoint = hit.point + new Vector2(0, legLiftOverObject);
+                        else
+                        {
+                            newPoint = foot.newPos;
+                            oldPoint = foot.newPos;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            path.Add(new PathNode(oldPoint, Vector2.Distance(path[path.Count-1].point, oldPoint)));
+        }
+        if (path.Count == 1)
+        {
+            path.Add(new PathNode(foot.newPos, Vector2.Distance(foot.oldPos, foot.newPos)));
+        }
+        
+        print(path.Count);
+        float totalDist = 0;
+        float points = 0;
+        if (path.Count > 1)
+        {
+            foreach (PathNode p in path)
+            {
+                totalDist += p.distance;
+            }
+            for (int i = 0; i < path.Count; i++)
+            {
+                path[i].percentOfPath = path[i].distance / totalDist;
+                points += path[i].percentOfPath;
+                path[i].percentPointInPath = points;
+            }
+        }
+        foot.path = path;
+        if (foot.path.Count > 0)
+        {
+            for (int i = 0; i < foot.path.Count; i++)
+            {
+                PathNode p = foot.path[i];
+                foot.x.AddKey(new Keyframe(p.percentPointInPath, p.point.x));
+                foot.y.AddKey(new Keyframe(p.percentPointInPath, p.point.y));
+            }
+            for (int i = 0; i < foot.x.keys.Length; i++)
+            {
+                foot.x.SmoothTangents(i, 0);
+            }
+            for (int i = 0; i < foot.y.keys.Length; i++)
+            {
+                foot.y.SmoothTangents(i, 0);
+            }
+        }
+    }
+
     public void MoveFoot(Foot foot, float t)
     {
-        float yBonus = 0f;
-        if (t < 0.5f)
+        for (int i = 0; i < foot.path.Count-1; i++)
         {
-            yBonus = t;
+            Debug.DrawLine(foot.path[i].point, foot.path[i + 1].point, Color.red);
         }
-        else
+        Vector2 nextPos = Vector2.zero;
+        float yBonus = 0f; // curve.Evaluate(t);
+        if (foot.x != null && foot.y != null)
         {
-            yBonus = 0.5f - (t - 0.5f);
+            nextPos = new Vector2(foot.x.Evaluate(t), foot.y.Evaluate(t)) + new Vector2(0, yBonus);
+            displayXCurve = foot.x;
         }
-        foot.foot.transform.position = Vector2.Lerp(foot.oldPos, foot.newPos, t) + new Vector2(0, yBonus);
+
+        foot.foot.transform.position = nextPos;
+        //nextPos = Vector2.Lerp(foot.oldPos, foot.newPos, t);
+        //Vector2 dir = (nextPos - (Vector2)foot.joint.position).normalized;
+        //Vector2 newPos = Vector2.zero;
+        //RaycastHit2D hit = Physics2D.Raycast(foot.joint.position, dir, Mathf.Infinity, groundMask);
+        //if (hit.collider)
+        //{
+        //    newPos = dir * (hit.distance - yBonus);
+        //}
+
+        //foot.foot.transform.position = Vector2.Lerp(foot.oldPos, foot.newPos, t) + new Vector2(0, yBonus);
+        //foot.foot.transform.position = (Vector2)foot.joint.position + newPos;
     }
 
     public void Idle(Foot foot)
@@ -263,8 +413,24 @@ public class LegMovement : MonoBehaviour
     }
 }
 
+public class PathNode
+{
+    public Vector2 point;
+    public float percentOfPath;
+    public float percentPointInPath;
+    public float distance;
+
+
+    public PathNode(Vector2 _point, float _distance)
+    {
+        point = _point;
+        distance = _distance;
+    }
+}
+
 public class Foot
 {
+    public int index;
     public GameObject foot;
     public Transform joint;
     public bool isMoving;
@@ -272,13 +438,16 @@ public class Foot
     public float t = 0;
     public LineRenderer lr;
     public bool isFront;
+    public List<PathNode> path = new List<PathNode>();
+    public AnimationCurve x = new AnimationCurve();
+    public AnimationCurve y = new AnimationCurve();
 
-    public Foot(GameObject _foot, Transform _joint, bool _isFront, LineRenderer _lr)
+    public Foot(int _index, GameObject _foot, Transform _joint, LineRenderer _lr)
     {
+        index = _index;
         foot = _foot;
         joint = _joint;
         newPos = foot.transform.position;
-        isFront = _isFront;
         lr = _lr;
     }
 }
