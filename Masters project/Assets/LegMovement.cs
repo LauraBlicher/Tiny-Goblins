@@ -19,6 +19,7 @@ public class LegMovement : MonoBehaviour
     public float legLiftHeight = 1f, legLiftOverObject = .5f;
     public float secondsToMoveFoot = 1f;
     public float movementSpeed = 1f, sprintSpeed = 2f;
+    public float forwardCheckAngle = 45;
     public Vector2 velocity;
     private Vector2 oldPos, newPos;
     public bool sprinting = false;
@@ -41,7 +42,7 @@ public class LegMovement : MonoBehaviour
         bool flag = false;
         for (int i = 0; i < footGameObjects.Count; i++)
         {
-            feet.Add(new Foot(index, footGameObjects[i], jointGameObjects[i].transform, footGameObjects[i].GetComponent<LineRenderer>()));
+            feet.Add(new Foot(index, footGameObjects[i], jointGameObjects[i].transform));
             if (!flag)
             {
                 flag = !flag;
@@ -61,8 +62,8 @@ public class LegMovement : MonoBehaviour
     void FixedUpdate()
     {
         sprinting = Input.GetKey(KeyCode.LeftShift);
-        transform.Translate(new Vector2(Input.GetAxis("Horizontal") * (sprinting ? sprintSpeed : movementSpeed) * Time.deltaTime, 0));
-
+        //transform.Translate(new Vector2(Input.GetAxis("Horizontal") * (sprinting ? sprintSpeed : movementSpeed) * Time.deltaTime, 0));
+        transform.position += new Vector3(Input.GetAxis("Horizontal") * (sprinting ? sprintSpeed : movementSpeed) * Time.deltaTime, 0,0);
         UpdateJointHeight();
 
         velocity = CalculateVelocity();
@@ -80,11 +81,11 @@ public class LegMovement : MonoBehaviour
 
         foreach(Foot f in feet)
         {
-            f.lr.SetPosition(0, f.foot.transform.position);
-            f.lr.SetPosition(1, f.joint.position);
+            //f.lr.SetPosition(0, f.foot.transform.position);
+            //f.lr.SetPosition(1, f.joint.position);
             if (!f.isMoving)
             {
-                if (OtherFootIsBehind(f) || FootIsTooFar(f))
+                if ( FootIsTooFar(f)) // OtherFootIsBehind(f) ||
                 {
                     f.oldPos = f.foot.transform.position; // f.newPos;
                     f.newPos = NewFootPosition(f);
@@ -138,7 +139,7 @@ public class LegMovement : MonoBehaviour
         }
         foreach (Foot f in feet)
         {
-            Vector2 newPos = new Vector2(f.joint.position.x, lowestPoint.y + maxDist * 0.8f);
+            Vector2 newPos = new Vector2(f.joint.position.x, lowestPoint.y + maxDist);
             f.joint.position = newPos;
         }
     }
@@ -189,7 +190,7 @@ public class LegMovement : MonoBehaviour
         }
         else
         {
-            output = (foot.joint.position - foot.foot.transform.position).sqrMagnitude > Mathf.Pow((sprinting ? maxDistSprint * 1.1f : maxDist * 1.1f) * 0.9f, 2);
+            output = (foot.joint.position - foot.foot.transform.position).sqrMagnitude > Mathf.Pow((sprinting ? maxDistSprint * 1.2f : maxDist * 1.2f), 2);
         }
 
         if (velocity.x != 0)
@@ -207,7 +208,7 @@ public class LegMovement : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             Vector2 dir; // = new Vector2(Mathf.Lerp(1 * leftMod, 0, 0 + (float)i / 10), Mathf.Lerp(0, -1, 0 + (float)i / 10));
-            dir = sprinting ? Quaternion.Euler(0, 0, 45 *-leftMod) * Vector3.right * leftMod : Quaternion.Euler(0, 0, 55 * -leftMod) * Vector3.right * leftMod;
+            dir = sprinting ? Quaternion.Euler(0, 0, forwardCheckAngle *-leftMod) * Vector3.right * leftMod : Quaternion.Euler(0, 0, forwardCheckAngle * -leftMod) * Vector3.right * leftMod;
             hit = Physics2D.Raycast(foot.joint.position, dir, Mathf.Infinity, groundMask); // Physics2D.Raycast(foot.joint.position, dir, (sprinting ? maxDistSprint*0.9f : maxDist*0.9f), groundMask);
             Debug.DrawRay(foot.joint.position, dir * 10);
             if (hit.collider)
@@ -216,6 +217,7 @@ public class LegMovement : MonoBehaviour
                 break;
             }
         }
+        print(output);
         return output;
     }
 
@@ -436,18 +438,16 @@ public class Foot
     public bool isMoving;
     public Vector2 newPos, oldPos;
     public float t = 0;
-    public LineRenderer lr;
     public bool isFront;
     public List<PathNode> path = new List<PathNode>();
     public AnimationCurve x = new AnimationCurve();
     public AnimationCurve y = new AnimationCurve();
 
-    public Foot(int _index, GameObject _foot, Transform _joint, LineRenderer _lr)
+    public Foot(int _index, GameObject _foot, Transform _joint)
     {
         index = _index;
         foot = _foot;
         joint = _joint;
         newPos = foot.transform.position;
-        lr = _lr;
     }
 }
