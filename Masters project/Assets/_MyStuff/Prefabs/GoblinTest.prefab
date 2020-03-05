@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438b5e97bbc89e740a6a50ae794dd15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0}
   jumpHeight: 0
   groundMask:
     serializedVersion: 2
@@ -54,8 +55,8 @@ MonoBehaviour:
   sr: {fileID: 3063445871004748362}
   anim: {fileID: 3063445871004748361}
   movementSpeed: 5
-  jumpForceMin: 4
-  jumpHeightMax: 1
+  jumpForceMin: 2
+  jumpHeightMax: 0.5
   hasAirControl: 1
 --- !u!212 &3063445871004748362
 SpriteRenderer:

@@ -7,7 +7,9 @@ public class CharacterController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Vector2 oldPos, newPos;
-    private Vector2 velocity;
+
+    [HideInInspector]
+    public Vector2 velocity;
     private bool isGrounded;
     private bool canMove;
     private float characterHeight;

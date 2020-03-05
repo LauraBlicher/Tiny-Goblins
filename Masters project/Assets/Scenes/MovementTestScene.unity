@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 565003891}
   - component: {fileID: 565003890}
   - component: {fileID: 565003889}
+  - component: {fileID: 565003892}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -204,6 +205,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &565003892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565003888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e45d182ec61dc147aadc5d0a4afbf98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goblinToFollow: {fileID: 1120436033}
+  forwardOffset: 10
+  lerpSpeed: 1
+--- !u!4 &1120436033 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3063445871004748363, guid: dc50b015e4e80494a8f83335be405f71,
+    type: 3}
+  m_PrefabInstance: {fileID: 1810689614}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1201053814
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,6 +370,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438b5e97bbc89e740a6a50ae794dd15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 0}
   jumpHeight: 0
   groundMask:
     serializedVersion: 2
@@ -583,7 +606,7 @@ PrefabInstance:
     - target: {fileID: 3063445871004748363, guid: dc50b015e4e80494a8f83335be405f71,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.9082031
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3063445871004748363, guid: dc50b015e4e80494a8f83335be405f71,
         type: 3}
