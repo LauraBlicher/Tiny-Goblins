@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DoodleMat
-  m_Shader: {fileID: 4800000, guid: db3ab59e7692186459952281c09e9ef4, type: 3}
+  m_Name: WaterColorTest
+  m_Shader: {fileID: 4800000, guid: 036d46eea31e01c42b5a602c033885b3, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 750b1bd7ba8bd28489650de6d0a95cc5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -55,19 +55,39 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: 368e7c0ec3559db49828b483eb113c1e, type: 3}
+    - _Texture0:
+        m_Texture: {fileID: 2800000, guid: 10596aac55d7cd54fb1baea7818055dc, type: 3}
+        m_Scale: {x: 0, y: 5}
+        m_Offset: {x: 0, y: 0}
+    - _Texture1:
+        m_Texture: {fileID: 2800000, guid: 5a37e76196f9a804fab05b19ffdddac6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample1:
-        m_Texture: {fileID: 2800000, guid: f5453dca2ac649e4182c56a3966ad395, type: 3}
-        m_Scale: {x: 0.2, y: 0.2}
+    - _Texture2:
+        m_Texture: {fileID: 2800000, guid: d3a780a450cf8584793c374ad13bcaa4, type: 3}
+        m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _TextureSample2:
+    - _TopTexture0:
+        m_Texture: {fileID: 2800000, guid: b0159e237b70bfd47be7f8623d164a5e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopTexture1:
         m_Texture: {fileID: 2800000, guid: f1c89797d876c064eb82a90239db6b84, type: 3}
         m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0.054, y: 0.05}
+        m_Offset: {x: 0, y: 0}
+    - _TopTexture2:
+        m_Texture: {fileID: 2800000, guid: 10596aac55d7cd54fb1baea7818055dc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _tex3coord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord3:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -76,34 +96,35 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FlameFlickerSpeed: 0.01
-    - _FlickerSpeed: 0.01
-    - _Float0: 0.0005
-    - _Float1: 0
-    - _Float2: 0.002
-    - _Float3: 0.8
-    - _FrameRate: 3
+    - _Float0: -6.76
+    - _Float1: -6.76
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Influence: 1.75
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseAmount: 0.01
-    - _NoiseScale: -4.86
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Scale: -8
+    - _Scale2: -8
+    - _Scale3: -8
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TransAmbient: 0.2
+    - _TransDirect: 1
+    - _TransNormalDistortion: 0.1
+    - _TransScattering: 2
+    - _TransShadow: 0.9
+    - _Translucency: 1
     - _UVSec: 0
-    - _WobbleAmount: 1
-    - _WobbleScale: 0.1
-    - _WobbleSpeed: 0.39
-    - _WorldPosEffect: 0.002
-    - _WorldPosMultiplier: 0.002
     - _ZWrite: 1
     - __dirty: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Vector0: {r: 1, g: 1, b: 0, a: 0}
+    - _Tint: {r: 0.7735849, g: 0.6587094, b: 0.46342114, a: 0}
+    - _Vector0: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _Vector1: {r: 0.2, g: 0.2, b: 0, a: 0}
+    - _Vector2: {r: 0.2, g: 0.2, b: 0, a: 0}
