@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlurMat
-  m_Shader: {fileID: 4800000, guid: 998ffc41a9fd9a844939dae44d793a0b, type: 3}
+  m_Name: DissolveWorldPos
+  m_Shader: {fileID: 4800000, guid: 16ae7adcc64cf0a4a80ce581c56edecb, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 368e7c0ec3559db49828b483eb113c1e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -55,32 +55,63 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Texture0:
+        m_Texture: {fileID: 2800000, guid: cd460ee4ac5c1e746b7a734cc7cc64dd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: e28dc97a9541e3642a48c0e3886688c5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample2:
+        m_Texture: {fileID: 2800000, guid: e28dc97a9541e3642a48c0e3886688c5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopTexture0:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _BlurAmount: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Float1: 28.8
-    - _Float2: 78.9
+    - _Float0: 1.02
+    - _Float1: 8.4
+    - _Float3: 5.37
+    - _Float4: 0.38
+    - _Float5: 0
+    - _Float6: 4.4
+    - _Float7: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Gradientpower: 0.2
+    - _HardCutoff: 0.08
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Radi: 5.37
+    - _Radius: 7.56
+    - _SmootedgeB: -0.09
+    - _SmoothEdge: 0.22
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _Verticalmask: 0.32
     - _ZWrite: 1
     - __dirty: 0
+    - _stepthing: 0.67
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 1, g: 1, b: 1, a: 0}
+    - _EdgeColor: {r: 0.6039216, g: 0.14358541, b: 0.0039215703, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GoblinPo: {r: 0.15, g: 0.15, b: 0, a: 0}
+    - _StartPosition: {r: -32.2, g: -30, b: 0, a: 0}
+    - _Vector1: {r: 0.15, g: 0.15, b: 0, a: 0}
