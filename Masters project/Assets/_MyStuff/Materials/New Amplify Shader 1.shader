@@ -171,7 +171,7 @@ Shader "New Amplify Shader 1"
 }
 /*ASEBEGIN
 Version=17000
-0;6;1920;1013;18.75281;1850.315;2.265498;True;True
+105;323;1309;696;-496.6479;1366.63;2.265498;True;True
 Node;AmplifyShaderEditor.Vector2Node;37;967.5709,-614.3051;Float;False;Property;_Vector0;Vector 0;5;0;Create;True;0;0;False;0;0.2,0.2;0.2,0.2;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.Vector2Node;41;966.0961,-102.3876;Float;False;Property;_Vector2;Vector 2;4;0;Create;True;0;0;False;0;0.2,0.2;0.2,0.2;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.Vector2Node;38;970.0961,-358.3876;Float;False;Property;_Vector1;Vector 1;6;0;Create;True;0;0;False;0;0.2,0.2;0.2,0.2;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
@@ -201,4 +201,4 @@ WireConnection;46;0;27;4
 WireConnection;0;2;44;0
 WireConnection;0;9;46;0
 ASEEND*/
-//CHKSM=698BE798D4BA447DE4DB8F0D25818854D1E00391
+//CHKSM=E5F413B22F5A03F684F0155DCB77B2130714AD7D

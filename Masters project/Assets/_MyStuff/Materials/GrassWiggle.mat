@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: GrassWiggle
   m_Shader: {fileID: 4800000, guid: a8bece880f169d148a49b48f1dadb732, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _TextureSample0:
-        m_Texture: {fileID: 2800000, guid: 368e7c0ec3559db49828b483eb113c1e, type: 3}
+        m_Texture: {fileID: 2800000, guid: d839a8eda5b21f84cb1df00d3ae9ad32, type: 3}
         m_Scale: {x: 1.2, y: 1.2}
         m_Offset: {x: -0.1, y: 0.1}
     - _texcoord:
