@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        targetPos = new Vector3((goblinToFollow.position + (goblinVelocity * forwardOffset)).x, transform.position.y, -10);
-        transform.position = Vector3.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime);
+        targetPos = new Vector3((goblinToFollow.position + (goblinVelocity * forwardOffset)).x, 0, -10);
+        transform.position = new Vector3(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), goblinToFollow.position.y, -10);
     }
 }
