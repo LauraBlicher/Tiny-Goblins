@@ -74,7 +74,7 @@ Material:
     - _Float3: 11.95
     - _Float4: 10.68
     - _Float5: 10.03
-    - _Float6: 80
+    - _Float6: 56.4
     - _Float7: 0.5
     - _Float8: 0.55
     - _GlossMapScale: 1
@@ -93,6 +93,6 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 1, g: 1, b: 1, a: 0}
-    - _Color1: {r: 0, g: 0, b: 0, a: 1}
+    - _Color1: {r: 0.39030796, g: 0.40206748, b: 0.46226418, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ForegroundColor: {r: 0.5660378, g: 0.52324164, b: 0.4298683, a: 0}
