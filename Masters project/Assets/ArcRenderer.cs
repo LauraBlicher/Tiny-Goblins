@@ -12,7 +12,9 @@ public class ArcRenderer : MonoBehaviour
     public float velocity;
     public int resolution;
     float angleRadians;
+    public bool render = false;
 
+    public bool flipped = false;
 
     void Awake()
     {
@@ -29,11 +31,15 @@ public class ArcRenderer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RenderArc();
+        if (render)
+            RenderArc();
+        else
+            lr.enabled = false;
     }
 
     public void RenderArc()
     {
+        lr.enabled = true;
         lr.positionCount = resolution + 1;
         lr.SetPositions(ArcArray());
     }
@@ -41,7 +47,7 @@ public class ArcRenderer : MonoBehaviour
     public Vector3[] ArcArray()
     {
         Vector3[] output = new Vector3[resolution + 1];
-        angleRadians = Mathf.Deg2Rad * angle;
+        angleRadians = Mathf.Deg2Rad * (flipped ? -angle : angle);
         float maxDist = (velocity * velocity * Mathf.Sin(2 * angleRadians)) / g;
 
         for (int i = 0; i < resolution + 1; i++)

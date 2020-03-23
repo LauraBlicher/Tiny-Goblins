@@ -21,6 +21,7 @@ public class CharacterController : MonoBehaviour
     public float groundAngle = 0;
     private Vector3 newRight;
     private Vector3 walkDir;
+    public bool overrideControl = false;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
@@ -30,6 +31,7 @@ public class CharacterController : MonoBehaviour
     public Transform feet;
 
     [Header("Character Stats")]
+    public bool isActive;
     public float movementSpeed = 1f;
     public float jumpForceMin = 1f, jumpHeightMax = 3f;
     public bool hasAirControl = false;
@@ -71,13 +73,13 @@ public class CharacterController : MonoBehaviour
             CharacterLandedTrigger(true);
         }
         // Receive Inputs
-        if (canMove)
+        if (canMove && isActive && !overrideControl)
             transform.position += walkDir; // new Vector3(Input.GetAxis("Horizontal") * (isGrounded ? movementSpeed : movementSpeed) * Time.deltaTime, 0, 0);
 
         if (Input.GetButton("Jump"))
         {
-            if (canJump)
-                Jump();
+            //if (canJump)
+                //Jump();
         }
         if (Input.GetButtonUp("Jump"))
         {
@@ -87,8 +89,9 @@ public class CharacterController : MonoBehaviour
             canJump = true;
 
         // Animations
-        anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
-        if (!isGrounded && velocity.y < 0)
+        if (anim)
+            anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        if (!isGrounded && velocity.y < 0 && anim)
             anim.SetTrigger("falling");
         if (velocity.x < 0)
         {
@@ -143,17 +146,23 @@ public class CharacterController : MonoBehaviour
         rb.gravityScale = 0;
         startY = 0;
         jumpHeight = 0;
-        anim.SetTrigger("landed");
-        anim.ResetTrigger("jump");
+        if (anim)
+        {
+            anim.SetTrigger("landed");
+            anim.ResetTrigger("jump");
+        }
     }
 
     public void Jump()
     {        
         if (!startYSet)
         {
-            anim.ResetTrigger("falling");
-            anim.ResetTrigger("landed");
-            anim.SetTrigger("jump");
+            if (anim)
+            {
+                anim.ResetTrigger("falling");
+                anim.ResetTrigger("landed");
+                anim.SetTrigger("jump");
+            }
             startY = transform.position.y;
             jumpHeight = transform.position.y;
             startYSet = true;
