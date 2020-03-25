@@ -7,6 +7,8 @@ public class CharacterController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private Vector2 oldPos, newPos;
+    public enum CharacterType { Goblin, Frog, Beetle, Bird }
+    public CharacterController frog;
 
     [HideInInspector]
     public Vector2 velocity;
@@ -22,6 +24,8 @@ public class CharacterController : MonoBehaviour
     private Vector3 newRight;
     private Vector3 walkDir;
     public bool overrideControl = false;
+    public bool isMounted = false;
+    private static bool interactionSeparator = false;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
@@ -31,6 +35,7 @@ public class CharacterController : MonoBehaviour
     public Transform feet;
 
     [Header("Character Stats")]
+    public CharacterType type = CharacterType.Goblin;
     public bool isActive;
     public float movementSpeed = 1f;
     public float jumpForceMin = 1f, jumpHeightMax = 3f;
@@ -66,6 +71,7 @@ public class CharacterController : MonoBehaviour
         //isGrounded = hit.collider;
         Debug.DrawRay(transform.position, Vector3.down * (characterHeight / 2 + 0.1f));
         canMove = hasAirControl || (!hasAirControl && isGrounded);
+        
 
         CharacterLandedTrigger(true);
         if (velocity.y == 0)
@@ -74,20 +80,48 @@ public class CharacterController : MonoBehaviour
         }
         // Receive Inputs
         if (canMove && isActive && !overrideControl)
+        {
             transform.position += walkDir; // new Vector3(Input.GetAxis("Horizontal") * (isGrounded ? movementSpeed : movementSpeed) * Time.deltaTime, 0, 0);
 
-        if (Input.GetButton("Jump"))
-        {
-            //if (canJump)
-                //Jump();
-        }
-        if (Input.GetButtonUp("Jump"))
-        {
-            canJump = false;
-        }
-        if (isGrounded && !canJump)
-            canJump = true;
+            if (Input.GetButton("Jump"))
+            {
+                if (canJump)
+                {
+                    //Jump();
+                }
+            }
+            if (Input.GetButtonUp("Jump"))
+            {
+                canJump = false;
+            }
+            if (isGrounded && !canJump)
+                canJump = true;
 
+            if (Input.GetButtonDown("Interact"))
+            {
+                if (!interactionSeparator)
+                {
+                    if (type != CharacterType.Goblin)
+                    {
+                        CharacterManager.instance.Unmount();
+                        interactionSeparator = true;
+                    }
+                    else
+                    {
+                        CharacterManager.instance.Mount(frog);
+                        interactionSeparator = true;
+                    }
+                }
+                else
+                {
+                    interactionSeparator = false;
+                }
+            }
+            if (Input.GetButtonUp("Interact"))
+            {
+                interactionSeparator = false;
+            }
+        }
         // Animations
         if (anim)
             anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
