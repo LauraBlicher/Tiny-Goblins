@@ -8,14 +8,14 @@ public class ScenaryManager : MonoBehaviour
     public Camera cam;
     public float transisitionSpeed = 1f;
     public Transform frontLayer, middleLayer, backLayer;
-    [Tooltip("Compared to camera Z")] public float zWayFront = -1f, zFront = 1f, zMiddle = 21f, zBack = 41f;
+    [Tooltip("Compared to camera Z")] public float zWayFront = -1f, zFront = 1f, zMiddle = 21f, zBack = 41f, zWayBack = 42f;
     public Transform foliage1, foliage2, foliage3;
     [Tooltip("Compared to camera Z")] public float f0z = -1f, f1z = 11f, f2z = 31f, f3z = 51f;
     public float t = 0;
     public bool moveForward = false, moveBack = false;
     public List<PositionInfo> positions = new List<PositionInfo>();
-
-    public enum Position { Wayfront, Front, Middle, Back }
+    public int layerIndex = 0;
+    public enum Position { Wayfront, Front, Middle, Back, Wayback }
 
     void Awake()
     {
@@ -33,13 +33,16 @@ public class ScenaryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.I))
+        if (!moveBack && !moveForward)
         {
-            moveForward = true;
-        }
-        if (Input.GetKey(KeyCode.K))
-        {
-            moveBack = true;
+            if (Input.GetKey(KeyCode.I) && layerIndex < 1)
+            {
+                moveForward = true;
+            }
+            if (Input.GetKey(KeyCode.K) && layerIndex > -1)
+            {
+                moveBack = true;
+            }
         }
         if (moveForward)
         {
@@ -64,8 +67,9 @@ public class ScenaryManager : MonoBehaviour
             moveForward = false;
             for (int i = 0; i < positions.Count; i++)
             {
-                positions[i].SetNewPos(true);
+                positions[i].SetNewPos(true);                
             }
+            layerIndex++;
             t = 0;
         }
     }
@@ -83,8 +87,9 @@ public class ScenaryManager : MonoBehaviour
             moveBack = false;
             for (int i = 0; i < positions.Count; i++)
             {
-                positions[i].SetNewPos(false);
+                positions[i].SetNewPos(false);                
             }
+            layerIndex--;
             t = 0;
         }
     }
@@ -123,8 +128,12 @@ public class PositionInfo
                 back = new Vector3(obj.position.x, obj.position.y, camZ + ScenaryManager.instance.zFront);
                 break;
             case ScenaryManager.Position.Back:
-                forward = new Vector3(obj.position.x, obj.position.y, camZ + ScenaryManager.instance.zBack);
+                forward = new Vector3(obj.position.x, obj.position.y, camZ + ScenaryManager.instance.zWayBack);
                 back = new Vector3(obj.position.x, obj.position.y, camZ + ScenaryManager.instance.zMiddle);
+                break;
+            case ScenaryManager.Position.Wayback:
+                forward = new Vector3(obj.position.x, obj.position.y, camZ + ScenaryManager.instance.zWayBack);
+                back = new Vector3(obj.position.x, obj.position.y, camZ + ScenaryManager.instance.zBack);
                 break;
             default:
                 break;
@@ -145,7 +154,10 @@ public class PositionInfo
                 currentPos = movedForward ? ScenaryManager.Position.Back : ScenaryManager.Position.Front;
                 break;
             case ScenaryManager.Position.Back:
-                currentPos = movedForward ? ScenaryManager.Position.Back : ScenaryManager.Position.Middle;
+                currentPos = movedForward ? ScenaryManager.Position.Wayback : ScenaryManager.Position.Middle;
+                break;
+            case ScenaryManager.Position.Wayback:
+                currentPos = movedForward ? ScenaryManager.Position.Wayback : ScenaryManager.Position.Back;
                 break;
         }
 
