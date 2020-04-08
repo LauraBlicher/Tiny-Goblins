@@ -13,7 +13,7 @@ public class CharacterController : MonoBehaviour
     [HideInInspector]
     public Vector2 velocity;
     private bool isGrounded;
-    private bool canMove;
+    private bool canMove = true;
     private float characterHeight;
     private RaycastHit2D hit;
     public float jumpHeight = 0;
@@ -26,18 +26,25 @@ public class CharacterController : MonoBehaviour
     public bool overrideControl = false;
     public bool isMounted = false;
     private static bool interactionSeparator = false;
+    public float movespeedT;
+    public bool sliding = false;
+    private float right;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
     public SpriteRenderer sr;
-    private BoxCollider2D col;
+    private Collider2D col;
     public Animator anim;
     public Transform feet;
+    public PhysicsMaterial2D normal, slide;
 
     [Header("Character Stats")]
     public CharacterType type = CharacterType.Goblin;
     public bool isActive;
     public float movementSpeed = 1f;
+    public float msMin, msMax;
+    public float angleMax = 40f;
+    public float slideStopAngle = 20f;
     public float jumpForceMin = 1f, jumpHeightMax = 3f;
     public bool hasAirControl = false;
 
@@ -52,7 +59,7 @@ public class CharacterController : MonoBehaviour
         oldPos = transform.position;
         newPos = transform.position;
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<BoxCollider2D>();
+        col = GetComponent<Collider2D>();
         characterHeight = sr.size.y;        
     }
 
@@ -63,21 +70,32 @@ public class CharacterController : MonoBehaviour
         newPos = transform.position;
         velocity = newPos - oldPos;
         oldPos = newPos;
-        groundAngle = CalculateSlopeAngle();
-        newRight = Quaternion.AngleAxis(groundAngle, Vector3.forward) * Vector3.right;
+        right = Mathf.Round(Input.GetAxis("Horizontal")) >= 0 ? 1 : -1;
+        groundAngle = CalculateSlopeAngle() * right;
+        movespeedT = Mathf.InverseLerp(-angleMax, angleMax, groundAngle);
+        movementSpeed = Mathf.Lerp(msMax, msMin, movespeedT);
+        newRight = Quaternion.AngleAxis(groundAngle * right, Vector3.forward) * Vector3.right;
         walkDir = newRight * (Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime);
-        Debug.DrawRay(transform.position, newRight * 2, Color.red);
+        Debug.DrawRay(transform.position, walkDir * 10, Color.red);
         //hit = Physics2D.BoxCast(col.bounds.center, col.bounds.size, 0f, Vector2.down, 0.01f, groundMask);
         //isGrounded = hit.collider;
         Debug.DrawRay(transform.position, Vector3.down * (characterHeight / 2 + 0.1f));
-        canMove = hasAirControl || (!hasAirControl && isGrounded);
-        
-
-        CharacterLandedTrigger(true);
-        if (velocity.y == 0)
+        if (Mathf.Abs(groundAngle) > angleMax)
         {
-            CharacterLandedTrigger(true);
+            sliding = true;
         }
+        
+        if (sliding)
+        {
+            Slide();
+        }
+
+        CharacterLandedTrigger(false);
+        //if (velocity.y == 0)
+        //{
+        //    CharacterLandedTrigger(true);
+        //}
+
         // Receive Inputs
         if (canMove && isActive && !overrideControl)
         {
@@ -87,7 +105,7 @@ public class CharacterController : MonoBehaviour
             {
                 if (canJump)
                 {
-                    //Jump();
+                    Jump();
                 }
             }
             if (Input.GetButtonUp("Jump"))
@@ -185,6 +203,21 @@ public class CharacterController : MonoBehaviour
             anim.SetTrigger("landed");
             anim.ResetTrigger("jump");
         }
+    }
+
+    public void Slide()
+    {
+        col.sharedMaterial = slide;
+        rb.gravityScale = 1;
+        canMove = false;
+        if (Mathf.Abs(groundAngle) <= slideStopAngle)
+        {
+            col.sharedMaterial = normal;
+            rb.gravityScale = 0;
+            canMove = true;
+            sliding = false;
+        }
+
     }
 
     public void Jump()
