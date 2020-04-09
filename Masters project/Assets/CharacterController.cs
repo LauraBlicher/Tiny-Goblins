@@ -12,7 +12,7 @@ public class CharacterController : MonoBehaviour
 
     [HideInInspector]
     public Vector2 velocity;
-    private bool isGrounded;
+    public bool isGrounded;
     private bool canMove = true;
     private float characterHeight;
     private RaycastHit2D hit;
@@ -84,7 +84,7 @@ public class CharacterController : MonoBehaviour
         //hit = Physics2D.BoxCast(col.bounds.center, col.bounds.size, 0f, Vector2.down, 0.01f, groundMask);
         //isGrounded = hit.collider;
         Debug.DrawRay(transform.position, Vector3.down * (characterHeight / 2 + 0.1f));
-        if (Mathf.Abs(groundAngle) > angleMax)
+        if (Mathf.Abs(groundAngle) > angleMax || Mathf.Abs(groundAngle) < -angleMax)
         {
             sliding = true;
         }
@@ -95,6 +95,10 @@ public class CharacterController : MonoBehaviour
         }
 
         CharacterLandedTrigger(false);
+        if (!sliding)
+        {
+            CharacterLandedTrigger(true);
+        }
         //if (velocity.y == 0)
         //{
         //    CharacterLandedTrigger(true);
@@ -154,7 +158,17 @@ public class CharacterController : MonoBehaviour
         }
         // Animations
         if (anim)
-            anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        {
+            if (canMove && isGrounded && velocity.y < 0)
+            {
+                anim.SetTrigger("landed");
+                anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+            }
+            else if (!canMove)
+            {
+                anim.SetTrigger("falling");
+            }
+        }
         if (!isGrounded && velocity.y < 0 && anim)
             anim.SetTrigger("falling");
         if (velocity.x < 0)
@@ -281,6 +295,10 @@ public class CharacterController : MonoBehaviour
             angle = 90f - (Mathf.Rad2Deg * Mathf.Acos((Mathf.Pow(sideA, 2) + Mathf.Pow(sideC, 2) - Mathf.Pow(sideB, 2)) / (2 * sideA * sideC)));
             //print(angle);
             angle = SlopeIsLeft() ? -angle : angle;
+        }
+        else
+        {
+            angle = -100;
         }
         return Mathf.Round(angle);
     }
