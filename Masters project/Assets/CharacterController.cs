@@ -29,6 +29,9 @@ public class CharacterController : MonoBehaviour
     public float movespeedT;
     public bool sliding = false;
     private float right;
+    public bool sprinting = false;
+    private float jumpT = 0;
+    private bool hasNotReleased = false;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
@@ -73,7 +76,8 @@ public class CharacterController : MonoBehaviour
         right = Mathf.Round(Input.GetAxis("Horizontal")) >= 0 ? 1 : -1;
         groundAngle = CalculateSlopeAngle() * right;
         movespeedT = Mathf.InverseLerp(-angleMax, angleMax, groundAngle);
-        movementSpeed = Mathf.Lerp(msMax, msMin, movespeedT);
+        sprinting = Input.GetKey(KeyCode.LeftShift);
+        movementSpeed = Mathf.Lerp(msMax, msMin, movespeedT) * (sprinting ? 1.5f : 1);
         newRight = Quaternion.AngleAxis(groundAngle * right, Vector3.forward) * Vector3.right;
         walkDir = newRight * (Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime);
         Debug.DrawRay(transform.position, walkDir * 10, Color.red);
@@ -101,16 +105,24 @@ public class CharacterController : MonoBehaviour
         {
             transform.position += walkDir; // new Vector3(Input.GetAxis("Horizontal") * (isGrounded ? movementSpeed : movementSpeed) * Time.deltaTime, 0, 0);
 
-            if (Input.GetButton("Jump"))
+            if (!hasNotReleased)
             {
-                if (canJump)
+                if (Input.GetButton("Jump"))
                 {
-                    Jump();
+                    if (canJump)
+                    {
+                        Jump();
+                    }
+                    else
+                    {
+                        hasNotReleased = true;
+                    }
                 }
             }
             if (Input.GetButtonUp("Jump"))
             {
                 canJump = false;
+                hasNotReleased = false;
             }
             if (isGrounded && !canJump)
                 canJump = true;
@@ -224,6 +236,7 @@ public class CharacterController : MonoBehaviour
     {        
         if (!startYSet)
         {
+            jumpT = 0;
             if (anim)
             {
                 anim.ResetTrigger("falling");
@@ -236,13 +249,16 @@ public class CharacterController : MonoBehaviour
             isGrounded = false;
             rb.gravityScale = 1;
         }
-        //Vector2 jumpDir = (Vector2.up + velocity.normalized).normalized;
+        jumpT += Time.deltaTime;
+        float jf = Mathf.Lerp(jumpForceMin, 0, jumpT);
 
-        //if (jumpHeight <= startY + jumpHeightMax && Mathf.Abs(velocity.y) >= 0)
-        //{
-            jumpHeight = transform.position.y;
-            rb.velocity = Vector2.up * jumpForceMin;
-        //}
+        jumpHeight = transform.position.y;
+        rb.velocity = Vector2.up * jf;
+        
+        if (jumpT >= 1)
+        {
+            canJump = false;
+        }
     }
 
     public float CalculateSlopeAngle()
