@@ -48,16 +48,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438b5e97bbc89e740a6a50ae794dd15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  frog: {fileID: 0}
   velocity: {x: 0, y: 0}
   jumpHeight: 0
   groundAngle: 0
+  overrideControl: 0
+  isMounted: 0
+  movespeedT: 0
+  sliding: 0
+  sprinting: 0
   groundMask:
     serializedVersion: 2
     m_Bits: 512
   sr: {fileID: 3063445871004748362}
   anim: {fileID: 3063445871004748361}
   feet: {fileID: 3465658275983731121}
+  normal: {fileID: 6200000, guid: e0913d282f0c14249829c158c8497560, type: 2}
+  slide: {fileID: 6200000, guid: 61a426e4964b2a741a1ff1e200e88b21, type: 2}
+  type: 0
+  isActive: 1
   movementSpeed: 5
+  msMin: 1
+  msMax: 9
+  angleMax: 40
+  slideStopAngle: 20
   jumpForceMin: 2
   jumpHeightMax: 0.5
   hasAirControl: 1
