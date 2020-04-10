@@ -20,14 +20,14 @@ public class CharacterManager : MonoBehaviour
     {
         camController = mainCam.GetComponent<CameraController>();
         controllableCharacters.Add(currentCharacter);
-        camController.characterToFollow = currentCharacter.transform;
+        //camController.characterToFollow = currentCharacter.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
         print("Following " + currentCharacter.name);
-        camController.characterToFollow = currentCharacter.transform;
+        //camController.characterToFollow = currentCharacter.transform;
     }
 
     public void Mount(CharacterController character)

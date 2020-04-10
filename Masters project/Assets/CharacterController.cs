@@ -10,10 +10,10 @@ public class CharacterController : MonoBehaviour
     public enum CharacterType { Goblin, Frog, Beetle, Bird }
     public CharacterController frog;
 
-    [HideInInspector]
     public Vector2 velocity;
+    private Vector2 vel1, vel2;
     public bool isGrounded;
-    private bool canMove = true;
+    public bool canMove = true;
     private float characterHeight;
     private RaycastHit2D hit;
     public float jumpHeight = 0;
@@ -71,7 +71,9 @@ public class CharacterController : MonoBehaviour
     {
         // Maths
         newPos = transform.position;
-        velocity = newPos - oldPos;
+        vel1 = newPos - oldPos;
+        velocity = (vel1 + vel2) / 2;
+        vel2 = vel1;
         oldPos = newPos;
         right = Mathf.Round(Input.GetAxis("Horizontal")) >= 0 ? 1 : -1;
         groundAngle = CalculateSlopeAngle() * right;

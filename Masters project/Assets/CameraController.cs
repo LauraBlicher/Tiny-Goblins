@@ -4,27 +4,51 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform characterToFollow;
+    public CharacterController goblin;
+    private Rigidbody2D rb;
     public float forwardOffset = 1;
     public float lerpSpeed = 2;
+    public static Camera mainCam;
 
-    private Vector3 goblinVelocity;
+    public PointOfInterestHandler currentPOI;
+    public static List<PointOfInterestHandler> pois = new List<PointOfInterestHandler>();
+    public bool usePOI = false;
+    public float standardSize;
+
+    public Vector3 goblinVelocity;
     private Vector3 targetPos;
+    void Awake()
+    {
+        mainCam = GetComponent<Camera>();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        rb = goblin.GetComponent<Rigidbody2D>();
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
-        goblinVelocity = characterToFollow.GetComponent<CharacterController>().velocity.normalized;
+        goblinVelocity = goblin.velocity.normalized * (goblin.sprinting ? 1 : 0.75f);
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
-        targetPos = new Vector3((characterToFollow.position + (goblinVelocity * forwardOffset)).x, 0, -21);
-        transform.position = new Vector3(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), characterToFollow.position.y, -21);
+        // Movement
+        targetPos = new Vector3((goblin.transform.position + (goblinVelocity * forwardOffset)).x, 0, -21);
+        Vector3 forwardPos = new Vector3(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
+        Vector3 currentPos = new Vector3(Mathf.Lerp(transform.position.x, goblin.transform.position.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
+        transform.position = goblin.canMove ? forwardPos : currentPos;
+
+        // Zoom
+        if (!usePOI)
+        {
+            mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, standardSize, lerpSpeed * Time.deltaTime);
+        }
+        else if (usePOI && currentPOI)
+        {
+            mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, currentPOI.camSize, lerpSpeed * Time.deltaTime);
+        }
     }
 }
