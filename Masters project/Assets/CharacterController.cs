@@ -10,6 +10,8 @@ public class CharacterController : MonoBehaviour
     public enum CharacterType { Goblin, Frog, Beetle, Bird }
     public CharacterController frog;
 
+    public static CharacterController theGoblin;
+
     public Vector2 velocity;
     private Vector2 vel1, vel2;
     public bool isGrounded;
@@ -54,6 +56,10 @@ public class CharacterController : MonoBehaviour
     public void Awake()
     {
         onLanded += CharacterLanded;
+        if (!theGoblin && type == CharacterType.Goblin)
+        {
+            theGoblin = this;
+        }
     }
 
     // Start is called before the first frame update
