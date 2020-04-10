@@ -121,6 +121,18 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &428516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7228128795511584865, guid: dc50b015e4e80494a8f83335be405f71,
+    type: 3}
+  m_PrefabInstance: {fileID: 252055821}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438b5e97bbc89e740a6a50ae794dd15c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7946972
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,12 +1159,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc50b015e4e80494a8f83335be405f71, type: 3}
---- !u!4 &252055822 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3063445871004748363, guid: dc50b015e4e80494a8f83335be405f71,
-    type: 3}
-  m_PrefabInstance: {fileID: 252055821}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &346128019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3313,9 +3319,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e45d182ec61dc147aadc5d0a4afbf98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterToFollow: {fileID: 252055822}
+  goblin: {fileID: 428516}
   forwardOffset: 1
   lerpSpeed: 2
+  currentPOI: {fileID: 0}
+  usePOI: 0
+  standardSize: 5
+  goblinVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &972095154
 GameObject:
   m_ObjectHideFlags: 0
@@ -4220,33 +4230,33 @@ EdgeCollider2D:
   m_EdgeRadius: 0
   m_Points:
   - {x: -28.849512, y: -29.734564}
-  - {x: -29.123285, y: -29.16427}
-  - {x: -29.359411, y: -28.378687}
-  - {x: -29.688662, y: -27.194822}
-  - {x: -30.088043, y: -25.690315}
-  - {x: -30.53724, y: -23.933388}
-  - {x: -31.015463, y: -21.993858}
-  - {x: -31.501766, y: -19.941845}
-  - {x: -31.975227, y: -17.847513}
-  - {x: -32.414898, y: -15.780791}
-  - {x: -32.799885, y: -13.8111}
-  - {x: -33.109333, y: -12.006617}
-  - {x: -33.32232, y: -10.432156}
-  - {x: -33.41653, y: -9.1406555}
-  - {x: -33.345657, y: -8.121309}
-  - {x: -32.81601, y: -7.338704}
-  - {x: -32.32682, y: -7.101633}
-  - {x: -31.979189, y: -6.9751015}
-  - {x: -31.618216, y: -6.880381}
-  - {x: -31.237097, y: -6.8143635}
-  - {x: -30.603258, y: -6.7564}
-  - {x: -29.19273, y: -6.7102423}
-  - {x: -28.523315, y: -6.6753416}
-  - {x: -27.856304, y: -6.620463}
-  - {x: -27.210236, y: -6.541567}
-  - {x: -26.604544, y: -6.435293}
-  - {x: -26.059929, y: -6.2997065}
-  - {x: -25.598682, y: -6.135953}
+  - {x: -29.123657, y: -29.172842}
+  - {x: -29.366016, y: -28.395115}
+  - {x: -29.705002, y: -27.22404}
+  - {x: -30.11704, y: -25.73683}
+  - {x: -30.581297, y: -24.001495}
+  - {x: -31.076454, y: -22.087597}
+  - {x: -31.581036, y: -20.065}
+  - {x: -32.073586, y: -18.003618}
+  - {x: -32.53263, y: -15.973123}
+  - {x: -32.936764, y: -14.042684}
+  - {x: -33.264633, y: -12.280213}
+  - {x: -33.49493, y: -10.750124}
+  - {x: -33.605103, y: -9.503925}
+  - {x: -33.544975, y: -8.516871}
+  - {x: -32.94902, y: -7.7590046}
+  - {x: -31.975143, y: -7.2644963}
+  - {x: -31.594025, y: -7.089365}
+  - {x: -31.167753, y: -6.933881}
+  - {x: -30.686869, y: -6.81414}
+  - {x: -30.423698, y: -6.7720127}
+  - {x: -30.14409, y: -6.743477}
+  - {x: -28.858856, y: -6.6950207}
+  - {x: -28.188362, y: -6.6506615}
+  - {x: -27.529459, y: -6.584249}
+  - {x: -26.901085, y: -6.49202}
+  - {x: -26.323246, y: -6.371194}
+  - {x: -25.81743, y: -6.2210827}
   - {x: -25.412828, y: -6.0488186}
   - {x: -24.77183, y: -5.658321}
   - {x: -24.166336, y: -5.1836658}
@@ -4670,9 +4680,9 @@ MonoBehaviour:
       bevelSize: 0
       spriteIndex: 1
       corner: 1
-    - position: {x: -32.54515, y: -7.88982, z: 0}
-      leftTangent: {x: -1.4804611, y: -0.7276039, z: 0}
-      rightTangent: {x: 0.7911644, y: 0.4347973, z: 0}
+    - position: {x: -32.75618, y: -8.34202, z: 0}
+      leftTangent: {x: -1.4402657, y: -0.4763813, z: 0}
+      rightTangent: {x: 0.9720459, y: 0.42474747, z: 0}
       mode: 2
       height: 1
       bevelCutoff: 0
@@ -5100,8 +5110,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: f5fa52a496e5dd64f9c06cb24a92bc2b, type: 3}
   - {fileID: 21300000, guid: 569015eb27cdf3948a8325f34d0b287f, type: 3}
   m_LocalAABB:
-    m_Center: {x: 11.352211, y: -6.4006824, z: -0.000029998831}
-    m_Extent: {x: 45.091057, y: 23.897278, z: 0.009020001}
+    m_Center: {x: 11.257961, y: -6.4006824, z: -0.000029998831}
+    m_Extent: {x: 45.18531, y: 23.897278, z: 0.009020001}
 --- !u!4 &1428377242
 Transform:
   m_ObjectHideFlags: 0
