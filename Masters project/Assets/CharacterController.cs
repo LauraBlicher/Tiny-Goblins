@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class CharacterController : MonoBehaviour
 {
     private Rigidbody2D rb;
@@ -19,7 +20,7 @@ public class CharacterController : MonoBehaviour
     private float characterHeight;
     private RaycastHit2D hit;
     public float jumpHeight = 0;
-    private bool startYSet = false;
+    private bool jumpStarted = false;
     private float startY = 0;
     private bool canJump = true;
     public float groundAngle = 0;
@@ -29,11 +30,13 @@ public class CharacterController : MonoBehaviour
     public bool isMounted = false;
     private static bool interactionSeparator = false;
     public float movespeedT;
+    public float airSpeedT = 0;
     public bool sliding = false;
     private float right;
     public bool sprinting = false;
     private float jumpT = 0;
     private bool hasNotReleased = false;
+    public float movementInput;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
@@ -52,6 +55,13 @@ public class CharacterController : MonoBehaviour
     public float slideStopAngle = 20f;
     public float jumpForceMin = 1f, jumpHeightMax = 3f;
     public bool hasAirControl = false;
+
+    
+    public enum AnimationState { Idle, Run, Sprint, Jump, Fall, Slide }
+    [Header("Animations")]
+    public AnimationState currentAnimationState = AnimationState.Idle;
+    private bool enterState = false;
+    private bool lastFlipState = false;
 
     public void Awake()
     {
@@ -75,26 +85,44 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        AnimationStateMachine();
         // Maths
         newPos = transform.position;
         vel1 = newPos - oldPos;
         velocity = (vel1 + vel2) / 2;
         vel2 = vel1;
         oldPos = newPos;
-        right = Mathf.Round(Input.GetAxis("Horizontal")) >= 0 ? 1 : -1;
+        movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
+        right = lastFlipState ? 1 : -1;
         groundAngle = CalculateSlopeAngle() * right;
         movespeedT = Mathf.InverseLerp(-angleMax, angleMax, groundAngle);
         sprinting = Input.GetKey(KeyCode.LeftShift);
-        movementSpeed = Mathf.Lerp(msMax, msMin, movespeedT) * (sprinting ? 1.5f : 1);
+        movementSpeed = isGrounded ?
+            Mathf.Lerp(msMax, msMin, movespeedT) * (sprinting ? 1.5f : 1) :
+            Mathf.Lerp(movementSpeed, 3, airSpeedT);
+        if (!isGrounded)
+        {
+            airSpeedT += Time.deltaTime / 3;
+            airSpeedT = Mathf.Clamp01(airSpeedT);
+        }
+        else
+        {
+            airSpeedT = 0;
+        }
         newRight = Quaternion.AngleAxis(groundAngle * right, Vector3.forward) * Vector3.right;
-        walkDir = newRight * (Input.GetAxis("Horizontal") * movementSpeed * Time.deltaTime);
+        walkDir = (isGrounded ? newRight : Vector3.right * Mathf.Abs(movementInput)) * (movementInput * movementSpeed * Time.deltaTime);
         Debug.DrawRay(transform.position, walkDir * 10, Color.red);
-        //hit = Physics2D.BoxCast(col.bounds.center, col.bounds.size, 0f, Vector2.down, 0.01f, groundMask);
-        //isGrounded = hit.collider;
         Debug.DrawRay(transform.position, Vector3.down * (characterHeight / 2 + 0.1f));
+        if (velocity.magnitude <= 0.005f && velocity.magnitude >= -0.005f)
+        {
+            velocity = Vector2.zero;
+        }
+
+        // Slide
         if (Mathf.Abs(groundAngle) > angleMax || Mathf.Abs(groundAngle) < -angleMax)
         {
-            sliding = true;
+            if (IsGrounded())
+                sliding = true;
         }
         
         if (sliding)
@@ -107,15 +135,11 @@ public class CharacterController : MonoBehaviour
         {
             CharacterLandedTrigger(true);
         }
-        //if (velocity.y == 0)
-        //{
-        //    CharacterLandedTrigger(true);
-        //}
 
         // Receive Inputs
         if (canMove && isActive && !overrideControl)
         {
-            transform.position += walkDir; // new Vector3(Input.GetAxis("Horizontal") * (isGrounded ? movementSpeed : movementSpeed) * Time.deltaTime, 0, 0);
+            transform.position += walkDir;
 
             if (!hasNotReleased)
             {
@@ -138,55 +162,184 @@ public class CharacterController : MonoBehaviour
             }
             if (isGrounded && !canJump)
                 canJump = true;
+        }
+    }
 
-            if (Input.GetButtonDown("Interact"))
-            {
-                if (!interactionSeparator)
-                {
-                    if (type != CharacterType.Goblin)
-                    {
-                        CharacterManager.instance.Unmount();
-                        interactionSeparator = true;
-                    }
-                    else
-                    {
-                        CharacterManager.instance.Mount(frog);
-                        interactionSeparator = true;
-                    }
-                }
-                else
-                {
-                    interactionSeparator = false;
-                }
-            }
-            if (Input.GetButtonUp("Interact"))
-            {
-                interactionSeparator = false;
-            }
-        }
-        // Animations
-        if (anim)
+    public void AnimationStateMachine()
+    {
+        switch (currentAnimationState)
         {
-            if (canMove && isGrounded && velocity.y < 0)
-            {
-                anim.SetTrigger("landed");
-                anim.SetFloat("speed", Mathf.Abs(Input.GetAxis("Horizontal")));
-            }
-            else if (!canMove)
-            {
-                anim.SetTrigger("falling");
-            }
+            default:
+                break;
+            case AnimationState.Idle:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterIdle");
+                    enterState = true;
+                }
+                if (velocity.x != 0)
+                {
+                    enterState = false;
+                    currentAnimationState = sprinting ? AnimationState.Sprint : AnimationState.Run;
+                    break;
+                }
+                if (velocity.y < 0 && !IsGrounded())
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Fall;
+                    break;
+                }
+                if (jumpStarted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Jump;
+                    break;
+                }
+                if (sliding)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Slide;
+                    break;
+                }
+                break;
+            case AnimationState.Run:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterRun");
+                    enterState = true;
+                }
+                if (sprinting)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Sprint;
+                    break;
+                }
+                if (velocity == Vector2.zero)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Idle;
+                    break;
+                }
+                if (velocity.y < 0 && !IsGrounded())
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Fall;
+                    break;
+                }
+                if (jumpStarted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Jump;
+                    break;
+                }
+                if (sliding)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Slide;
+                    break;
+                }
+                break;
+            case AnimationState.Sprint:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterSprint");
+                    enterState = true;
+                }
+                if (!sprinting)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Run;
+                    break;
+                }
+                if (velocity == Vector2.zero)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Idle;
+                    break;
+                }
+                if (velocity.y < 0 && !IsGrounded())
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Fall;
+                    break;
+                }
+                if (jumpStarted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Jump;
+                    break;
+                }
+                if (sliding)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Slide;
+                    break;
+                }
+                break;
+            case AnimationState.Jump:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterJump");
+                    enterState = true;
+                }
+                if (!canJump)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Fall;
+                    break;
+                }
+                if (sliding)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Slide;
+                    break;
+                }
+                break;
+            case AnimationState.Fall:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterFall");
+                    enterState = true;
+                }
+                if (isGrounded)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Idle;
+                    break;
+                }
+                break;
+            case AnimationState.Slide:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterFall");
+                    enterState = true;
+                }
+                if (!sliding)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Idle;
+                }
+                break;
         }
-        if (!isGrounded && velocity.y < 0 && anim)
-            anim.SetTrigger("falling");
-        if (velocity.x < 0)
+
+        // Sprite flip
+        if (velocity.x != 0)
         {
-            sr.flipX = false;
+            if (velocity.x < 0)
+            {
+                sr.flipX = false;
+                lastFlipState = false;
+            }
+            else if (velocity.x > 0)
+            {
+                sr.flipX = true;
+                lastFlipState = true;
+            }
         }
-        else if (velocity.x > 0)
-            sr.flipX = true;
         else
-            sr.flipX = sr.flipX;
+        {
+            sr.flipX = lastFlipState;
+        }
     }
 
     public event Action onLanded;
@@ -228,15 +381,10 @@ public class CharacterController : MonoBehaviour
     {
         isGrounded = true;
         canJump = true;
-        startYSet = false;
+        jumpStarted = false;
         rb.gravityScale = 0;
         startY = 0;
         jumpHeight = 0;
-        if (anim)
-        {
-            anim.SetTrigger("landed");
-            anim.ResetTrigger("jump");
-        }
     }
 
     public void Slide()
@@ -256,18 +404,12 @@ public class CharacterController : MonoBehaviour
 
     public void Jump()
     {        
-        if (!startYSet)
+        if (!jumpStarted)
         {
             jumpT = 0;
-            if (anim)
-            {
-                anim.ResetTrigger("falling");
-                anim.ResetTrigger("landed");
-                anim.SetTrigger("jump");
-            }
             startY = transform.position.y;
             jumpHeight = transform.position.y;
-            startYSet = true;
+            jumpStarted = true;
             isGrounded = false;
             rb.gravityScale = 1;
         }
@@ -301,7 +443,7 @@ public class CharacterController : MonoBehaviour
             sideB = hit2.distance;
             sideC = Vector2.Distance(hit1.point, hit2.point);
             angle = 90f - (Mathf.Rad2Deg * Mathf.Acos((Mathf.Pow(sideA, 2) + Mathf.Pow(sideC, 2) - Mathf.Pow(sideB, 2)) / (2 * sideA * sideC)));
-            //print(angle);
+
             angle = SlopeIsLeft() ? -angle : angle;
         }
         else
