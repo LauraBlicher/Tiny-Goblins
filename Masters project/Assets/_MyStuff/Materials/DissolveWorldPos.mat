@@ -71,6 +71,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TopTexture1:
+        m_Texture: {fileID: 2800000, guid: 80445246cc51bc649a90911a060ce7ca, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopTexture2:
+        m_Texture: {fileID: 2800000, guid: cca47f44ceeb0f540ab20c6a25dab52a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopTexture3:
+        m_Texture: {fileID: 2800000, guid: 9789d23040cb1fb45ad60392430c3c15, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopTexture4:
+        m_Texture: {fileID: 2800000, guid: b0159e237b70bfd47be7f8623d164a5e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -103,6 +119,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TexInfluence: -0.72
     - _UVSec: 0
     - _Verticalmask: 0.32
     - _ZWrite: 1
@@ -115,3 +132,7 @@ Material:
     - _GoblinPo: {r: 0.15, g: 0.15, b: 0, a: 0}
     - _StartPosition: {r: 6.62, g: 0, b: 0, a: 0}
     - _Vector1: {r: 0.15, g: 0.15, b: 0, a: 0}
+    - _Vector10: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _Vector11: {r: 0.05, g: 0.01, b: 0, a: 0}
+    - _Vector8: {r: 0.002, g: 0.002, b: 0, a: 0}
+    - _Vector9: {r: 0.05, g: 0.05, b: 0, a: 0}
