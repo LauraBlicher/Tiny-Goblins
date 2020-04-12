@@ -6,6 +6,7 @@ using System;
 public class FrogScript : MonoBehaviour
 {
     public LayerMask groundMask;
+    public Transform checkPoint1, checkPoint2, c1Holder, c2Holder;
     public ArcRenderer arc;
     public Rigidbody2D rb;
     public SpriteRenderer sr;
@@ -23,8 +24,10 @@ public class FrogScript : MonoBehaviour
     float v, a;
     bool aiming = false;
     Vector3 aimDir;
+    public float acceptableHeight = 1f;
     private float right;
-    private float groundAngle;
+    public float groundAngle;
+    public float groundAngleNew;
     private float movementSpeed;
     private Vector3 newRight;
     private Vector3 walkDir;
@@ -47,15 +50,31 @@ public class FrogScript : MonoBehaviour
     void Update()
     {
         CharacterLandedTrigger();
-
+        checkPoint1.position = c1Holder.position + Vector3.right * 1.5f;
+        checkPoint2.position = c2Holder.position + Vector3.left * 1.5f;
         if (isMounted)
         {
             movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
             right = sr.flipX ? 1 : -1;
             groundAngle = CalculateSlopeAngle() * right;
+            groundAngleNew = CalculateSlopeAngleNew() * -right;
             movementSpeed = isGrounded ? 2 : 0;
-            newRight = Quaternion.AngleAxis(groundAngle * right, Vector3.forward) * Vector3.right;
+            newRight = Quaternion.AngleAxis(groundAngleNew * right, Vector3.forward) * Vector3.right;
+            transform.rotation = Quaternion.Euler(0, 0, right * groundAngleNew);
             walkDir = (isGrounded ? newRight : Vector3.right * Mathf.Abs(movementInput)) * (movementInput * movementSpeed * Time.deltaTime);
+
+            RaycastHit2D hit = Physics2D.CapsuleCast(transform.position, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
+            if (hit.collider)
+            {
+                if (hit.distance > col.size.y + 0.2f)
+                {
+                    isGrounded = IsGrounded();
+                }
+                if (hit.distance <= acceptableHeight - 0.1f)
+                {
+                    transform.position += transform.up * Time.deltaTime;
+                }
+            }
 
             if (!aiming)
                 transform.position += walkDir;
@@ -72,10 +91,11 @@ public class FrogScript : MonoBehaviour
                     CameraController.mainCamController.frogCamOverride = false;
                     rb.gravityScale = 1;
                     canJump = false;
-                    isGrounded = false;
+
                     arc.render = false;
                     rb.velocity = Vector3.zero;
                     rb.AddForce(aimDir * v, ForceMode2D.Impulse);
+                    isGrounded = false;
                     aiming = false;
                 }
                 else
@@ -175,11 +195,42 @@ public class FrogScript : MonoBehaviour
 
         Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down;
         RaycastHit2D hit2 =
-        Physics2D.CapsuleCast(transform.position, col.size, CapsuleDirection2D.Horizontal, 0, Vector2.down, 1.1f, groundMask);
+        Physics2D.CapsuleCast(transform.position, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, 1.11f, groundMask);
 
         output = hit2.collider;
 
         return output;
+    }
+
+    public float CalculateSlopeAngleNew()
+    {
+        RaycastHit2D hit1, hit2;
+        float a, b, c, d, e, c1, c2, c3;
+
+        hit1 = Physics2D.Raycast(checkPoint1.position, Vector3.down, Mathf.Infinity, groundMask);
+        hit2 = Physics2D.Raycast(checkPoint2.position, Vector3.down, Mathf.Infinity, groundMask);
+
+        Debug.DrawRay(checkPoint1.position, Vector3.down * hit1.distance, Color.cyan);
+        Debug.DrawRay(checkPoint2.position, Vector3.down * hit2.distance, Color.cyan);
+
+        if (hit1.collider && hit2.collider)
+        {
+            d = hit1.distance;
+            b = hit2.distance;
+            a = Vector2.Distance(checkPoint1.position, checkPoint2.position);
+            c = Vector2.Distance(hit1.point, hit2.point);
+            e = Vector2.Distance(hit1.point, checkPoint2.position);
+            c1 = Mathf.Rad2Deg * Mathf.Acos((d * d + e * e - a * a) / (2 * d * e));
+            print(c1);
+            c2 = Mathf.Rad2Deg * Mathf.Acos((e * e + c * c - b * b) / (2 * e * c));
+            print(c2);
+            c3 = Mathf.Round(90 - c1 - c2);
+        }
+        else
+        {
+            c3 = -100;
+        }
+        return c3;
     }
 
     public float CalculateSlopeAngle()
@@ -190,10 +241,10 @@ public class FrogScript : MonoBehaviour
         float sideA, sideB, sideC;
         float angle = 0;
         newangle = SlopeIsLeft() ? Quaternion.AngleAxis(-30, Vector3.forward) * Vector2.down : Quaternion.AngleAxis(30, Vector3.forward) * Vector2.down;
-        hit1 = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, groundMask);
-        hit2 = Physics2D.Raycast(transform.position, newangle, Mathf.Infinity, groundMask);
-        Debug.DrawRay(transform.position, Vector2.down * 10, Color.red);
-        Debug.DrawRay(transform.position, newangle * 10, Color.red);
+        hit1 = Physics2D.Raycast(checkPoint1.position, Vector2.down, Mathf.Infinity, groundMask);
+        hit2 = Physics2D.Raycast(checkPoint1.position, newangle, Mathf.Infinity, groundMask);
+        //Debug.DrawRay(checkPoint1.position, Vector2.down * 10, Color.red);
+        //Debug.DrawRay(checkPoint1.position, newangle * 10, Color.red);
         if (hit1.collider && hit2.collider)
         {
             sideA = hit1.distance;
@@ -216,10 +267,10 @@ public class FrogScript : MonoBehaviour
         RaycastHit2D hit1, hit2;
         Vector3 angleLeft = Quaternion.AngleAxis(-30, Vector3.forward) * Vector3.down;
         Vector3 angleRight = Quaternion.AngleAxis(30, Vector3.forward) * Vector3.down;
-        hit1 = Physics2D.Raycast(transform.position, angleLeft, Mathf.Infinity, groundMask);
-        hit2 = Physics2D.Raycast(transform.position, angleRight, Mathf.Infinity, groundMask);
-        Debug.DrawRay(transform.position, angleLeft * 10, Color.cyan);
-        Debug.DrawRay(transform.position, angleRight * 10, Color.cyan);
+        hit1 = Physics2D.Raycast(checkPoint1.position, angleLeft, Mathf.Infinity, groundMask);
+        hit2 = Physics2D.Raycast(checkPoint2.position, angleRight, Mathf.Infinity, groundMask);
+        //Debug.DrawRay(checkPoint1.position, angleLeft * 10, Color.cyan);
+        //Debug.DrawRay(checkPoint2.position, angleRight * 10, Color.cyan);
 
         output = hit1.distance < hit2.distance;
         return output;

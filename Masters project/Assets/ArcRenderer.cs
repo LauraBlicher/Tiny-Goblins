@@ -53,12 +53,12 @@ public class ArcRenderer : MonoBehaviour
         angleRadians = Mathf.Deg2Rad * (flipped ? -angle : angle);
         float maxDist = (velocity * velocity * Mathf.Sin(2 * angleRadians)) / g;
 
-        for (int i = 0; i < resolution + 1; i++)
+        for (int i = 0; i < resolution + 10; i++)
         {
             float t = (float)i / (float)resolution;
             float t2 = ((float)i + 1) / (float)resolution;
             ArcPoint point = TestGroundHit(frog.position + ArcPoint(t, maxDist), frog.position + ArcPoint(t2, maxDist));
-            if (i < resolution)
+            if (i < resolution + 10)
             {
                 if (!point.hitGround)
                 {
