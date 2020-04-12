@@ -26,8 +26,8 @@ public class CharacterController : MonoBehaviour
     public float groundAngle = 0;
     private Vector3 newRight;
     private Vector3 walkDir;
-    public bool overrideControl = false;
-    public bool isMounted = false;
+    
+    
     private static bool interactionSeparator = false;
     public float movespeedT;
     public float airSpeedT = 0;
@@ -56,8 +56,21 @@ public class CharacterController : MonoBehaviour
     public float jumpForceMin = 1f, jumpHeightMax = 3f;
     public bool hasAirControl = false;
 
-    
-    public enum AnimationState { Idle, Run, Sprint, Jump, Fall, Slide }
+    // Mounting
+    [Header("Mounts")]
+    public GameObject mount;
+    public Transform saddle;
+    public float detectionRadius;
+    public bool mountNearby;
+    public LayerMask mountMask;
+    public bool isMounted = false;
+    public bool overrideControl = false;
+    public float distToMount;
+    public float minMountDist;
+    public bool canMount = false;
+
+    // Animations
+    public enum AnimationState { Idle, Run, Sprint, Jump, Fall, Slide, Mounted }
     [Header("Animations")]
     public AnimationState currentAnimationState = AnimationState.Idle;
     private bool enterState = false;
@@ -86,6 +99,26 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         AnimationStateMachine();
+        if (!mountNearby)
+            CheckForMounts();
+        else
+        {
+            distToMount = Vector2.Distance(transform.position, mount.transform.position);
+            if (distToMount > detectionRadius + detectionRadius * 0.2f)
+            {
+                mount = null;
+                mountNearby = false;
+            }
+            if (distToMount <= minMountDist)
+            {
+                canMount = true;
+            }
+            else
+            {
+                canMount = false;
+            }
+        }
+
         // Maths
         newPos = transform.position;
         vel1 = newPos - oldPos;
@@ -163,6 +196,17 @@ public class CharacterController : MonoBehaviour
             if (isGrounded && !canJump)
                 canJump = true;
         }
+        if (canMount)
+        {
+            if (Input.GetButtonDown("Interact"))
+            {
+                MountAction();
+            }
+        }
+        if (isMounted)
+        {
+            transform.position = saddle.position;
+        }
     }
 
     public void AnimationStateMachine()
@@ -199,6 +243,12 @@ public class CharacterController : MonoBehaviour
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Slide;
+                    break;
+                }
+                if (isMounted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Mounted;
                     break;
                 }
                 break;
@@ -238,6 +288,12 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Slide;
                     break;
                 }
+                if (isMounted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Mounted;
+                    break;
+                }
                 break;
             case AnimationState.Sprint:
                 if (!enterState)
@@ -273,6 +329,12 @@ public class CharacterController : MonoBehaviour
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Slide;
+                    break;
+                }
+                if (isMounted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Mounted;
                     break;
                 }
                 break;
@@ -320,6 +382,19 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Idle;
                 }
                 break;
+            case AnimationState.Mounted:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterIdle");
+                    enterState = true;
+                }
+                rb.velocity = Vector2.zero;
+                if (!isMounted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Idle;
+                }
+                break;
         }
 
         // Sprite flip
@@ -339,6 +414,42 @@ public class CharacterController : MonoBehaviour
         else
         {
             sr.flipX = lastFlipState;
+        }
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+
+    }
+
+    public void CheckForMounts()
+    {
+        Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, detectionRadius, mountMask);
+        if (cols.Length != 0)
+        {
+            mountNearby = true;
+            mount = cols[0].gameObject;
+        }
+    }
+
+    public void MountAction()
+    {
+        col.isTrigger = !col.isTrigger;
+        overrideControl = !overrideControl;
+        isMounted = !isMounted;
+        saddle = mount.transform.GetChild(mount.transform.childCount - 1);
+        
+        switch (mount.tag)
+        {
+            default:
+                break;
+            case "Frog":
+                mount.GetComponent<FrogScript>().canMove = !mount.GetComponent<FrogScript>().canMove;
+                mount.GetComponent<FrogScript>().isMounted = !mount.GetComponent<FrogScript>().isMounted;
+                break;
+            case "Beetle":
+                break;
         }
     }
 

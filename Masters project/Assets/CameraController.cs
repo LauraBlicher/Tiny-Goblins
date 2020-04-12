@@ -16,6 +16,9 @@ public class CameraController : MonoBehaviour
     public bool usePOI = false;
     public float standardSize;
 
+    public bool frogCamOverride = false;
+    public float sizePerDistance = 1f;
+
     public Vector3 goblinVelocity;
     private Vector3 targetPos;
     void Awake()
@@ -50,19 +53,28 @@ public class CameraController : MonoBehaviour
         usePOI = flag;
 
         // Movement and Zoom
-        if (!usePOI)
+        if (!frogCamOverride)
         {
-            mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, standardSize, lerpSpeed * Time.deltaTime);
-            targetPos = new Vector3((goblin.transform.position + (goblinVelocity * forwardOffset)).x, goblin.transform.position.y, -21);
-            Vector2 forwardPos = Vector2.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime); // new Vector2(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
-            Vector2 currentPos = Vector2.Lerp(transform.position, goblin.transform.position, lerpSpeed * Time.deltaTime); // new Vector3(Mathf.Lerp(transform.position.x, goblin.transform.position.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
-            transform.position = (Vector3)(goblin.canMove ? forwardPos: currentPos) + Vector3.back * 21;
+            if (!usePOI)
+            {
+                mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, standardSize, lerpSpeed * Time.deltaTime);
+                targetPos = new Vector3((goblin.transform.position + (goblinVelocity * forwardOffset)).x, goblin.transform.position.y, -21);
+                Vector2 forwardPos = Vector2.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime); // new Vector2(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
+                Vector2 currentPos = Vector2.Lerp(transform.position, goblin.transform.position, lerpSpeed * Time.deltaTime); // new Vector3(Mathf.Lerp(transform.position.x, goblin.transform.position.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
+                transform.position = (Vector3)(goblin.canMove ? forwardPos : currentPos) + Vector3.back * 21;
+            }
+            else if (usePOI && currentPOI)
+            {
+                mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, currentPOI.camSize, lerpSpeed * Time.deltaTime);
+                Vector2 poiPos = Vector2.Lerp(transform.position, currentPOI.useOffset ? currentPOI.offset : (Vector2)currentPOI.transform.position, lerpSpeed * Time.deltaTime);
+                transform.position = (Vector3)poiPos + Vector3.back * 21;
+            }
         }
-        else if (usePOI && currentPOI)
+        else
         {
-            mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, currentPOI.camSize, lerpSpeed * Time.deltaTime);
-            Vector2 poiPos = Vector2.Lerp(transform.position, currentPOI.useOffset ? currentPOI.offset : (Vector2)currentPOI.transform.position, lerpSpeed * Time.deltaTime);
-            transform.position = (Vector3)poiPos + Vector3.back * 21;
+            FrogScript frog = goblin.mount.GetComponent<FrogScript>();
+            mainCam.orthographicSize = frog.jumpDistance * sizePerDistance;
+            transform.position = frog.arc.avgPosition + Vector3.back * 21;
         }
     }
 }

@@ -15,6 +15,9 @@ public class ArcRenderer : MonoBehaviour
     public bool render = false;
 
     public bool flipped = false;
+    public LayerMask groundMask;
+    public Vector3 hitPoint;
+    public Vector3 avgPosition;
 
     void Awake()
     {
@@ -46,17 +49,43 @@ public class ArcRenderer : MonoBehaviour
 
     public Vector3[] ArcArray()
     {
-        Vector3[] output = new Vector3[resolution + 1];
+        List<Vector3> output = new List<Vector3>(); //Vector3[resolution + 1];
         angleRadians = Mathf.Deg2Rad * (flipped ? -angle : angle);
         float maxDist = (velocity * velocity * Mathf.Sin(2 * angleRadians)) / g;
 
         for (int i = 0; i < resolution + 1; i++)
         {
             float t = (float)i / (float)resolution;
-            output[i] = frog.position + ArcPoint(t, maxDist);
+            float t2 = ((float)i + 1) / (float)resolution;
+            ArcPoint point = TestGroundHit(frog.position + ArcPoint(t, maxDist), frog.position + ArcPoint(t2, maxDist));
+            if (i < resolution)
+            {
+                if (!point.hitGround)
+                {
+                    output.Add(point.point);
+                }
+                else
+                {
+                    output.Add(point.point);
+                    output.Add(point.hitPoint);
+                    hitPoint = point.hitPoint;
+                    break;
+                }
+            }
+            else
+            {
+                output.Add(point.point);
+                hitPoint = point.point;
+            }
         }
-
-        return output;
+        Vector3 avg= Vector3.zero;
+        foreach(Vector3 point in output)
+        {
+            avg += point;
+        }
+        avgPosition = avg / output.Count;
+        lr.positionCount = output.Count;
+        return output.ToArray();
     }
 
     public Vector3 ArcPoint(float t, float maxDist)
@@ -64,5 +93,42 @@ public class ArcRenderer : MonoBehaviour
         float x = t * maxDist;
         float y = x * Mathf.Tan(angleRadians) - ((g * x * x) / (2 * velocity * velocity * Mathf.Cos(angleRadians) * Mathf.Cos(angleRadians)));
         return new Vector3(x, y, -1f);
+    }
+
+    public ArcPoint TestGroundHit(Vector3 start, Vector3 end)
+    {
+        RaycastHit2D rhit;
+        Vector3 dir = (end - start).normalized;
+        float dst = Vector3.Distance(start, end);
+        rhit = Physics2D.Raycast(start, dir, dst, groundMask);
+        Debug.DrawRay(start, dir * dst);
+        if (!rhit.collider)
+        {
+            return new ArcPoint(false, start);
+        }
+        else
+        {
+            return new ArcPoint(true, start, rhit.point);
+        }
+    }
+}
+
+public class ArcPoint
+{
+    public bool hitGround;
+    public Vector3 point;
+    public Vector3 hitPoint;
+
+    public ArcPoint(bool _hitGround, Vector3 _point)
+    {
+        hitGround = _hitGround;
+        point = _point;
+    }
+
+    public ArcPoint(bool _hitground, Vector3 _point, Vector3 _hitPoint)
+    {
+        hitGround = _hitground;
+        point = _point;
+        hitPoint = _hitPoint;
     }
 }
