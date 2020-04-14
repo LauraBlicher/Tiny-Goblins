@@ -190,7 +190,7 @@ public class CameraController : MonoBehaviour
             size = currentPOI.camSize;
         }
 
-        moveT += Time.deltaTime * lerpSpeed;
+        moveT += Time.deltaTime * lerpSpeed * (goblin.currentAnimationState == CharacterController.AnimationState.Fall ? 2 : 1);
         moveT = Mathf.Clamp01(moveT);
         mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, size, moveT * 0.5f);
         transform.position = Vector3.Lerp(transform.position, targetPos, moveT);
