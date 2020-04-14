@@ -39,4 +39,10 @@ public class PointOfInterestHandler : MonoBehaviour
         }
         offset = transform.position + child.localPosition;
     }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, distForTrigger);
+        Gizmos.DrawWireCube(useOffset ? child.transform.position : transform.position, new Vector3(camSize * 3.5f, camSize * 2f, 1));
+    }
 }

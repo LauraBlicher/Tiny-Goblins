@@ -493,6 +493,7 @@ public class CharacterController : MonoBehaviour
         isGrounded = true;
         canJump = true;
         jumpStarted = false;
+        rb.velocity = Vector2.zero;
         rb.gravityScale = 0;
         startY = 0;
         jumpHeight = 0;
@@ -501,6 +502,7 @@ public class CharacterController : MonoBehaviour
     public void Slide()
     {
         col.sharedMaterial = slide;
+        rb.isKinematic = false;
         rb.gravityScale = 1;
         canMove = false;
         if (Mathf.Abs(groundAngle) <= slideStopAngle)

@@ -11,6 +11,16 @@ public class CameraController : MonoBehaviour
     public static Camera mainCam;
     public static CameraController mainCamController;
 
+    public enum GoblinMovement { MoveLeft, MoveRight, StandStill, POI }
+    public GoblinMovement currentMovement = GoblinMovement.StandStill;
+    public GoblinMovement lastMovement = GoblinMovement.StandStill;
+    public Vector3 targetPos;
+    public Vector3 lastTargetPos;
+    public Vector3 lastPos;
+    private bool enterState = false;
+    private float moveT = 0;
+    private float lastT = 0;
+
     public PointOfInterestHandler currentPOI;
     public static List<PointOfInterestHandler> pois = new List<PointOfInterestHandler>();
     public bool usePOI = false;
@@ -20,7 +30,7 @@ public class CameraController : MonoBehaviour
     public float sizePerDistance = 1f;
 
     public Vector3 goblinVelocity;
-    private Vector3 targetPos;
+
     void Awake()
     {
         mainCam = GetComponent<Camera>();
@@ -35,6 +45,155 @@ public class CameraController : MonoBehaviour
     public void FixedUpdate()
     {
         goblinVelocity = goblin.velocity.normalized * (goblin.sprinting ? 1 : 0.75f);
+    }
+
+    public void MovementStateMachine()
+    {
+        float offset = goblin.sprinting ? forwardOffset + 1 : forwardOffset;
+        switch (currentMovement)
+        {
+            case GoblinMovement.StandStill:
+                if (!enterState)
+                {
+                    moveT = 0;
+                    enterState = true;
+                }
+
+                targetPos = goblin.transform.position + Vector3.back * 21;
+
+                if (goblin.currentAnimationState == CharacterController.AnimationState.Run || goblin.currentAnimationState == CharacterController.AnimationState.Sprint)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.StandStill;
+                    if (goblinVelocity.x < 0)
+                    {
+                        currentMovement = GoblinMovement.MoveRight;
+                    }
+                    else
+                    {
+                        currentMovement = GoblinMovement.MoveLeft;
+                    }                    
+                }
+                if (usePOI)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.StandStill;
+                    currentMovement = GoblinMovement.POI;
+                }
+                break;
+            case GoblinMovement.MoveLeft:
+                if (!enterState)
+                {
+                    moveT = 0;
+                    enterState = true;
+                }
+
+                targetPos = goblin.transform.position + (Vector3.left * offset) + (Vector3.back * 21);
+
+                if (goblin.currentAnimationState == CharacterController.AnimationState.Idle || (goblin.currentAnimationState == CharacterController.AnimationState.Slide && !usePOI))
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.MoveLeft;
+                    currentMovement = GoblinMovement.StandStill;
+                }
+                if (goblinVelocity.x > 0)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.MoveLeft;
+                    currentMovement = GoblinMovement.MoveRight;
+                }
+                if (usePOI)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.MoveLeft;
+                    currentMovement = GoblinMovement.POI;
+                }
+                break;
+            case GoblinMovement.MoveRight:
+                if (!enterState)
+                {
+                    moveT = 0;
+                    enterState = true;
+                }
+
+                targetPos = goblin.transform.position + (Vector3.right * offset) + (Vector3.back * 21);
+
+                if (goblin.currentAnimationState == CharacterController.AnimationState.Idle || (goblin.currentAnimationState == CharacterController.AnimationState.Slide && !usePOI))
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.MoveRight;
+                    currentMovement = GoblinMovement.StandStill;
+                }
+                if (goblinVelocity.x < 0)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.MoveRight;
+                    currentMovement = GoblinMovement.MoveLeft;
+                }
+                if (usePOI)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    lastMovement = GoblinMovement.MoveRight;
+                    currentMovement = GoblinMovement.POI;
+                }
+                break;
+            case GoblinMovement.POI:
+                if (!enterState)
+                {
+                    moveT = 0;
+                    enterState = true;
+                }
+
+                if (currentPOI)
+                {
+                    targetPos = (currentPOI.useOffset ? (Vector3)currentPOI.offset : currentPOI.transform.position) + Vector3.back * 21;
+                }
+
+                if (!usePOI)
+                {
+                    enterState = false;
+                    lastT = moveT;
+                    currentMovement = GoblinMovement.StandStill;
+                }
+
+                break;
+        }
+        switch (lastMovement)
+        {
+            case GoblinMovement.StandStill:
+                lastTargetPos = goblin.transform.position + Vector3.back * 21;
+                
+                break;
+            case GoblinMovement.MoveLeft:
+                lastTargetPos = goblin.transform.position + (Vector3.left * offset) + (Vector3.back * 21);
+                break;
+            case GoblinMovement.MoveRight:
+                lastTargetPos = goblin.transform.position + (Vector3.right * offset) + (Vector3.back * 21);
+                break;
+            case GoblinMovement.POI:
+                lastTargetPos = (currentPOI.useOffset ? (Vector3)currentPOI.offset : currentPOI.transform.position) + Vector3.back * 21;
+                break;
+        }
+        lastPos = Vector3.Lerp(lastTargetPos, targetPos, lastT);
+
+        float size = goblin.sprinting ? standardSize -1 : standardSize;
+        if (usePOI && currentPOI)
+        {
+            size = currentPOI.camSize;
+        }
+
+        moveT += Time.deltaTime * lerpSpeed;
+        moveT = Mathf.Clamp01(moveT);
+        mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, size, moveT * 0.5f);
+        transform.position = Vector3.Lerp(transform.position, targetPos, moveT);
     }
 
     // Update is called once per frame
@@ -55,20 +214,22 @@ public class CameraController : MonoBehaviour
         // Movement and Zoom
         if (!frogCamOverride)
         {
-            if (!usePOI)
-            {
-                mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, standardSize, lerpSpeed * Time.deltaTime);
-                targetPos = new Vector3((goblin.transform.position + (goblinVelocity * forwardOffset)).x, goblin.transform.position.y, -21);
-                Vector2 forwardPos = Vector2.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime); // new Vector2(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
-                Vector2 currentPos = Vector2.Lerp(transform.position, goblin.transform.position, lerpSpeed * Time.deltaTime); // new Vector3(Mathf.Lerp(transform.position.x, goblin.transform.position.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
-                transform.position = (Vector3)(goblin.canMove ? forwardPos : currentPos) + Vector3.back * 21;
-            }
-            else if (usePOI && currentPOI)
-            {
-                mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, currentPOI.camSize, lerpSpeed * Time.deltaTime);
-                Vector2 poiPos = Vector2.Lerp(transform.position, currentPOI.useOffset ? currentPOI.offset : (Vector2)currentPOI.transform.position, lerpSpeed * Time.deltaTime);
-                transform.position = (Vector3)poiPos + Vector3.back * 21;
-            }
+            //if (!usePOI)
+            //{
+            //    mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, standardSize, lerpSpeed * Time.deltaTime);
+            //    targetPos = new Vector3((goblin.transform.position + (goblinVelocity * forwardOffset)).x, goblin.transform.position.y, -21);
+            //    Vector2 forwardPos = Vector2.Lerp(transform.position, targetPos, lerpSpeed * Time.deltaTime); // new Vector2(Mathf.Lerp(transform.position.x, targetPos.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
+            //    Vector2 currentPos = Vector2.Lerp(transform.position, goblin.transform.position, lerpSpeed * Time.deltaTime); // new Vector3(Mathf.Lerp(transform.position.x, goblin.transform.position.x, lerpSpeed * Time.deltaTime), goblin.transform.position.y, -21);
+            //    transform.position = (Vector3)(goblin.canMove ? forwardPos : currentPos) + Vector3.back * 21;
+            //}
+            //else if (usePOI && currentPOI)
+            //{
+            //    mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, currentPOI.camSize, lerpSpeed * Time.deltaTime);
+            //    Vector2 poiPos = Vector2.Lerp(transform.position, currentPOI.useOffset ? currentPOI.offset : (Vector2)currentPOI.transform.position, lerpSpeed * Time.deltaTime);
+            //    transform.position = (Vector3)poiPos + Vector3.back * 21;
+            //}
+
+            MovementStateMachine();
         }
         else
         {
