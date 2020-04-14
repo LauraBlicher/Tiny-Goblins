@@ -234,8 +234,8 @@ public class CameraController : MonoBehaviour
         else
         {
             FrogScript frog = goblin.mount.GetComponent<FrogScript>();
-            mainCam.orthographicSize = frog.jumpDistance * sizePerDistance;
-            transform.position = frog.arc.avgPosition + Vector3.back * 21;
+            mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, frog.jumpDistance * sizePerDistance, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, frog.arc.avgPosition + Vector3.back * 21, Time.deltaTime);
         }
     }
 }
