@@ -24,8 +24,10 @@ public class CharacterController : MonoBehaviour
     private float startY = 0;
     private bool canJump = true;
     public float groundAngle = 0;
+    public float groundAngleNew;
     private Vector3 newRight;
     private Vector3 walkDir;
+    private bool wallLeft, wallRight;
 
     public float height;
     
@@ -37,7 +39,7 @@ public class CharacterController : MonoBehaviour
     public bool sprinting = false;
     private float jumpT = 0;
     private bool hasNotReleased = false;
-    private float movementInput;
+    public float movementInput;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
@@ -127,7 +129,9 @@ public class CharacterController : MonoBehaviour
         vel2 = vel1;
         oldPos = newPos;
         movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
+        MovementModifiers();
         right = lastFlipState ? 1 : -1;
+        groundAngleNew = Mathf.Round(CalculateSlopeAngleNew()) * right;
         groundAngle = CalculateSlopeAngle() * right;
         movespeedT = Mathf.InverseLerp(-angleMax, angleMax, groundAngle);
         sprinting = Input.GetKey(KeyCode.LeftShift);
@@ -430,6 +434,30 @@ public class CharacterController : MonoBehaviour
 
     }
 
+    public void MovementModifiers()
+    {
+        if (wallLeft)
+        {
+            movementInput = Mathf.Clamp(movementInput, 0, 1);
+        }
+        if (wallRight)
+        {
+            movementInput = Mathf.Clamp(movementInput, -1, 0);
+        }
+    }
+
+    public void HitInvisibleWall(bool prohibitLeft)
+    {
+        wallLeft = prohibitLeft;
+        wallRight = !prohibitLeft;
+    }
+
+    public void LeftInvisibleWall()
+    {
+        wallLeft = false;
+        wallRight = false;
+    }
+
     public void CheckForMounts()
     {
         Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, detectionRadius, mountMask);
@@ -574,6 +602,19 @@ public class CharacterController : MonoBehaviour
         {
             canJump = false;
         }
+    }
+
+    public float CalculateSlopeAngleNew()
+    {
+        RaycastHit2D hit1;
+        float output = 0;
+        hit1 = Physics2D.Raycast(feet.transform.position, Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down, Mathf.Infinity, groundMask);
+        if (hit1.collider)
+        {
+            Vector2 vectorAngle = hit1.normal;
+            output = Mathf.Atan2(vectorAngle.y, vectorAngle.x) * Mathf.Rad2Deg;
+        }
+        return output - 90;
     }
 
     public float CalculateSlopeAngle()

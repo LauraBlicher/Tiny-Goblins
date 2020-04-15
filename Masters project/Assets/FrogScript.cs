@@ -11,6 +11,7 @@ public class FrogScript : MonoBehaviour
     public Rigidbody2D rb;
     public SpriteRenderer sr;
     public CapsuleCollider2D col;
+    public FrogPositionInfo currentPosition;
     public float velocityMin, velocityMax;
     public float angleMin, angleMax;
     public float scrollSpeed = 1f;
@@ -20,17 +21,20 @@ public class FrogScript : MonoBehaviour
     public float jumpDistance;
     public bool canMove;
     public bool canJump;
+
     float ta = 0, tv = 0;
     float v, a;
     bool aiming = false;
     Vector3 aimDir;
-    public float acceptableHeight = 1f;
+    public float currentHeight = 1f;
     private float right;
     public float groundAngle;
     public float groundAngleNew;
     private float movementSpeed;
     private Vector3 newRight;
     private Vector3 walkDir;
+
+    public float minHeight = 1f, maxHeight = 1.1f;
 
     void Awake()
     {
@@ -39,6 +43,7 @@ public class FrogScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        currentPosition = new FrogPositionInfo(ClosestGroundPoint(), 0, Vector3.zero);
         col = GetComponent<CapsuleCollider2D>();
         a = angleMin;
         v = velocityMin;
@@ -52,6 +57,11 @@ public class FrogScript : MonoBehaviour
         CharacterLandedTrigger();
         checkPoint1.position = c1Holder.position + Vector3.right * 1.5f;
         checkPoint2.position = c2Holder.position + Vector3.left * 1.5f;
+        UpdatePositionInfo();
+        if (isGrounded)
+        {
+            MaintainHeight();
+        }
         if (isMounted)
         {
             movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
@@ -59,22 +69,12 @@ public class FrogScript : MonoBehaviour
             groundAngle = CalculateSlopeAngle() * right;
             groundAngleNew = CalculateSlopeAngleNew() * -right;
             movementSpeed = isGrounded ? 2 : 0;
-            newRight = Quaternion.AngleAxis(groundAngleNew * right, Vector3.forward) * Vector3.right;
-            transform.rotation = Quaternion.Euler(0, 0, right * groundAngleNew);
+            //newRight = Quaternion.AngleAxis(groundAngleNew * right, Vector3.forward) * Vector3.right;
+            newRight = Vector3.Cross(currentPosition.dirToGroundPoint, Vector3.back);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(RotationFromDir(newRight)), 3*Time.deltaTime);//Quaternion.Euler(0, 0, right * groundAngleNew);
             walkDir = (isGrounded ? newRight : Vector3.right * Mathf.Abs(movementInput)) * (movementInput * movementSpeed * Time.deltaTime);
 
-            RaycastHit2D hit = Physics2D.CapsuleCast(transform.position, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
-            if (hit.collider)
-            {
-                if (hit.distance > col.size.y + 0.2f)
-                {
-                    isGrounded = IsGrounded();
-                }
-                if (hit.distance <= acceptableHeight - 0.1f)
-                {
-                    transform.position += transform.up * Time.deltaTime;
-                }
-            }
+            currentHeight = currentPosition.distToGroundPoint;
 
             if (!aiming)
                 transform.position += walkDir;
@@ -108,6 +108,26 @@ public class FrogScript : MonoBehaviour
                 }
             }
             arc.flipped = sr.flipX;
+        }
+    }
+
+    public void UpdatePositionInfo()
+    {
+        currentPosition.closestGroundPoint = ClosestGroundPoint();
+        currentPosition.dirToGroundPoint = (ClosestGroundPoint() - transform.position).normalized;
+        currentPosition.distToGroundPoint = Vector3.Distance(ClosestGroundPoint(), transform.position);
+        Debug.DrawRay(transform.position, currentPosition.dirToGroundPoint * currentPosition.distToGroundPoint, Color.yellow);
+    }
+
+    public void MaintainHeight()
+    {
+        if(currentPosition.distToGroundPoint > maxHeight)
+        {
+            transform.position += currentPosition.dirToGroundPoint * Time.deltaTime;
+        }
+        else if (currentPosition.distToGroundPoint < minHeight)
+        {
+            transform.position -= currentPosition.dirToGroundPoint * Time.deltaTime;
         }
     }
 
@@ -202,6 +222,25 @@ public class FrogScript : MonoBehaviour
         return output;
     }
 
+    public Vector3 ClosestGroundPoint()
+    {
+        Vector3 output = Vector3.zero;
+
+        RaycastHit2D hit1 = Physics2D.CircleCast(transform.position, col.size.x, -transform.up, Mathf.Infinity, groundMask);
+        if (hit1.collider)
+        {
+            output = hit1.point;
+        }
+
+        return output;
+    }
+
+    public Vector3 RotationFromDir(Vector3 dir)
+    {
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        return new Vector3(0,0,angle);
+    }
+
     public float CalculateSlopeAngleNew()
     {
         RaycastHit2D hit1, hit2;
@@ -221,9 +260,9 @@ public class FrogScript : MonoBehaviour
             c = Vector2.Distance(hit1.point, hit2.point);
             e = Vector2.Distance(hit1.point, checkPoint2.position);
             c1 = Mathf.Rad2Deg * Mathf.Acos((d * d + e * e - a * a) / (2 * d * e));
-            print(c1);
+
             c2 = Mathf.Rad2Deg * Mathf.Acos((e * e + c * c - b * b) / (2 * e * c));
-            print(c2);
+
             c3 = Mathf.Round(90 - c1 - c2);
         }
         else
@@ -274,5 +313,19 @@ public class FrogScript : MonoBehaviour
 
         output = hit1.distance < hit2.distance;
         return output;
+    }
+}
+
+public class FrogPositionInfo
+{
+    public Vector3 closestGroundPoint;
+    public Vector3 dirToGroundPoint;
+    public float distToGroundPoint;
+
+    public FrogPositionInfo (Vector3 _cgp, float _disttgp, Vector3 _dirtgp)
+    {
+        closestGroundPoint = _cgp;
+        dirToGroundPoint = _dirtgp;
+        distToGroundPoint = _disttgp;
     }
 }

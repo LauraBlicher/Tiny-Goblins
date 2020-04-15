@@ -175,10 +175,10 @@ MonoBehaviour:
   arc: {fileID: 2677490070363970668}
   rb: {fileID: 2677490068460352696}
   sr: {fileID: 2677490068460352699}
-  col: {fileID: 0}
+  col: {fileID: 2677490068460352697}
   velocityMin: 15
   velocityMax: 30
-  angleMin: 30
+  angleMin: 15
   angleMax: 60
   scrollSpeed: 1
   isGrounded: 0
@@ -187,8 +187,11 @@ MonoBehaviour:
   jumpDistance: 0
   canMove: 0
   canJump: 0
+  currentHeight: 1
   groundAngle: 0
   groundAngleNew: 0
+  minHeight: 3
+  maxHeight: 3.2
 --- !u!50 &2677490068460352696
 Rigidbody2D:
   serializedVersion: 4

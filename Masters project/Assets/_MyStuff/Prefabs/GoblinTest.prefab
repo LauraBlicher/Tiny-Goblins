@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3140797130119028701}
   m_Layer: 0
   m_Name: GoblinTest
-  m_TagString: Untagged
+  m_TagString: Goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,13 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438b5e97bbc89e740a6a50ae794dd15c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frog: {fileID: 0}
   velocity: {x: 0, y: 0}
-  jumpHeight: 0
+  isGrounded: 0
+  canMove: 1
   groundAngle: 0
-  overrideControl: 0
-  isMounted: 0
-  movespeedT: 0
+  groundAngleNew: 0
+  height: 0
   sliding: 0
   sprinting: 0
   groundMask:
@@ -75,6 +74,19 @@ MonoBehaviour:
   jumpForceMin: 4
   jumpHeightMax: 0.5
   hasAirControl: 1
+  mount: {fileID: 0}
+  saddle: {fileID: 0}
+  detectionRadius: 10
+  mountNearby: 0
+  mountMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  isMounted: 0
+  overrideControl: 0
+  distToMount: 0
+  minMountDist: 5
+  canMount: 0
+  currentAnimationState: 4
 --- !u!212 &3063445871004748362
 SpriteRenderer:
   m_ObjectHideFlags: 0
