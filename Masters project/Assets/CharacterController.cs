@@ -9,34 +9,35 @@ public class CharacterController : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 oldPos, newPos;
     public enum CharacterType { Goblin, Frog, Beetle, Bird }
-    public CharacterController frog;
 
     public static CharacterController theGoblin;
 
+    [HideInInspector]
     public Vector2 velocity;
     private Vector2 vel1, vel2;
     public bool isGrounded;
     public bool canMove = true;
     private float characterHeight;
     private RaycastHit2D hit;
-    public float jumpHeight = 0;
+    private float jumpHeight = 0;
     private bool jumpStarted = false;
     private float startY = 0;
     private bool canJump = true;
     public float groundAngle = 0;
     private Vector3 newRight;
     private Vector3 walkDir;
-    
+
+    public float height;
     
     private static bool interactionSeparator = false;
-    public float movespeedT;
-    public float airSpeedT = 0;
+    private float movespeedT;
+    private float airSpeedT = 0;
     public bool sliding = false;
     private float right;
     public bool sprinting = false;
     private float jumpT = 0;
     private bool hasNotReleased = false;
-    public float movementInput;
+    private float movementInput;
 
     [Header("Dependencies")]
     public LayerMask groundMask;
@@ -149,6 +150,12 @@ public class CharacterController : MonoBehaviour
         if (velocity.magnitude <= 0.005f && velocity.magnitude >= -0.005f)
         {
             velocity = Vector2.zero;
+        }
+
+        height = HeightOffGround();
+        if (isGrounded)
+        {
+            MaintainHeight();
         }
 
         // Slide
@@ -488,6 +495,24 @@ public class CharacterController : MonoBehaviour
         return output;
     }
 
+    public float HeightOffGround()
+    {
+        Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down;
+        RaycastHit2D hit2 = Physics2D.Raycast(feet.position, dir, Mathf.Infinity, groundMask);
+        if (hit2.collider)
+        {
+            if (hit2.distance > 0.5f)
+            {
+                isGrounded = IsGrounded();
+            }
+            return hit2.distance;
+        }
+        else
+        {
+            return 1000;
+        }
+    }
+
     public void CharacterLanded()
     {
         isGrounded = true;
@@ -497,6 +522,19 @@ public class CharacterController : MonoBehaviour
         rb.gravityScale = 0;
         startY = 0;
         jumpHeight = 0;
+    }
+
+    public void MaintainHeight()
+    {
+        Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.up;
+        if (HeightOffGround() < 0.24f)
+        {
+            transform.position += dir * Time.deltaTime * 0.1f;
+        }
+        else if (HeightOffGround() > 0.3f)
+        {
+            transform.position -= dir * Time.deltaTime * 0.1f;
+        }
     }
 
     public void Slide()
