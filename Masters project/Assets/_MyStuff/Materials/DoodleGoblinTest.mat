@@ -61,7 +61,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _TextureSample1:
         m_Texture: {fileID: 2800000, guid: f5453dca2ac649e4182c56a3966ad395, type: 3}
-        m_Scale: {x: 10, y: 10}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _TextureSample2:
         m_Texture: {fileID: 2800000, guid: 4321c1c9d21236d438e21d648f5c20ed, type: 3}
@@ -97,7 +97,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _WobbleAmount: 1
-    - _WobbleScale: 0.007
+    - _WobbleScale: 0.003
     - _WobbleSpeed: 0.39
     - _WorldPosEffect: 0.002
     - _WorldPosMultiplier: 0.002
