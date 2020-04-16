@@ -6,10 +6,12 @@ using System;
 public class FrogScript : MonoBehaviour
 {
     public LayerMask groundMask;
-    public Transform checkPoint1, checkPoint2, c1Holder, c2Holder;
+
     public ArcRenderer arc;
     public Rigidbody2D rb;
-    public SpriteRenderer sr;
+
+    private bool flipped = false;
+    private Vector3 frogMidPoint;
     public CapsuleCollider2D col;
     public FrogPositionInfo currentPosition;
     public float velocityMin, velocityMax;
@@ -54,9 +56,9 @@ public class FrogScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        frogMidPoint = col.bounds.center;
         CharacterLandedTrigger();
-        checkPoint1.position = c1Holder.position + Vector3.right * 1.5f;
-        checkPoint2.position = c2Holder.position + Vector3.left * 1.5f;
+
         UpdatePositionInfo();
         if (isGrounded)
         {
@@ -65,11 +67,9 @@ public class FrogScript : MonoBehaviour
         if (isMounted)
         {
             movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
-            right = sr.flipX ? 1 : -1;
-            groundAngle = CalculateSlopeAngle() * right;
-            groundAngleNew = CalculateSlopeAngleNew() * -right;
+            right = flipped ? 1 : -1;
             movementSpeed = isGrounded ? 2 : 0;
-            //newRight = Quaternion.AngleAxis(groundAngleNew * right, Vector3.forward) * Vector3.right;
+
             newRight = Vector3.Cross(currentPosition.dirToGroundPoint, Vector3.back);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(RotationFromDir(newRight)), 3*Time.deltaTime);//Quaternion.Euler(0, 0, right * groundAngleNew);
             walkDir = (isGrounded ? newRight : Vector3.right * Mathf.Abs(movementInput)) * (movementInput * movementSpeed * Time.deltaTime);
@@ -102,21 +102,27 @@ public class FrogScript : MonoBehaviour
                 {
                     float h = Input.GetAxis("Horizontal");
                     if (h < 0)
-                        sr.flipX = true;
+                    {
+                        flipped = true;
+                        transform.localScale = new Vector3(0.5f,0.5f);
+                    }
                     else if (h > 0)
-                        sr.flipX = false;
+                    {
+                        flipped = false;
+                        transform.localScale = new Vector3(-0.5f, 0.5f);
+                    }
                 }
             }
-            arc.flipped = sr.flipX;
+            arc.flipped = flipped;
         }
     }
 
     public void UpdatePositionInfo()
     {
         currentPosition.closestGroundPoint = ClosestGroundPoint();
-        currentPosition.dirToGroundPoint = (ClosestGroundPoint() - transform.position).normalized;
-        currentPosition.distToGroundPoint = Vector3.Distance(ClosestGroundPoint(), transform.position);
-        Debug.DrawRay(transform.position, currentPosition.dirToGroundPoint * currentPosition.distToGroundPoint, Color.yellow);
+        currentPosition.dirToGroundPoint = (ClosestGroundPoint() - frogMidPoint).normalized;
+        currentPosition.distToGroundPoint = Vector3.Distance(ClosestGroundPoint(), frogMidPoint);
+        Debug.DrawRay(frogMidPoint, currentPosition.dirToGroundPoint * currentPosition.distToGroundPoint, Color.yellow);
     }
 
     public void MaintainHeight()
@@ -140,17 +146,21 @@ public class FrogScript : MonoBehaviour
         arc.velocity = v = Mathf.Lerp(velocityMin, velocityMax, tv);
         arc.angle = a = Mathf.Lerp(angleMin, angleMax, ta);
 
-        float inputValueX = sr.flipX ? -Input.GetAxis("Horizontal") : Input.GetAxis("Horizontal");
+        float inputValueX = flipped ? -Input.GetAxis("Horizontal") : Input.GetAxis("Horizontal");
 
         ta += Input.GetAxis("Vertical") * scrollSpeed * Time.deltaTime;
         tv += inputValueX * scrollSpeed * Time.deltaTime;
 
-        if (tv < 0.01f && Input.GetAxis("Horizontal") < 0 && !sr.flipX)
+        if (tv < 0.01f && Input.GetAxis("Horizontal") < 0 && !flipped)
         {
-            sr.flipX = true;
+            flipped = true;
+            transform.localScale = new Vector3(0.5f, 0.5f);
         }
-        else if (tv < 0.01f && Input.GetAxis("Horizontal") > 0 && sr.flipX)
-            sr.flipX = false;
+        else if (tv < 0.01f && Input.GetAxis("Horizontal") > 0 && flipped)
+        {
+            flipped = false;
+            transform.localScale = new Vector3(-0.5f, 0.5f);
+        }
 
         if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -212,12 +222,10 @@ public class FrogScript : MonoBehaviour
     public bool IsGrounded()
     {
         bool output = false;
-
-        Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down;
         RaycastHit2D hit2 =
-        Physics2D.CapsuleCast(transform.position, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, 1.11f, groundMask);
+        Physics2D.CapsuleCast(frogMidPoint, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
 
-        output = hit2.collider;
+        output = hit2.distance < minHeight / 2;
 
         return output;
     }
@@ -226,7 +234,7 @@ public class FrogScript : MonoBehaviour
     {
         Vector3 output = Vector3.zero;
 
-        RaycastHit2D hit1 = Physics2D.CircleCast(transform.position, col.size.x, -transform.up, Mathf.Infinity, groundMask);
+        RaycastHit2D hit1 = Physics2D.CircleCast(frogMidPoint + transform.up, col.size.x/3, -transform.up, Mathf.Infinity, groundMask);
         if (hit1.collider)
         {
             output = hit1.point;
@@ -235,84 +243,15 @@ public class FrogScript : MonoBehaviour
         return output;
     }
 
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(frogMidPoint + transform.up, col.size.x/3);
+    }
+
     public Vector3 RotationFromDir(Vector3 dir)
     {
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         return new Vector3(0,0,angle);
-    }
-
-    public float CalculateSlopeAngleNew()
-    {
-        RaycastHit2D hit1, hit2;
-        float a, b, c, d, e, c1, c2, c3;
-
-        hit1 = Physics2D.Raycast(checkPoint1.position, Vector3.down, Mathf.Infinity, groundMask);
-        hit2 = Physics2D.Raycast(checkPoint2.position, Vector3.down, Mathf.Infinity, groundMask);
-
-        Debug.DrawRay(checkPoint1.position, Vector3.down * hit1.distance, Color.cyan);
-        Debug.DrawRay(checkPoint2.position, Vector3.down * hit2.distance, Color.cyan);
-
-        if (hit1.collider && hit2.collider)
-        {
-            d = hit1.distance;
-            b = hit2.distance;
-            a = Vector2.Distance(checkPoint1.position, checkPoint2.position);
-            c = Vector2.Distance(hit1.point, hit2.point);
-            e = Vector2.Distance(hit1.point, checkPoint2.position);
-            c1 = Mathf.Rad2Deg * Mathf.Acos((d * d + e * e - a * a) / (2 * d * e));
-
-            c2 = Mathf.Rad2Deg * Mathf.Acos((e * e + c * c - b * b) / (2 * e * c));
-
-            c3 = Mathf.Round(90 - c1 - c2);
-        }
-        else
-        {
-            c3 = -100;
-        }
-        return c3;
-    }
-
-    public float CalculateSlopeAngle()
-    {
-        RaycastHit2D hit1, hit2;
-        Vector2 newangle = Vector2.down;
-        Vector2 slopeAngle = Vector2.zero;
-        float sideA, sideB, sideC;
-        float angle = 0;
-        newangle = SlopeIsLeft() ? Quaternion.AngleAxis(-30, Vector3.forward) * Vector2.down : Quaternion.AngleAxis(30, Vector3.forward) * Vector2.down;
-        hit1 = Physics2D.Raycast(checkPoint1.position, Vector2.down, Mathf.Infinity, groundMask);
-        hit2 = Physics2D.Raycast(checkPoint1.position, newangle, Mathf.Infinity, groundMask);
-        //Debug.DrawRay(checkPoint1.position, Vector2.down * 10, Color.red);
-        //Debug.DrawRay(checkPoint1.position, newangle * 10, Color.red);
-        if (hit1.collider && hit2.collider)
-        {
-            sideA = hit1.distance;
-            sideB = hit2.distance;
-            sideC = Vector2.Distance(hit1.point, hit2.point);
-            angle = 90f - (Mathf.Rad2Deg * Mathf.Acos((Mathf.Pow(sideA, 2) + Mathf.Pow(sideC, 2) - Mathf.Pow(sideB, 2)) / (2 * sideA * sideC)));
-
-            angle = SlopeIsLeft() ? -angle : angle;
-        }
-        else
-        {
-            angle = -100;
-        }
-        return Mathf.Round(angle);
-    }
-
-    public bool SlopeIsLeft()
-    {
-        bool output;
-        RaycastHit2D hit1, hit2;
-        Vector3 angleLeft = Quaternion.AngleAxis(-30, Vector3.forward) * Vector3.down;
-        Vector3 angleRight = Quaternion.AngleAxis(30, Vector3.forward) * Vector3.down;
-        hit1 = Physics2D.Raycast(checkPoint1.position, angleLeft, Mathf.Infinity, groundMask);
-        hit2 = Physics2D.Raycast(checkPoint2.position, angleRight, Mathf.Infinity, groundMask);
-        //Debug.DrawRay(checkPoint1.position, angleLeft * 10, Color.cyan);
-        //Debug.DrawRay(checkPoint2.position, angleRight * 10, Color.cyan);
-
-        output = hit1.distance < hit2.distance;
-        return output;
     }
 }
 
