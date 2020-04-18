@@ -1324,6 +1324,36 @@ MonoBehaviour:
     m_Center: {x: -0.028103799, y: -1.4724892, z: -0.099999905}
     m_Extent: {x: 0.229135, y: 0.2947451, z: 0}
   m_UseBatching: 1
+--- !u!1 &3323339542310702347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3867923316163653992}
+  m_Layer: 0
+  m_Name: Feet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3867923316163653992
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3323339542310702347}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.104, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8019238804986792375}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3604940354810162659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2591,6 +2621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8019238804986792375}
+  - component: {fileID: 2266781773866979800}
   - component: {fileID: 2805907642135225976}
   - component: {fileID: 2805907642135225977}
   - component: {fileID: 8376060360440352353}
@@ -2632,9 +2663,63 @@ Transform:
   - {fileID: 2805907642622233201}
   - {fileID: 2805907640780141566}
   - {fileID: 2805907642523291107}
+  - {fileID: 3867923316163653992}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2266781773866979800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8376060360440352354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438b5e97bbc89e740a6a50ae794dd15c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 0.1
+  velocity: {x: 0, y: 0}
+  isGrounded: 0
+  canMove: 1
+  groundAngle: 0
+  groundAngleNew: 0
+  height: 0
+  sliding: 0
+  sprinting: 0
+  movementInput: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 512
+  sr: {fileID: 0}
+  anim: {fileID: 2805907642135225976}
+  feet: {fileID: 3867923316163653992}
+  normal: {fileID: 6200000, guid: e0913d282f0c14249829c158c8497560, type: 2}
+  slide: {fileID: 6200000, guid: 61a426e4964b2a741a1ff1e200e88b21, type: 2}
+  type: 0
+  isActive: 1
+  movementSpeed: 5
+  msMin: 1
+  msMax: 9
+  angleMax: 40
+  slideStopAngle: 20
+  jumpForceMin: 4
+  jumpHeightMax: 0.5
+  hasAirControl: 1
+  mount: {fileID: 0}
+  saddle: {fileID: 0}
+  detectionRadius: 10
+  mountNearby: 0
+  mountMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  isMounted: 0
+  overrideControl: 0
+  distToMount: 0
+  minMountDist: 5
+  canMount: 0
+  currentAnimationState: 4
 --- !u!95 &2805907642135225976
 Animator:
   serializedVersion: 3
@@ -2723,7 +2808,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &8383451535475540365
 GameObject:
   m_ObjectHideFlags: 0

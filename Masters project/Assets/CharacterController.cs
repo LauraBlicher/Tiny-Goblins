@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class CharacterController : MonoBehaviour
 {
+    public float radius = 0.1f;
     private Rigidbody2D rb;
     private Vector2 oldPos, newPos;
     public enum CharacterType { Goblin, Frog, Beetle, Bird }
@@ -17,7 +18,6 @@ public class CharacterController : MonoBehaviour
     private Vector2 vel1, vel2;
     public bool isGrounded;
     public bool canMove = true;
-    private float characterHeight;
     private RaycastHit2D hit;
     private float jumpHeight = 0;
     private bool jumpStarted = false;
@@ -25,11 +25,9 @@ public class CharacterController : MonoBehaviour
     private bool canJump = true;
     public float groundAngle = 0;
     public float groundAngleNew;
-    private Vector3 newRight;
+    public Vector3 newRight;
     private Vector3 walkDir;
     private bool wallLeft, wallRight;
-
-    public float height;
     
     private static bool interactionSeparator = false;
     private float movespeedT;
@@ -43,7 +41,6 @@ public class CharacterController : MonoBehaviour
 
     [Header("Dependencies")]
     public LayerMask groundMask;
-    public SpriteRenderer sr;
     private Collider2D col;
     public Animator anim;
     public Transform feet;
@@ -58,6 +55,10 @@ public class CharacterController : MonoBehaviour
     public float slideStopAngle = 20f;
     public float jumpForceMin = 1f, jumpHeightMax = 3f;
     public bool hasAirControl = false;
+    public float heightFromGround;
+    public float idealHeight = 0.3f;
+    private Vector3 groundPoint;
+    private Vector2 groundNormal;
 
     // Mounting
     [Header("Mounts")]
@@ -94,12 +95,11 @@ public class CharacterController : MonoBehaviour
         oldPos = transform.position;
         newPos = transform.position;
         rb = GetComponent<Rigidbody2D>();
-        col = GetComponent<Collider2D>();
-        characterHeight = sr.size.y;        
+        col = GetComponent<Collider2D>();       
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         AnimationStateMachine();
         if (!mountNearby)
@@ -123,6 +123,7 @@ public class CharacterController : MonoBehaviour
         }
 
         // Maths
+        HeightOffGround();
         newPos = transform.position;
         vel1 = newPos - oldPos;
         velocity = (vel1 + vel2) / 2;
@@ -132,7 +133,7 @@ public class CharacterController : MonoBehaviour
         MovementModifiers();
         right = lastFlipState ? 1 : -1;
         groundAngleNew = Mathf.Round(CalculateSlopeAngleNew()) * right;
-        groundAngle = CalculateSlopeAngle() * right;
+        groundAngle = CalculateSlopeAngleNew() * right;
         movespeedT = Mathf.InverseLerp(-angleMax, angleMax, groundAngle);
         sprinting = Input.GetKey(KeyCode.LeftShift);
         movementSpeed = isGrounded ?
@@ -147,16 +148,17 @@ public class CharacterController : MonoBehaviour
         {
             airSpeedT = 0;
         }
-        newRight = Quaternion.AngleAxis(groundAngle * right, Vector3.forward) * Vector3.right;
+        //newRight = Quaternion.AngleAxis(groundAngle * right, Vector3.forward) * Vector3.right;
+        Vector3 dirToGround = (groundPoint - feet.position).normalized;
+        newRight = (Vector3.Cross(dirToGround, Vector3.back)).normalized;
         walkDir = (isGrounded ? newRight : Vector3.right * Mathf.Abs(movementInput)) * (movementInput * movementSpeed * Time.deltaTime);
-        Debug.DrawRay(transform.position, walkDir * 10, Color.red);
-        Debug.DrawRay(transform.position, Vector3.down * (characterHeight / 2 + 0.1f));
+        Debug.DrawRay(feet.position, walkDir * 10, Color.red);
+        //Debug.DrawRay(transform.position, Vector3.down * (characterHeight / 2 + 0.1f));
         if (velocity.magnitude <= 0.005f && velocity.magnitude >= -0.005f)
         {
             velocity = Vector2.zero;
         }
-
-        height = HeightOffGround();
+        
         if (isGrounded)
         {
             MaintainHeight();
@@ -199,6 +201,10 @@ public class CharacterController : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                isGrounded = IsGrounded();
+            }
             if (Input.GetButtonUp("Jump"))
             {
                 canJump = false;
@@ -222,6 +228,10 @@ public class CharacterController : MonoBehaviour
 
     public void AnimationStateMachine()
     {
+        for (int i = 0; i < 6; i++)
+        {
+            anim.ResetTrigger(i);
+        }
         switch (currentAnimationState)
         {
             default:
@@ -281,18 +291,18 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Idle;
                     break;
                 }
-                if (velocity.y < 0 && !IsGrounded())
-                {
-                    enterState = false;
-                    currentAnimationState = AnimationState.Fall;
-                    break;
-                }
                 if (jumpStarted)
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Jump;
                     break;
                 }
+                if (velocity.y < 0 && !IsGrounded())
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Fall;
+                    break;
+                }                
                 if (sliding)
                 {
                     enterState = false;
@@ -324,18 +334,18 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Idle;
                     break;
                 }
-                if (velocity.y < 0 && !IsGrounded())
-                {
-                    enterState = false;
-                    currentAnimationState = AnimationState.Fall;
-                    break;
-                }
                 if (jumpStarted)
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Jump;
                     break;
                 }
+                if (velocity.y < 0 && !IsGrounded())
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Fall;
+                    break;
+                }                
                 if (sliding)
                 {
                     enterState = false;
@@ -374,7 +384,7 @@ public class CharacterController : MonoBehaviour
                     anim.SetTrigger("enterFall");
                     enterState = true;
                 }
-                if (isGrounded)
+                if (IsGrounded())
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Idle;
@@ -384,7 +394,7 @@ public class CharacterController : MonoBehaviour
             case AnimationState.Slide:
                 if (!enterState)
                 {
-                    anim.SetTrigger("enterFall");
+                    anim.SetTrigger("enterSlide");
                     enterState = true;
                 }
                 if (!sliding)
@@ -413,24 +423,27 @@ public class CharacterController : MonoBehaviour
         {
             if (velocity.x < 0)
             {
-                sr.flipX = false;
+                transform.localScale = new Vector3(0.5f, 0.5f);
+                //sr.flipX = false;
                 lastFlipState = false;
             }
             else if (velocity.x > 0)
             {
-                sr.flipX = true;
+                transform.localScale = new Vector3(-0.5f, 0.5f);
+                //sr.flipX = true;
                 lastFlipState = true;
             }
         }
         else
         {
-            sr.flipX = lastFlipState;
+            transform.localScale = new Vector3(lastFlipState ? -0.5f : 0.5f, 0.5f);
         }
     }
 
     public void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.DrawWireSphere(feet.position, radius);
 
     }
 
@@ -514,31 +527,66 @@ public class CharacterController : MonoBehaviour
     {
         bool output = false;
 
-        Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down;
-        RaycastHit2D hit2 = Physics2D.Raycast(feet.position, dir, .51f, groundMask);
-        Debug.DrawRay(feet.position, dir*0.51f, Color.blue);
+        Vector3 dir = (groundPoint - feet.position).normalized; //Quaternion.AngleAxis(CalculateSlopeAngleNew(), Vector3.forward) * Vector3.down;
+        if (dir.y < 0)
+        {
+            RaycastHit2D hit2 = Physics2D.Raycast(feet.position, dir, .31f, groundMask);
+            Debug.DrawRay(feet.position, dir * 0.51f, Color.blue);
 
-        output = hit2.collider;
+            output = hit2.collider;
+        }
+        else
+            output = false;
 
         return output;
     }
 
-    public float HeightOffGround()
+    public void HeightOffGround()
     {
-        Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down;
-        RaycastHit2D hit2 = Physics2D.Raycast(feet.position, dir, Mathf.Infinity, groundMask);
-        if (hit2.collider)
+        int i = 0;
+        radius = 0.1f;
+        RaycastHit2D hit2;
+        while (i< 100)
         {
-            if (hit2.distance > 0.5f)
+            hit2 = Physics2D.CircleCast(feet.position, radius, Vector2.zero, 0, groundMask);
+            if (hit2.collider)
             {
-                isGrounded = IsGrounded();
+                groundPoint = hit2.point;
+                heightFromGround = Vector2.Distance(feet.position, hit2.point);
+                groundNormal = hit2.normal;
+                Debug.DrawLine(feet.position, hit2.point);
+                break;
             }
-            return hit2.distance;
+            else
+            {
+                i++;
+                radius += 0.05f;
+            }
         }
-        else
+        if (i >= 99)
         {
-            return 1000;
+            heightFromGround = 10f;
         }
+
+        if (heightFromGround > idealHeight * idealHeight)
+        {
+            isGrounded = IsGrounded();
+        }
+
+        //Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down;
+        //hit2 = Physics2D.Raycast(feet.position, dir, Mathf.Infinity, groundMask);
+        //if (hit2.collider)
+        //{
+        //    if (hit2.distance > 0.5f)
+        //    {
+        //        isGrounded = IsGrounded();
+        //    }
+        //    return hit2.distance;
+        //}
+        //else
+        //{
+        //    return 1000;
+        //}
     }
 
     public void CharacterLanded()
@@ -554,14 +602,14 @@ public class CharacterController : MonoBehaviour
 
     public void MaintainHeight()
     {
-        Vector3 dir = Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.up;
-        if (HeightOffGround() < 0.24f)
+        Vector3 dir = (groundPoint - feet.position).normalized;
+        if (heightFromGround < idealHeight - 0.1f)
         {
-            transform.position += dir * Time.deltaTime * 0.1f;
+            transform.position -= dir * Time.deltaTime;
         }
-        else if (HeightOffGround() > 0.3f)
+        else if (heightFromGround > idealHeight + 0.1f)
         {
-            transform.position -= dir * Time.deltaTime * 0.1f;
+            transform.position += dir * Time.deltaTime;
         }
     }
 
@@ -606,14 +654,10 @@ public class CharacterController : MonoBehaviour
 
     public float CalculateSlopeAngleNew()
     {
-        RaycastHit2D hit1;
         float output = 0;
-        hit1 = Physics2D.Raycast(feet.transform.position, Quaternion.AngleAxis(CalculateSlopeAngle(), Vector3.forward) * Vector3.down, Mathf.Infinity, groundMask);
-        if (hit1.collider)
-        {
-            Vector2 vectorAngle = hit1.normal;
-            output = Mathf.Atan2(vectorAngle.y, vectorAngle.x) * Mathf.Rad2Deg;
-        }
+
+        output = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
+
         return output - 90;
     }
 
@@ -627,8 +671,8 @@ public class CharacterController : MonoBehaviour
         newangle = SlopeIsLeft() ? Quaternion.AngleAxis(-30, Vector3.forward)*Vector2.down : Quaternion.AngleAxis(30, Vector3.forward) * Vector2.down;
         hit1 = Physics2D.Raycast(transform.position, Vector2.down, Mathf.Infinity, groundMask);
         hit2 = Physics2D.Raycast(transform.position, newangle, Mathf.Infinity, groundMask);
-        Debug.DrawRay(transform.position, Vector2.down * 10, Color.red);
-        Debug.DrawRay(transform.position, newangle * 10, Color.red);
+        //Debug.DrawRay(transform.position, Vector2.down * 10, Color.red);
+        //Debug.DrawRay(transform.position, newangle * 10, Color.red);
         if (hit1.collider && hit2.collider)
         {
             sideA = hit1.distance;
@@ -653,8 +697,8 @@ public class CharacterController : MonoBehaviour
         Vector3 angleRight = Quaternion.AngleAxis(30, Vector3.forward) * Vector3.down;
         hit1 = Physics2D.Raycast(transform.position, angleLeft, Mathf.Infinity, groundMask);
         hit2 = Physics2D.Raycast(transform.position, angleRight, Mathf.Infinity, groundMask);
-        Debug.DrawRay(transform.position, angleLeft * 10, Color.cyan);
-        Debug.DrawRay(transform.position, angleRight * 10, Color.cyan);
+        //Debug.DrawRay(transform.position, angleLeft * 10, Color.cyan);
+        //Debug.DrawRay(transform.position, angleRight * 10, Color.cyan);
 
         output = hit1.distance < hit2.distance;
         return output;
