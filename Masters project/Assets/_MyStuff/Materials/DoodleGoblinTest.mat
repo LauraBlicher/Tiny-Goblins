@@ -97,7 +97,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _WobbleAmount: 1
-    - _WobbleScale: 0.003
+    - _WobbleScale: 0.01
     - _WobbleSpeed: 0.39
     - _WorldPosEffect: 0.002
     - _WorldPosMultiplier: 0.002
