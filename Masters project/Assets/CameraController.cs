@@ -39,11 +39,13 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = goblin.GetComponent<Rigidbody2D>();
+        //rb = goblin.GetComponent<Rigidbody2D>();
     }
 
     public void FixedUpdate()
     {
+        if (!goblin)
+            goblin = CharacterController.theGoblin;
         goblinVelocity = goblin.velocity.normalized * (goblin.sprinting ? 1 : 0.75f);
     }
 

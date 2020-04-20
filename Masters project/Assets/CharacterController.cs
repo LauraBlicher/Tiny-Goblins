@@ -26,7 +26,8 @@ public class CharacterController : MonoBehaviour
     public float groundAngle = 0;
     public float groundAngleNew;
     public Vector3 newRight;
-    private Vector3 walkDir;
+    [HideInInspector]
+    public Vector3 walkDir;
     private bool wallLeft, wallRight;
     
     private static bool interactionSeparator = false;
@@ -57,7 +58,7 @@ public class CharacterController : MonoBehaviour
     public bool hasAirControl = false;
     public float heightFromGround;
     public float idealHeight = 0.3f;
-    private Vector3 groundPoint;
+    public Vector3 groundPoint;
     private Vector2 groundNormal;
 
     // Mounting

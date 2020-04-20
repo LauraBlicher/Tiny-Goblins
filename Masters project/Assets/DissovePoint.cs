@@ -9,6 +9,10 @@ public class DissovePoint : MonoBehaviour
  
     void Update()
     {
+        if (!goblin)
+        {
+            goblin = CharacterController.theGoblin.transform;
+        }
         GoblinPos = goblin.position;
         GetComponent<Renderer>().material.SetVector("_StartPosition", GoblinPos);
     }

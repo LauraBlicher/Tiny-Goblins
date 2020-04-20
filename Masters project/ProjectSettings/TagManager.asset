@@ -8,6 +8,7 @@ TagManager:
   - Frog
   - Beetle
   - Goblin
+  - Phase
   layers:
   - Default
   - TransparentFX
