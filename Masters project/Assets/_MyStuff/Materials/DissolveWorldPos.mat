@@ -113,7 +113,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Radi: 5.37
-    - _Radius: 7.56
+    - _Radius: 7.5
     - _SmootedgeB: -0.09
     - _SmoothEdge: 0.22
     - _SmoothnessTextureChannel: 0

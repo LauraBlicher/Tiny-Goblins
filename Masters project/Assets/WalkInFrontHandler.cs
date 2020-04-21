@@ -9,12 +9,14 @@ public class WalkInFrontHandler : MonoBehaviour
     public List<Collider2D> colliders = new List<Collider2D>();
 
     public Collider2D checkCol;
+    public DissovePoint dissolvePoint;
 
     public bool isInFront;
 
     // Start is called before the first frame update
     void Start()
     {
+        dissolvePoint = transform.GetComponentInChildren<DissovePoint>();
         checkCol = GetComponent<Collider2D>();
         checkCol.enabled = false;
         checkCol.isTrigger = true;
@@ -30,6 +32,7 @@ public class WalkInFrontHandler : MonoBehaviour
         }
 
         checkCol.enabled = isInFront;
+        dissolvePoint.isActive = !isInFront;
     }
 
     public void OnTriggerExit2D(Collider2D other)

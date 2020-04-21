@@ -139,7 +139,7 @@ public class CharacterController : MonoBehaviour
         sprinting = Input.GetKey(KeyCode.LeftShift);
         movementSpeed = isGrounded ?
             Mathf.Lerp(msMax, msMin, movespeedT) * (sprinting ? 1.5f : 1) :
-            Mathf.Lerp(movementSpeed, 3, airSpeedT);
+            Mathf.Lerp(movementSpeed, (movementSpeed > 4 ? movementSpeed * 0.9f : 4), airSpeedT);
         if (!isGrounded)
         {
             airSpeedT += Time.deltaTime / 3;
@@ -298,7 +298,7 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Jump;
                     break;
                 }
-                if (velocity.y < 0 && !IsGrounded())
+                if (velocity.y < 0 && !isGrounded)
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Fall;
@@ -341,7 +341,7 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Jump;
                     break;
                 }
-                if (velocity.y < 0 && !IsGrounded())
+                if (velocity.y < 0 && !isGrounded)
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Fall;
