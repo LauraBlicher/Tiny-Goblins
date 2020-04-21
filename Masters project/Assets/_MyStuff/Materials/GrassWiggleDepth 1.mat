@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GrassWiggleDepth
+  m_Name: GrassWiggleDepth 1
   m_Shader: {fileID: 4800000, guid: 0d79b092e36abf34988cccd2e64cbb42, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 0
@@ -86,8 +86,9 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _FlameFlickerSpeed: 0.01
+    - _FlickerSpeed: 0.01
     - _Float1: 20.1
-    - _Float2: 74.5
+    - _Float2: 22
     - _Float3: 7.9
     - _Float4: 6.8
     - _Float5: 10.03
