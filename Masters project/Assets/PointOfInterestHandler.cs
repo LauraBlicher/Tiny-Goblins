@@ -8,7 +8,8 @@ public class PointOfInterestHandler : MonoBehaviour
     public float camSize;
     public float distForTrigger;
     public bool testDistance = false;
-    public float currentDistToPlayer;
+    public AnimationCurve yCurve;
+    private float currentDistToPlayer;
     public bool useOffset = false;
     public Vector2 offset;
     public bool playerIsCloseEnough = false;
@@ -16,6 +17,11 @@ public class PointOfInterestHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (yCurve.length == 0)
+        { 
+            yCurve.AddKey(new Keyframe(0, 0));
+            yCurve.AddKey(new Keyframe(1, 0));
+        }
         
         if (!CameraController.pois.Contains(this))
         {

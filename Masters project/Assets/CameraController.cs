@@ -195,7 +195,7 @@ public class CameraController : MonoBehaviour
         moveT += Time.deltaTime * lerpSpeed * (goblin.currentAnimationState == CharacterController.AnimationState.Fall ? 2 : 1);
         moveT = Mathf.Clamp01(moveT);
         mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, size, moveT * 0.5f);
-        transform.position = Vector3.Lerp(transform.position, targetPos, moveT);
+        transform.position = Vector3.Lerp(transform.position, targetPos, moveT) + Vector3.up * (usePOI && currentPOI ? currentPOI.yCurve.Evaluate(moveT) : 0);
     }
 
     // Update is called once per frame
