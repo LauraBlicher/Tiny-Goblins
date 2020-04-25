@@ -26,7 +26,7 @@ public class FrogScript : MonoBehaviour
 
     float ta = 0, tv = 0;
     float v, a;
-    bool aiming = false;
+    public bool aiming = false;
     Vector3 aimDir;
     public float currentHeight = 1f;
     private float right;
@@ -38,6 +38,11 @@ public class FrogScript : MonoBehaviour
 
     public float minHeight = 1f, maxHeight = 1.1f;
 
+    public enum AnimationState { Idle, JumpAim, Flying, Walk }
+    public AnimationState currentAnimState = AnimationState.Idle;
+    private bool enterState = false;
+    public Animator anim;
+
     void Awake()
     {
         onLanded += CharacterLanded;
@@ -45,6 +50,7 @@ public class FrogScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        anim = GetComponent<Animator>();
         currentPosition = new FrogPositionInfo(ClosestGroundPoint(), 0, Vector3.zero);
         col = GetComponent<CapsuleCollider2D>();
         a = angleMin;
@@ -57,7 +63,8 @@ public class FrogScript : MonoBehaviour
     void Update()
     {
         frogMidPoint = col.bounds.center;
-        CharacterLandedTrigger();
+        if (rb.velocity.y < 0)
+            CharacterLandedTrigger();
 
         UpdatePositionInfo();
         if (isGrounded)
@@ -66,6 +73,7 @@ public class FrogScript : MonoBehaviour
         }
         if (isMounted)
         {
+            AnimationStateMachine();
             movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
             right = flipped ? 1 : -1;
             movementSpeed = isGrounded ? 2 : 0;
@@ -117,6 +125,76 @@ public class FrogScript : MonoBehaviour
         }
     }
 
+    public void AnimationStateMachine()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            anim.ResetTrigger(i);
+        }
+        switch (currentAnimState)
+        {
+            case AnimationState.Idle:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterIdle");
+                    enterState = true;
+                }
+                if (Input.GetAxis("Horizontal") != 0 && !aiming)
+                {
+                    enterState = false;
+                    currentAnimState = AnimationState.Walk;
+                }
+                if (aiming)
+                {
+                    enterState = false;
+                    currentAnimState = AnimationState.JumpAim;
+                }
+                break;
+            case AnimationState.JumpAim:
+                if (!enterState)
+                {
+                    anim.SetTrigger("enterAim");
+                    enterState = true;
+                }
+                if (!aiming)
+                {
+                    enterState = false;
+                    currentAnimState = AnimationState.Flying;
+                }
+                break;
+            case AnimationState.Flying:
+                if (!enterState)
+                {
+                    enterState = true;
+                    anim.SetTrigger("enterFlying");
+                }
+                if (isGrounded)
+                {
+                    enterState = false;
+                    currentAnimState = AnimationState.Idle;
+                }
+                break;
+            case AnimationState.Walk:
+                if (!enterState)
+                {
+                    enterState = true;
+                    anim.SetTrigger("enterWalk");
+                }
+                if (aiming)
+                {
+                    enterState = false;
+                    currentAnimState = AnimationState.JumpAim;
+                    break;
+                }
+                if (Input.GetAxis("Horizontal") == 0)
+                {
+                    enterState = false;
+                    currentAnimState = AnimationState.Idle;
+                }
+                break;
+        }
+    }
+
     public void UpdatePositionInfo()
     {
         currentPosition.closestGroundPoint = ClosestGroundPoint();
@@ -127,7 +205,11 @@ public class FrogScript : MonoBehaviour
 
     public void MaintainHeight()
     {
-        if(currentPosition.distToGroundPoint > maxHeight)
+        if (currentPosition.distToGroundPoint > maxHeight + 0.5f)
+        {
+            isGrounded = IsGrounded();
+        }
+        else if(currentPosition.distToGroundPoint > maxHeight)
         {
             transform.position += currentPosition.dirToGroundPoint * Time.deltaTime;
         }
@@ -226,7 +308,6 @@ public class FrogScript : MonoBehaviour
         Physics2D.CapsuleCast(frogMidPoint, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
 
         output = hit2.distance < minHeight / 2;
-
         return output;
     }
 
@@ -241,6 +322,11 @@ public class FrogScript : MonoBehaviour
         }
 
         return output;
+    }
+
+    public void WalkSoundEffect()
+    {
+
     }
 
     public void OnDrawGizmos()

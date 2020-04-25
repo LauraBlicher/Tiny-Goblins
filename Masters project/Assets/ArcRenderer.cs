@@ -53,7 +53,7 @@ public class ArcRenderer : MonoBehaviour
         angleRadians = Mathf.Deg2Rad * (flipped ? -angle : angle);
         float maxDist = (velocity * velocity * Mathf.Sin(2 * angleRadians)) / g;
 
-        for (int i = 0; i < resolution + 10; i++)
+        for (int i = 0; i < resolution + 20; i++)
         {
             float t = (float)i / (float)resolution;
             float t2 = ((float)i + 1) / (float)resolution;
