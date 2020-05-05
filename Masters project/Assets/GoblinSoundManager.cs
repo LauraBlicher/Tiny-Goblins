@@ -20,9 +20,12 @@ public class GoblinSoundManager : MonoBehaviour
     }
 
     public void StepEvent()
-    { 
-        audio.pitch = Random.Range(0.9f, 1.1f);
-        int rand = Random.Range(0, clips.Count);
-        audio.PlayOneShot(clips[rand]);
+    {
+        if (CharacterController.theGoblin.isGrounded)
+        {
+            audio.pitch = Random.Range(0.9f, 1.1f);
+            int rand = Random.Range(0, clips.Count);
+            audio.PlayOneShot(clips[rand]);
+        }
     }
 }

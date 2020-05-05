@@ -186,7 +186,7 @@ public class FrogScript : MonoBehaviour
                     currentAnimState = AnimationState.JumpAim;
                     break;
                 }
-                if (Input.GetAxis("Horizontal") == 0)
+                if (movementInput == 0)
                 {
                     enterState = false;
                     currentAnimState = AnimationState.Idle;

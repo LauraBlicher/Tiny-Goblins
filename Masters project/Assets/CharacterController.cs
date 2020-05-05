@@ -532,7 +532,7 @@ public class CharacterController : MonoBehaviour
         if (dir.y < 0)
         {
             RaycastHit2D hit2 = Physics2D.Raycast(feet.position, dir, .31f, groundMask);
-            Debug.DrawRay(feet.position, dir * 0.51f, Color.blue);
+            Debug.DrawRay(feet.position, dir * 0.31f, Color.blue);
 
             output = hit2.collider;
         }

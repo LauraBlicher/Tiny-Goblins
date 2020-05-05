@@ -1821,7 +1821,7 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -2.5, y: 0}
   m_Size: {x: 6, y: 2.41}
   m_Direction: 1
 --- !u!114 &877507116
@@ -1842,8 +1842,8 @@ MonoBehaviour:
   arc: {fileID: 5005286412191472287}
   rb: {fileID: 877507115}
   col: {fileID: 877507114}
-  velocityMin: 15
-  velocityMax: 30
+  velocityMin: 7.5
+  velocityMax: 15
   angleMin: 15
   angleMax: 60
   scrollSpeed: 1
@@ -1853,11 +1853,14 @@ MonoBehaviour:
   jumpDistance: 0
   canMove: 0
   canJump: 1
+  aiming: 0
   currentHeight: 1
   groundAngle: 0
   groundAngleNew: 0
   minHeight: 1
   maxHeight: 1.1
+  currentAnimState: 0
+  anim: {fileID: 0}
 --- !u!1 &7987353355537841545
 GameObject:
   m_ObjectHideFlags: 0

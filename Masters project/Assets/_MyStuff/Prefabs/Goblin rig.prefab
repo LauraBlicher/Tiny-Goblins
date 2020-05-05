@@ -1321,7 +1321,7 @@ MonoBehaviour:
   - {fileID: 578298909719793715}
   - {fileID: 1738382306445875670}
   m_Bounds:
-    m_Center: {x: -0.028099984, y: -1.4724911, z: -0.099999905}
+    m_Center: {x: -0.028099984, y: -1.4724911, z: -0.1}
     m_Extent: {x: 0.229135, y: 0.2947451, z: 0}
   m_UseBatching: 1
 --- !u!1 &3323339542310702347
@@ -1348,7 +1348,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3323339542310702347}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.104, z: 0}
+  m_LocalPosition: {x: 0, y: -0.246, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8019238804986792375}
@@ -1650,8 +1650,8 @@ MonoBehaviour:
   - {fileID: 1424955466388878852}
   - {fileID: 292373915791004334}
   m_Bounds:
-    m_Center: {x: -0.036524966, y: -1.4865142, z: 0.004999995}
-    m_Extent: {x: 0.18743995, y: 0.5145482, z: 0.004999995}
+    m_Center: {x: -0.036524966, y: -1.4865142, z: 0.005}
+    m_Extent: {x: 0.18743995, y: 0.5145482, z: 0.005}
   m_UseBatching: 1
 --- !u!1 &4392370861218600137
 GameObject:
@@ -2075,8 +2075,8 @@ MonoBehaviour:
   - {fileID: 8635329377841048285}
   - {fileID: 947677166005211262}
   m_Bounds:
-    m_Center: {x: -0.02693142, y: -1.4710814, z: -0.004999995}
-    m_Extent: {x: 0.15257645, y: 0.53519523, z: 0.004999995}
+    m_Center: {x: -0.02693142, y: -1.4710814, z: -0.005}
+    m_Extent: {x: 0.15257645, y: 0.53519523, z: 0.005}
   m_UseBatching: 1
 --- !u!1 &6466523662684340290
 GameObject:
@@ -2579,8 +2579,8 @@ MonoBehaviour:
   - {fileID: 3436336361081451072}
   - {fileID: 6496257326249221452}
   m_Bounds:
-    m_Center: {x: -0.031764954, y: -1.4710643, z: -0.004999995}
-    m_Extent: {x: 0.18219995, y: 0.50909185, z: 0.004999995}
+    m_Center: {x: -0.031764954, y: -1.4710643, z: -0.005}
+    m_Extent: {x: 0.18219995, y: 0.50909185, z: 0.005}
   m_UseBatching: 1
 --- !u!1 &8265311343651988939
 GameObject:
@@ -2702,8 +2702,8 @@ MonoBehaviour:
   type: 0
   isActive: 1
   movementSpeed: 5
-  msMin: 1
-  msMax: 9
+  msMin: 3
+  msMax: 7
   angleMax: 45
   slideStopAngle: 25
   jumpForceMin: 4
@@ -2790,7 +2790,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 2.35}
+  m_Offset: {x: 0, y: 0.98}
   m_Size: {x: 1.02, y: 3.42}
   m_Direction: 0
 --- !u!50 &8376060360440352352
@@ -3119,7 +3119,7 @@ MonoBehaviour:
   m_BoneTransforms:
   - {fileID: 9204961801414929379}
   m_Bounds:
-    m_Center: {x: -0.038525045, y: -1.4896463, z: 0}
+    m_Center: {x: -0.038525045, y: -1.4896444, z: 0}
     m_Extent: {x: 0.70956004, y: 0.22951996, z: 0}
   m_UseBatching: 1
 --- !u!1 &9153475059592183364
