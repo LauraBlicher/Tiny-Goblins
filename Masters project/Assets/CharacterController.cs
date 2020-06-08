@@ -33,6 +33,7 @@ public class CharacterController : MonoBehaviour
     private static bool interactionSeparator = false;
     private float movespeedT;
     private float airSpeedT = 0;
+    public bool canSlide = false;
     public bool sliding = false;
     private float right;
     public bool sprinting = false;
@@ -168,7 +169,7 @@ public class CharacterController : MonoBehaviour
         // Slide
         if (Mathf.Abs(groundAngle) > angleMax || Mathf.Abs(groundAngle) < -angleMax)
         {
-            if (IsGrounded())
+            if (IsGrounded() && canSlide)
                 sliding = true;
         }
         
