@@ -12,7 +12,9 @@ public class LeafMovement : MonoBehaviour
     [Range(0.1f, 1)]
     public float speed = 0.5f;
 
-    private float t = 0; 
+    private float t = 0;
+
+    public Gradient g;
 
     void Awake()
     {
@@ -33,6 +35,12 @@ public class LeafMovement : MonoBehaviour
             currentPosition = transform.position;
             t = 0;
         }
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = g.Evaluate(speed);
+        Gizmos.DrawWireSphere(transform.position, strength);
     }
 
     public void GenerateNextPosition()
