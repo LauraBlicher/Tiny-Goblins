@@ -7,12 +7,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DoodleGoblinTest
+  m_Name: DoodleFrog
   m_Shader: {fileID: 4800000, guid: db3ab59e7692186459952281c09e9ef4, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 1
+  m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
@@ -97,7 +97,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _WobbleAmount: 1
-    - _WobbleScale: 0.01
+    - _WobbleScale: 0.005
     - _WobbleSpeed: 0.39
     - _WorldPosEffect: 0.002
     - _WorldPosMultiplier: 0.002

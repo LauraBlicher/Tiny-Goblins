@@ -36,11 +36,16 @@ public class LeafMovement : MonoBehaviour
             t = 0;
         }
     }
-
+    public void OnValidate()
+    {
+       
+            startPosition = transform.position;
+        
+    }
     public void OnDrawGizmos()
     {
         Gizmos.color = g.Evaluate(speed);
-        Gizmos.DrawWireSphere(transform.position, strength);
+        Gizmos.DrawWireSphere(startPosition, strength);
     }
 
     public void GenerateNextPosition()
