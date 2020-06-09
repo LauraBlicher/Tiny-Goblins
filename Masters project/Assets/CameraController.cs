@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour
     public float sizePerDistance = 1f;
 
     public Vector3 goblinVelocity;
+    Vector3 walkDirCur, walkDirPrev, walkDirAvg;
 
     void Awake()
     {
@@ -52,6 +53,9 @@ public class CameraController : MonoBehaviour
     public void MovementStateMachine()
     {
         float offset = goblin.sprinting ? forwardOffset + 1 : forwardOffset;
+        walkDirPrev = walkDirCur;
+        walkDirCur = goblin.walkDir.normalized * offset;
+        walkDirAvg = (walkDirCur + walkDirPrev) / 2;
         switch (currentMovement)
         {
             case GoblinMovement.StandStill:
@@ -91,8 +95,8 @@ public class CameraController : MonoBehaviour
                     moveT = 0;
                     enterState = true;
                 }
-
-                targetPos = goblin.transform.position + (Vector3.left * offset) + (Vector3.back * 21);
+                
+                targetPos = goblin.transform.position + walkDirAvg + (Vector3.back * 21);
 
                 if (goblin.currentAnimationState == CharacterController.AnimationState.Idle || (goblin.currentAnimationState == CharacterController.AnimationState.Slide && !usePOI))
                 {
@@ -123,7 +127,7 @@ public class CameraController : MonoBehaviour
                     enterState = true;
                 }
 
-                targetPos = goblin.transform.position + (Vector3.right * offset) + (Vector3.back * 21);
+                targetPos = goblin.transform.position + walkDirAvg + (Vector3.back * 21);
 
                 if (goblin.currentAnimationState == CharacterController.AnimationState.Idle || (goblin.currentAnimationState == CharacterController.AnimationState.Slide && !usePOI))
                 {

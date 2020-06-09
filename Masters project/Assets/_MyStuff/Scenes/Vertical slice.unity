@@ -27215,6 +27215,11 @@ PrefabInstance:
       propertyPath: goblin
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1087775346618692041, guid: 2693d53c78f7666448278762df8c77c6,
+        type: 3}
+      propertyPath: lerpSpeed
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 1087775346618692043, guid: 2693d53c78f7666448278762df8c77c6,
         type: 3}
       propertyPath: m_ClearFlags
