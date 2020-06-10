@@ -80,7 +80,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FadeIn: 2
+    - _FadeIn: 0
     - _FlickerSpeed: 0.01
     - _FrameRate: 3
     - _GlossMapScale: 1
