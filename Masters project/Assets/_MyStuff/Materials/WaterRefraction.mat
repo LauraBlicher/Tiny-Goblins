@@ -78,14 +78,16 @@ Material:
     - _DetailNormalMapScale: 1
     - _Distortion: 0.017
     - _DstBlend: 0
-    - _FlickerSpeed: 0.05
+    - _FlickerSpeed: -0.05
     - _Float0: 1
+    - _Float1: -0.46
+    - _Float2: 2.64
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NoiseScale: -18.98
+    - _NoiseScale: -8
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
@@ -97,6 +99,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 0
     - _timeScale: 0.8
+    - _worldposthing: 5.82
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color0: {r: 1, g: 1, b: 1, a: 0}
