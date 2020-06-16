@@ -256,6 +256,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e5e7ca893ced1a49b1fc4d0c99436e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  thoughtPrefab: {fileID: 6977484026142020729, guid: c6b80af664e513e4b871c4114eb9e6e0,
+    type: 3}
+  joint: {fileID: 1973039409493291971}
+  currentThought: {fileID: 0}
+  thoughts:
+  - {fileID: 11400000, guid: 791dbdce9b080b5409a8ba45331e079b, type: 2}
 --- !u!1 &1100925618067470784
 GameObject:
   m_ObjectHideFlags: 0

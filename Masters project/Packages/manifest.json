@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.coffee.softmask-for-ugui": "file:../Packages",
     "com.unity.2d.animation": "3.1.1",
     "com.unity.2d.ik": "2.0.0-preview.1",
     "com.unity.2d.psdimporter": "2.1.0",
