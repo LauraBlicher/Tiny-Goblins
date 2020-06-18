@@ -46,3 +46,27 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Back
+    uniqueID: 11447845
+    locked: 0
+  - name: back front
+    uniqueID: 4152601487
+    locked: 0
+  - name: Middle
+    uniqueID: 2012808851
+    locked: 0
+  - name: GoblinMiddle
+    uniqueID: 2939176257
+    locked: 0
+  - name: middle front
+    uniqueID: 2327909207
+    locked: 0
+  - name: front
+    uniqueID: 2730760263
+    locked: 0
+  - name: GoblinFront
+    uniqueID: 113152015
+    locked: 0
+  - name: front front
+    uniqueID: 4078853405
+    locked: 0
