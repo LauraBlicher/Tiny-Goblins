@@ -9,6 +9,8 @@ TagManager:
   - Beetle
   - Goblin
   - Phase
+  - Feet
+  - Saddle
   layers:
   - Default
   - TransparentFX

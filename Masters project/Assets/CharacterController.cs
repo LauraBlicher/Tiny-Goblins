@@ -215,7 +215,7 @@ public class CharacterController : MonoBehaviour
             if (isGrounded && !canJump)
                 canJump = true;
         }
-        if (canMount)
+        if (canMount && isMounted)
         {
             if (Input.GetButtonDown("Interact"))
             {
@@ -489,7 +489,7 @@ public class CharacterController : MonoBehaviour
         overrideControl = !overrideControl;
         isMounted = !isMounted;
         saddle = mount.transform.GetChild(mount.transform.childCount - 1);
-        
+        //Debug.Log("Mountaction");
         switch (mount.tag)
         {
             default:
