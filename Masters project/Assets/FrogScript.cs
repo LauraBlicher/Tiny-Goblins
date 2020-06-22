@@ -10,7 +10,7 @@ public class FrogScript : MonoBehaviour
     public ArcRenderer arc;
     public Rigidbody2D rb;
 
-    private bool flipped = false;
+    public bool flipped = false;
     private Vector3 frogMidPoint;
     public CapsuleCollider2D col;
     public FrogPositionInfo currentPosition;
@@ -42,6 +42,11 @@ public class FrogScript : MonoBehaviour
     public AnimationState currentAnimState = AnimationState.Idle;
     private bool enterState = false;
     public Animator anim;
+
+    public Vector3 expectedLandingPoint;
+    public bool isJumping;
+    public float landDist;
+    private bool isLanding;
 
     void Awake()
     {
@@ -108,6 +113,7 @@ public class FrogScript : MonoBehaviour
                     rb.velocity = Vector3.zero;
                     rb.AddForce(aimDir * v, ForceMode2D.Impulse);
                     isGrounded = false;
+                    isJumping = true;
                     aiming = false;
                 }
                 else if (isGrounded)
@@ -125,9 +131,15 @@ public class FrogScript : MonoBehaviour
                     }
                 }
             }
-
             arc.flipped = flipped;
+
+            if (isJumping && isGrounded)
+                isJumping = false;
+            else if (isJumping && !isGrounded)
+                JumpAngle();
         }
+
+
     }
 
     public void AnimationStateMachine()
@@ -173,7 +185,7 @@ public class FrogScript : MonoBehaviour
                     enterState = true;
                     anim.SetTrigger("enterFlying");
                 }
-                if (isGrounded)
+                if (isGrounded || isLanding)
                 {
                     enterState = false;
                     currentAnimState = AnimationState.Idle;
@@ -197,6 +209,20 @@ public class FrogScript : MonoBehaviour
                     currentAnimState = AnimationState.Idle;
                 }
                 break;
+        }
+    }
+
+    public void JumpAngle()
+    {
+        Debug.DrawLine(transform.position, (Vector2)transform.position + rb.velocity.normalized);
+        landDist = Vector3.Distance(transform.position, expectedLandingPoint);
+
+        float angleFromDir = Mathf.Atan2(rb.velocity.normalized.y, rb.velocity.normalized.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, flipped ? angleFromDir-180 : angleFromDir);
+
+        if (landDist <= 7.5f)
+        {
+            isLanding = true;
         }
     }
 
@@ -297,6 +323,7 @@ public class FrogScript : MonoBehaviour
         rb.gravityScale = 0;
         rb.inertia = 0;
         rb.velocity = Vector2.zero;
+        isLanding = false;
         //startY = 0;
         //jumpHeight = 0;
     }

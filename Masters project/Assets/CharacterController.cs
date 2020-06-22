@@ -225,6 +225,7 @@ public class CharacterController : MonoBehaviour
         if (isMounted)
         {
             transform.position = saddle.position;
+            transform.rotation = mount.transform.rotation;
         }
     }
 
@@ -434,24 +435,31 @@ public class CharacterController : MonoBehaviour
         }
 
         // Sprite flip
-        if (velocity.x != 0)
+        if (!isMounted)
         {
-            if (velocity.x < 0)
+            if (velocity.x != 0)
             {
-                transform.localScale = new Vector3(0.5f, 0.5f);
-                //sr.flipX = false;
-                lastFlipState = false;
+                if (velocity.x < 0)
+                {
+                    transform.localScale = new Vector3(0.5f, 0.5f);
+                    //sr.flipX = false;
+                    lastFlipState = false;
+                }
+                else if (velocity.x > 0)
+                {
+                    transform.localScale = new Vector3(-0.5f, 0.5f);
+                    //sr.flipX = true;
+                    lastFlipState = true;
+                }
             }
-            else if (velocity.x > 0)
+            else
             {
-                transform.localScale = new Vector3(-0.5f, 0.5f);
-                //sr.flipX = true;
-                lastFlipState = true;
+                transform.localScale = new Vector3(lastFlipState ? -0.5f : 0.5f, 0.5f);
             }
         }
         else
         {
-            transform.localScale = new Vector3(lastFlipState ? -0.5f : 0.5f, 0.5f);
+            transform.localScale = new Vector3(mount.GetComponent<FrogScript>().flipped ? 0.5f : -0.5f, 0.5f);
         }
     }
 

@@ -85,6 +85,7 @@ public class ArcRenderer : MonoBehaviour
         }
         avgPosition = avg / output.Count;
         lr.positionCount = output.Count;
+        frog.GetComponent<FrogScript>().expectedLandingPoint = hitPoint;
         return output.ToArray();
     }
 
