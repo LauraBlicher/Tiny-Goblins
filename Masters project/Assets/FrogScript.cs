@@ -82,6 +82,10 @@ public class FrogScript : MonoBehaviour
         {
             MaintainHeight();
         }
+        else
+        {
+            rb.gravityScale = 1;
+        }
         if (isMounted)
         {
             sounds.active = false;
@@ -384,10 +388,10 @@ public class FrogScript : MonoBehaviour
     public bool IsGrounded()
     {
         bool output = false;
-        RaycastHit2D hit2 =
-        Physics2D.CapsuleCast(frogMidPoint, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
+        //RaycastHit2D hit2 =
+        //Physics2D.CapsuleCast(frogMidPoint, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
 
-        output = hit2.distance < minHeight / 2;
+        output = currentPosition.distToGroundPoint < maxHeight + .5f;//hit2.distance < minHeight / 2;
         return output;
     }
 
