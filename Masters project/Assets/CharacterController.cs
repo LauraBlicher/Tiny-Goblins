@@ -215,7 +215,7 @@ public class CharacterController : MonoBehaviour
             if (isGrounded && !canJump)
                 canJump = true;
         }
-        if (canMount && isMounted)
+        if (isMounted && mount.GetComponent<FrogScript>().currentAnimState != FrogScript.AnimationState.Flying)
         {
             if (Input.GetButtonDown("Interact"))
             {
@@ -226,6 +226,10 @@ public class CharacterController : MonoBehaviour
         {
             transform.position = saddle.position;
             transform.rotation = mount.transform.rotation;
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 

@@ -47,6 +47,10 @@ public class FrogScript : MonoBehaviour
     public bool isJumping;
     public float landDist;
     private bool isLanding;
+    public float minJumpDistanceBeforeCancel = 3;
+
+    public FrogSounds sounds;
+    private bool jumpCancel = false;
 
     void Awake()
     {
@@ -78,6 +82,7 @@ public class FrogScript : MonoBehaviour
         }
         if (isMounted)
         {
+            sounds.active = false;
             AnimationStateMachine();
             movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
             right = flipped ? 1 : -1;
@@ -103,7 +108,7 @@ public class FrogScript : MonoBehaviour
             }
             else
             {
-                if (aiming)
+                if (aiming && arc.validAim)
                 {
                     CameraController.mainCamController.frogCamOverride = false;
                     rb.gravityScale = 1;
@@ -114,6 +119,13 @@ public class FrogScript : MonoBehaviour
                     rb.AddForce(aimDir * v, ForceMode2D.Impulse);
                     isGrounded = false;
                     isJumping = true;
+                    aiming = false;
+                }
+                else if (aiming && !arc.validAim)
+                {
+                    CameraController.mainCamController.frogCamOverride = false;
+                    arc.render = false;
+                    jumpCancel = true;
                     aiming = false;
                 }
                 else if (isGrounded)
@@ -138,7 +150,19 @@ public class FrogScript : MonoBehaviour
             else if (isJumping && !isGrounded)
                 JumpAngle();
         }
-
+        else
+        {
+            sounds.active = true;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+            anim.SetTrigger("enterIdle");
+            if (aiming)
+            {
+                CameraController.mainCamController.frogCamOverride = false;
+                aiming = false;
+                arc.render = false;
+                jumpCancel = true;                
+            }
+        }
 
     }
 
@@ -172,21 +196,31 @@ public class FrogScript : MonoBehaviour
                 {
                     anim.SetTrigger("enterAim");
                     enterState = true;
+                    
                 }
                 if (!aiming)
                 {
                     enterState = false;
-                    currentAnimState = AnimationState.Flying;
+                    if (!jumpCancel)
+                    {                        
+                        currentAnimState = AnimationState.Flying;
+                    }
+                    else
+                    {
+                        currentAnimState = AnimationState.Idle;
+                    }
                 }
                 break;
             case AnimationState.Flying:
                 if (!enterState)
                 {
+                    sounds.Jump();
                     enterState = true;
                     anim.SetTrigger("enterFlying");
                 }
                 if (isGrounded || isLanding)
                 {
+                    sounds.Land();
                     enterState = false;
                     currentAnimState = AnimationState.Idle;
                 }
@@ -252,6 +286,7 @@ public class FrogScript : MonoBehaviour
 
     public void AimJump()
     {
+        jumpCancel = false;
         CameraController.mainCamController.frogCamOverride = true;
         rb.velocity = Vector2.zero;
         aiming = true;

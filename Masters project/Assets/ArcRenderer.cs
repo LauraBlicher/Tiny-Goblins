@@ -19,6 +19,10 @@ public class ArcRenderer : MonoBehaviour
     public Vector3 hitPoint;
     public Vector3 avgPosition;
 
+    public float aimDistance;
+    public bool validAim;
+    public Material mat;
+
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
@@ -28,7 +32,7 @@ public class ArcRenderer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        mat = lr.material;
     }
 
     // Update is called once per frame
@@ -45,6 +49,17 @@ public class ArcRenderer : MonoBehaviour
         lr.enabled = true;
         lr.positionCount = resolution + 1;
         lr.SetPositions(ArcArray());
+        aimDistance = Vector2.Distance(frog.position, hitPoint);
+        if (aimDistance <= frog.GetComponent<FrogScript>().minJumpDistanceBeforeCancel)
+        {
+            validAim = false;
+            mat.SetColor("_Color1", Color.red);
+        }
+        else
+        {
+            validAim = true;
+            mat.SetColor("_Color1", Color.white);
+        }
     }
 
     public Vector3[] ArcArray()
