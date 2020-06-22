@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee3786232fd3b314ba6327d77bae4e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 0.125
+  strength: 0.15
   speed: 0.505
   g:
     serializedVersion: 2

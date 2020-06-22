@@ -54,13 +54,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6135748691492842362}
-  m_LocalRotation: {x: -0, y: -0, z: 0.038417682, w: 0.99926186}
+  m_LocalRotation: {x: -0, y: -0, z: 0.039608076, w: 0.99921536}
   m_LocalPosition: {x: 0.841, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6135748692223564454}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.4030004}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 4.5400004}
 --- !u!1 &6135748691901495532
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,7 +84,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6135748691901495532}
-  m_LocalRotation: {x: 0, y: 0, z: 0.15787813, w: 0.9874586}
+  m_LocalRotation: {x: 0, y: 0, z: 0.16252261, w: 0.9867048}
   m_LocalPosition: {x: 0.65424246, y: 0.000000054773828, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -115,7 +115,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6135748692223564455}
-  m_LocalRotation: {x: 0, y: 0, z: 0.13276947, w: 0.991147}
+  m_LocalRotation: {x: 0, y: 0, z: 0.12692285, w: 0.9919126}
   m_LocalPosition: {x: 0.66703194, y: 0.000000013659419, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -227,8 +227,8 @@ MonoBehaviour:
   - {fileID: 6135748691901495443}
   - {fileID: 6135748692223564454}
   m_Bounds:
-    m_Center: {x: -0.039736092, y: 0.011785984, z: 0}
-    m_Extent: {x: 0.39026392, y: 1.049666, z: 0}
+    m_Center: {x: -0.042878866, y: 0.012554288, z: 0}
+    m_Extent: {x: 0.38712114, y: 1.0504344, z: 0}
   m_UseBatching: 1
 --- !u!114 &6135748692323846605
 MonoBehaviour:
@@ -336,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6135748692629323600}
   m_LocalRotation: {x: -0, y: -0, z: 0.7351633, w: 0.6778902}
-  m_LocalPosition: {x: 0.23011398, y: 1.4702187, z: 0}
+  m_LocalPosition: {x: 0.23, y: 1.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6135748692405588891}
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee3786232fd3b314ba6327d77bae4e77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  strength: 0.22
+  strength: 0.3
   speed: 0.487
   g:
     serializedVersion: 2
