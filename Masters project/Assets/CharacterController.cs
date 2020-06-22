@@ -235,10 +235,13 @@ public class CharacterController : MonoBehaviour
 
     public void AnimationStateMachine()
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 8; i++)
         {
             anim.ResetTrigger(i);
         }
+        anim.SetFloat("HorizontalSpeed", Mathf.Abs(velocity.x) * 10);
+        anim.SetFloat("VerticalSpeed", velocity.y * 10);
+        anim.SetFloat("Sprinting", sprinting ? 1 : 0);
         switch (currentAnimationState)
         {
             default:
@@ -403,6 +406,12 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Idle;
                     break;
                 }
+                if (velocity.x != 0 && isGrounded)
+                {
+                    enterState = false;
+                    currentAnimationState = sprinting ? AnimationState.Sprint : AnimationState.Run;
+                    break;
+                }
                 if (isMounted)
                 {
                     enterState = false;
@@ -513,6 +522,7 @@ public class CharacterController : MonoBehaviour
         col.isTrigger = !col.isTrigger;
         overrideControl = !overrideControl;
         isMounted = !isMounted;
+        anim.SetBool("Mounted", isMounted);
         saddle = mount.transform.GetChild(mount.transform.childCount - 1);
         rb.gravityScale = isMounted ? 0 : 1;
         //Debug.Log("Mountaction");
@@ -548,6 +558,7 @@ public class CharacterController : MonoBehaviour
             else if (!isMounted)
             {
                 rb.gravityScale = 1;
+                anim.SetBool("Grounded", false);
             }
         }
     }
@@ -627,6 +638,7 @@ public class CharacterController : MonoBehaviour
         rb.gravityScale = 0;
         startY = 0;
         jumpHeight = 0;
+        anim.SetBool("Grounded", true);
     }
 
     public void MaintainHeight()
@@ -668,6 +680,7 @@ public class CharacterController : MonoBehaviour
             jumpStarted = true;
             isGrounded = false;
             rb.gravityScale = 1;
+            anim.SetBool("Grounded", false);
         }
         jumpT += Time.deltaTime;
         float jf = Mathf.Lerp(jumpForceMin, 0, jumpT);

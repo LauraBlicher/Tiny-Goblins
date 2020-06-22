@@ -48,6 +48,7 @@ public class FrogScript : MonoBehaviour
     public float landDist;
     private bool isLanding;
     public float minJumpDistanceBeforeCancel = 3;
+    public float journey;
 
     public FrogSounds sounds;
     private bool jumpCancel = false;
@@ -71,6 +72,7 @@ public class FrogScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("Mounted", isMounted);
         frogMidPoint = col.bounds.center;
         if (rb.velocity.y < 0)
             CharacterLandedTrigger();
@@ -113,7 +115,7 @@ public class FrogScript : MonoBehaviour
                     CameraController.mainCamController.frogCamOverride = false;
                     rb.gravityScale = 1;
                     canJump = false;
-
+                    anim.SetBool("Aiming", false);
                     arc.render = false;
                     rb.velocity = Vector3.zero;
                     rb.AddForce(aimDir * v, ForceMode2D.Impulse);
@@ -126,6 +128,9 @@ public class FrogScript : MonoBehaviour
                     CameraController.mainCamController.frogCamOverride = false;
                     arc.render = false;
                     jumpCancel = true;
+                    
+                    anim.SetBool("Cancel", true);
+                    anim.SetBool("Aiming", false);
                     aiming = false;
                 }
                 else if (isGrounded)
@@ -160,11 +165,13 @@ public class FrogScript : MonoBehaviour
                 CameraController.mainCamController.frogCamOverride = false;
                 aiming = false;
                 arc.render = false;
-                jumpCancel = true;                
+                jumpCancel = true;
+                anim.SetBool("Cancel", true);
             }
         }
 
     }
+
 
     public void AnimationStateMachine()
     {
@@ -172,6 +179,7 @@ public class FrogScript : MonoBehaviour
         {
             anim.ResetTrigger(i);
         }
+        anim.SetFloat("HorizontalSpeed", Mathf.Abs(Input.GetAxis("Horizontal")));
         switch (currentAnimState)
         {
             case AnimationState.Idle:
@@ -250,7 +258,8 @@ public class FrogScript : MonoBehaviour
     {
         Debug.DrawLine(transform.position, (Vector2)transform.position + rb.velocity.normalized);
         landDist = Vector3.Distance(transform.position, expectedLandingPoint);
-
+        journey = landDist / jumpDistance;
+        anim.SetFloat("Journey", journey);
         float angleFromDir = Mathf.Atan2(rb.velocity.normalized.y, rb.velocity.normalized.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, flipped ? angleFromDir-180 : angleFromDir);
 
@@ -286,6 +295,8 @@ public class FrogScript : MonoBehaviour
 
     public void AimJump()
     {
+        anim.SetBool("Aiming", true);
+        anim.SetBool("Cancel", false);
         jumpCancel = false;
         CameraController.mainCamController.frogCamOverride = true;
         rb.velocity = Vector2.zero;
@@ -359,6 +370,8 @@ public class FrogScript : MonoBehaviour
         rb.inertia = 0;
         rb.velocity = Vector2.zero;
         isLanding = false;
+        journey = 0;
+        anim.SetFloat("Journey", 0);
         //startY = 0;
         //jumpHeight = 0;
     }

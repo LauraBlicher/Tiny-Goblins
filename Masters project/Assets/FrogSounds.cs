@@ -13,12 +13,12 @@ public class FrogSounds : MonoBehaviour
 
     private bool isCroaking;
     private float delay = 5f;
-    private float t = 0;
+    public float t = 0;
 
     public void Croak()
     {
         isCroaking = true;
-        anim.SetTrigger("croak");
+        
         source.PlayOneShot(croak);
     }
     
@@ -41,19 +41,22 @@ public class FrogSounds : MonoBehaviour
                 if (!source.isPlaying)
                 {
                     isCroaking = false;
-                    anim.SetTrigger("noCroak");
+                    anim.SetFloat("CroakBlend", 0);
                     delay = Random.Range(minDelay, maxDelay);
                     t = 0;
+                }
+                else
+                {
+                    anim.SetFloat("CroakBlend", t - delay);
+                    t += Time.deltaTime * 2;
                 }
             }
             else
             {
                 if (t >= delay)
                     Croak();
-                else
-                {
-                    t += Time.deltaTime;
-                }
+
+                t += Time.deltaTime;
             }
         }
     }
