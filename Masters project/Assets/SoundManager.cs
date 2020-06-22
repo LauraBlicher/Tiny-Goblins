@@ -9,6 +9,10 @@ public class SoundManager : MonoBehaviour
     [Range(-80,20)]
     public float masterVolume = 0, ambienceVolume = 0, sfxVolume = 0, musicVolume = 0;
 
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
 
     // Start is called before the first frame update
     void Start()

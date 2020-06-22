@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_MyStuff/Scenes/Promo Scene.unity
+    guid: 4e1b817738be8b9468de267c5742c25d
+  - enabled: 1
+    path: Assets/_MyStuff/Scenes/Vertical slice.unity
+    guid: 351d99affbff161439e93c435c2ba16a
   m_configObjects: {}
