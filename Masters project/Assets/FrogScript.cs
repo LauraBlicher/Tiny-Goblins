@@ -87,6 +87,10 @@ public class FrogScript : MonoBehaviour
             if (!aiming)
                 transform.position += walkDir;
 
+            if (!aiming && !canJump)
+                if (Input.GetKeyUp(KeyCode.Space))
+                    canJump = true;
+
             if (Input.GetKey(KeyCode.Space))
             {
                 if (canJump)
@@ -106,7 +110,7 @@ public class FrogScript : MonoBehaviour
                     isGrounded = false;
                     aiming = false;
                 }
-                else
+                else if (isGrounded)
                 {
                     float h = Input.GetAxis("Horizontal");
                     if (h < 0)
@@ -121,6 +125,7 @@ public class FrogScript : MonoBehaviour
                     }
                 }
             }
+
             arc.flipped = flipped;
         }
     }

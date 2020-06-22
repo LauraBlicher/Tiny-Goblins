@@ -161,7 +161,7 @@ public class CharacterController : MonoBehaviour
             velocity = Vector2.zero;
         }
         
-        if (isGrounded)
+        if (isGrounded && !isMounted)
         {
             MaintainHeight();
         }
@@ -379,6 +379,12 @@ public class CharacterController : MonoBehaviour
                     currentAnimationState = AnimationState.Slide;
                     break;
                 }
+                if (isMounted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Mounted;
+                    break;
+                }
                 break;
             case AnimationState.Fall:
                 if (!enterState)
@@ -390,6 +396,12 @@ public class CharacterController : MonoBehaviour
                 {
                     enterState = false;
                     currentAnimationState = AnimationState.Idle;
+                    break;
+                }
+                if (isMounted)
+                {
+                    enterState = false;
+                    currentAnimationState = AnimationState.Mounted;
                     break;
                 }
                 break;
@@ -408,14 +420,15 @@ public class CharacterController : MonoBehaviour
             case AnimationState.Mounted:
                 if (!enterState)
                 {
-                    anim.SetTrigger("enterIdle");
+                    anim.SetTrigger("mount");
                     enterState = true;
                 }
                 rb.velocity = Vector2.zero;
                 if (!isMounted)
                 {
+                    anim.SetTrigger("dismount");
                     enterState = false;
-                    currentAnimationState = AnimationState.Idle;
+                    currentAnimationState = AnimationState.Fall;
                 }
                 break;
         }
@@ -489,6 +502,7 @@ public class CharacterController : MonoBehaviour
         overrideControl = !overrideControl;
         isMounted = !isMounted;
         saddle = mount.transform.GetChild(mount.transform.childCount - 1);
+        rb.gravityScale = isMounted ? 0 : 1;
         //Debug.Log("Mountaction");
         switch (mount.tag)
         {
@@ -497,6 +511,7 @@ public class CharacterController : MonoBehaviour
             case "Frog":
                 mount.GetComponent<FrogScript>().canMove = !mount.GetComponent<FrogScript>().canMove;
                 mount.GetComponent<FrogScript>().isMounted = !mount.GetComponent<FrogScript>().isMounted;
+                mount.GetComponent<FrogScript>().canJump = !Input.GetKey(KeyCode.Space);
                 break;
             case "Beetle":
                 break;
@@ -518,7 +533,7 @@ public class CharacterController : MonoBehaviour
             {
                 OnCharacterLanded();
             }
-            else
+            else if (!isMounted)
             {
                 rb.gravityScale = 1;
             }
