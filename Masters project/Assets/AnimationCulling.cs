@@ -5,11 +5,14 @@ using UnityEngine.U2D.Animation;
 
 public class AnimationCulling : MonoBehaviour
 {
+    public bool bigObject = false;
     public Camera cam;
     public SpriteSkin[] skins;
     public int count;
     public Vector2 screenPos;
     public bool isVisible;
+    [Range(0.1f,1)]
+    public float outOfBoundsSize = 0.5f;
 
     void Awake()
     {
@@ -32,7 +35,10 @@ public class AnimationCulling : MonoBehaviour
     {
         bool output = false;
         screenPos = cam.WorldToViewportPoint(transform.position);
-        output = screenPos.x < 1.1f && screenPos.y > -0.1f && screenPos.y < 1.1f && screenPos.x > -0.1f;
+        output = screenPos.x < (bigObject ? 1+outOfBoundsSize : 1.1f)
+            && screenPos.y > (bigObject ? -outOfBoundsSize : -0.1f)
+            && screenPos.y < (bigObject ? 1+outOfBoundsSize : 1.1f) 
+            && screenPos.x > (bigObject ? -outOfBoundsSize : -0.1f);
         return output;
     }
 }
