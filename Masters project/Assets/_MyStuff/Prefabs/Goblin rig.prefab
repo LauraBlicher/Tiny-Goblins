@@ -265,6 +265,7 @@ MonoBehaviour:
   thoughts:
   - {fileID: 11400000, guid: 791dbdce9b080b5409a8ba45331e079b, type: 2}
   tail: {fileID: 0}
+  speed: 2.5
 --- !u!1 &1100925618067470784
 GameObject:
   m_ObjectHideFlags: 0
