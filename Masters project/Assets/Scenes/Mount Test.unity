@@ -310,6 +310,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1847054707, guid: e0553e62350fc23419a9d33b2e1c69fa, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 6911639882275562650, guid: 35d6a8699babb4c4a99295da71975471,
+        type: 2}
     - target: {fileID: 2266781773866979800, guid: e0553e62350fc23419a9d33b2e1c69fa,
         type: 3}
       propertyPath: ignoreMask.m_Bits
