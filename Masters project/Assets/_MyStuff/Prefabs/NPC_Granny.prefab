@@ -1487,6 +1487,7 @@ GameObject:
   - component: {fileID: 6136827758915185403}
   - component: {fileID: 3054757523801590270}
   - component: {fileID: 9165741801581952806}
+  - component: {fileID: -2321204607889155559}
   m_Layer: 0
   m_Name: NPC_Granny
   m_TagString: Untagged
@@ -1567,6 +1568,23 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-2321204607889155559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2825968756121168715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &3054757521944696270
 GameObject:
   m_ObjectHideFlags: 0

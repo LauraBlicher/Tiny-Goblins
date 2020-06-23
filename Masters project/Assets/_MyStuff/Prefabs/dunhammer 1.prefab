@@ -105,6 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2662912845081873377}
   - component: {fileID: 8563242771107464950}
+  - component: {fileID: -205621508401656999}
   m_Layer: 0
   m_Name: dunhammer 1
   m_TagString: Untagged
@@ -150,6 +151,23 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_Weight: 1
+--- !u!114 &-205621508401656999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1606894066377693982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &1851170590266490916
 GameObject:
   m_ObjectHideFlags: 0

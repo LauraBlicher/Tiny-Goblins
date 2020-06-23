@@ -1917,6 +1917,7 @@ GameObject:
   - component: {fileID: 4357475029720961826}
   - component: {fileID: 4357475029720961827}
   - component: {fileID: 4357475029720961829}
+  - component: {fileID: -8866130320669355482}
   m_Layer: 10
   m_Name: Frog IK FINAL
   m_TagString: Frog
@@ -2088,6 +2089,23 @@ MonoBehaviour:
   minJumpDistanceBeforeCancel: 12
   journey: 0
   sounds: {fileID: 1630893000569796013}
+--- !u!114 &-8866130320669355482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6376730683511833727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &7024248000726937607
 GameObject:
   m_ObjectHideFlags: 0

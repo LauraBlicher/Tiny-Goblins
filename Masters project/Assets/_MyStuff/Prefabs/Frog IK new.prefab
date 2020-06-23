@@ -1651,6 +1651,9 @@ MonoBehaviour:
     m_Bits: 512
   hitPoint: {x: 0, y: 0, z: 0}
   avgPosition: {x: 0, y: 0, z: 0}
+  aimDistance: 0
+  validAim: 0
+  mat: {fileID: 0}
 --- !u!1 &6702473507832183022
 GameObject:
   m_ObjectHideFlags: 0
@@ -1698,6 +1701,7 @@ GameObject:
   - component: {fileID: 877507115}
   - component: {fileID: 877507114}
   - component: {fileID: 877507116}
+  - component: {fileID: 6896193536263352928}
   m_Layer: 10
   m_Name: Frog IK new
   m_TagString: Frog
@@ -1841,6 +1845,7 @@ MonoBehaviour:
     m_Bits: 512
   arc: {fileID: 5005286412191472287}
   rb: {fileID: 877507115}
+  flipped: 0
   col: {fileID: 877507114}
   velocityMin: 7.5
   velocityMax: 15
@@ -1861,6 +1866,29 @@ MonoBehaviour:
   maxHeight: 1.1
   currentAnimState: 0
   anim: {fileID: 0}
+  expectedLandingPoint: {x: 0, y: 0, z: 0}
+  isJumping: 0
+  landDist: 0
+  minJumpDistanceBeforeCancel: 3
+  journey: 0
+  sounds: {fileID: 0}
+--- !u!114 &6896193536263352928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7207569984372903062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &7987353355537841545
 GameObject:
   m_ObjectHideFlags: 0

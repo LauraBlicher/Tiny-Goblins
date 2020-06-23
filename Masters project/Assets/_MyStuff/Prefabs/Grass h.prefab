@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 7653316431322498655}
   - component: {fileID: 7653316431322498654}
   - component: {fileID: 7653316431322498649}
+  - component: {fileID: -422325642441508709}
   m_Layer: 0
   m_Name: Grass h
   m_TagString: Untagged
@@ -215,6 +216,23 @@ MonoBehaviour:
   m_Solvers:
   - {fileID: 7653316430864259068}
   m_Weight: 1
+--- !u!114 &-422325642441508709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7653316431322498648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &7653316431623398624
 GameObject:
   m_ObjectHideFlags: 0

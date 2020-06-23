@@ -1139,6 +1139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7371472174842125037}
   - component: {fileID: 6593569135478910473}
+  - component: {fileID: -4839872238315459210}
   m_Layer: 0
   m_Name: Oak sapling
   m_TagString: Untagged
@@ -1189,6 +1190,23 @@ MonoBehaviour:
   - {fileID: 6593569134765298089}
   - {fileID: 6593569136029319512}
   m_Weight: 1
+--- !u!114 &-4839872238315459210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6146511750191651906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &6381405763583400857
 GameObject:
   m_ObjectHideFlags: 0

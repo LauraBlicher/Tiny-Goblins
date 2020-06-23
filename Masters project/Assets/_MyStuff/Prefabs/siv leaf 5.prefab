@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 1916481064147394775}
   - component: {fileID: 1916481064147394772}
   - component: {fileID: 1916481064147394769}
+  - component: {fileID: -5044037507843891379}
   m_Layer: 0
   m_Name: siv leaf 5
   m_TagString: Untagged
@@ -213,6 +214,23 @@ MonoBehaviour:
   m_Solvers:
   - {fileID: 1916481064014306668}
   m_Weight: 1
+--- !u!114 &-5044037507843891379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916481064147394773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &1916481064355512530
 GameObject:
   m_ObjectHideFlags: 0

@@ -1220,6 +1220,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1337401030119046847}
   - component: {fileID: 2963432688134298441}
+  - component: {fileID: 177067649518924106}
   m_Layer: 0
   m_Name: "r\xF8d hestehov house"
   m_TagString: Untagged
@@ -1264,6 +1265,23 @@ MonoBehaviour:
   - {fileID: 2963432688743231942}
   - {fileID: 2963432688825157615}
   m_Weight: 1
+--- !u!114 &177067649518924106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5995332232406050286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  skins: []
+  count: 0
+  screenPos: {x: 0, y: 0}
+  isVisible: 0
 --- !u!1 &8267243002660053573
 GameObject:
   m_ObjectHideFlags: 0
