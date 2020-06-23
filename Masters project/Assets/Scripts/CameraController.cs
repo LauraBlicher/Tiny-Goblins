@@ -160,7 +160,7 @@ public class CameraController : MonoBehaviour
 
                 if (currentPOI)
                 {
-                    targetPos = (currentPOI.useOffset ? (Vector3)currentPOI.offset : currentPOI.transform.position) + Vector3.back * 21;
+                    targetPos = (currentPOI.useOffset ? (Vector3)currentPOI.offset : currentPOI.transform.position) + Vector3.back * (Mathf.Abs(goblin.transform.position.z) + 21);
                 }
 
                 if (!usePOI)

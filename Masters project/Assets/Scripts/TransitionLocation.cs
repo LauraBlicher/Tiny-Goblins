@@ -10,6 +10,7 @@ public class TransitionLocation : MonoBehaviour
     public Transform start, end;
 
     public bool isIgnored = false;
+    public bool transitionOnEnter = false;
 
     void Awake()
     {

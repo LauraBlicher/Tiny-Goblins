@@ -12,10 +12,11 @@ public class TransitionHandler : MonoBehaviour
     public float checkOffset = 1;
     bool ready = true;
     float t = 0;
-    public float t1 = 0;
+    float t1 = 0;
     public bool transitioning = false;
     bool flag = false;
-    public bool down = false;
+     bool down = false;
+    public bool transitionOnEnter = false;
 
     public void OnTriggerStay2D (Collider2D other)
     {
@@ -26,6 +27,7 @@ public class TransitionHandler : MonoBehaviour
                 active = true;
                 currentLocation = other.transform.parent.GetComponent<TransitionLocation>();
                 isIgnored = currentLocation.isIgnored;
+                transitionOnEnter = currentLocation.transitionOnEnter;
             }
         }
     }
@@ -61,7 +63,7 @@ public class TransitionHandler : MonoBehaviour
                     Transition();
             }
             //Debug.DrawRay((Vector2)transform.position + Vector2.down * checkOffset, -transform.up * 10, Color.cyan);
-            if (!ready)
+            if (!ready && !transitioning)
             {
                 t += Time.deltaTime;
                 if (t >= 1)
@@ -71,7 +73,7 @@ public class TransitionHandler : MonoBehaviour
             }
             if (active && isIgnored)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) || transitionOnEnter)
                     flag = true;
                 if (flag)
                 {
@@ -79,11 +81,12 @@ public class TransitionHandler : MonoBehaviour
                     transitioning = true;
                     down = false;
                     RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + Vector2.down * checkOffset, -transform.up, Mathf.Infinity, groundMask);
-                    if (hit.collider.gameObject.layer == 11 && hit.distance > 0.1f)
+                    if (hit.collider.gameObject.layer == 11 && hit.distance > 0.1f && hit.distance < 1)
                     {
                         hit.collider.gameObject.layer = 9;
                         currentLocation.isIgnored = false;
                         ready = false;
+                        active = false;
                         transitioning = false;
                         //transform.position = new Vector3(transform.position.x, transform.position.y, currentLocation.obj.transform.position.z);
                         t = 0;
@@ -96,6 +99,7 @@ public class TransitionHandler : MonoBehaviour
                 {
                     ready = false;
                     transitioning = true;
+                    active = false;
                     down = true;
                     t1 = 0;
                     t = 0;
