@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goblin: {fileID: 0}
   forwardOffset: 2
+  upOffset: 1.25
   lerpSpeed: 0.25
   currentMovement: 2
   lastMovement: 2

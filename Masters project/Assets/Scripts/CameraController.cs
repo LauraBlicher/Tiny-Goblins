@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public CharacterController goblin;
     private Rigidbody2D rb;
     public float forwardOffset = 1;
+    public float upOffset = 1f;
     public float lerpSpeed = 2;
     public static Camera mainCam;
     public static CameraController mainCamController;
@@ -199,7 +200,7 @@ public class CameraController : MonoBehaviour
         moveT += Time.deltaTime * lerpSpeed * (goblin.currentAnimationState == CharacterController.AnimationState.Fall ? 2 : 1);
         moveT = Mathf.Clamp01(moveT);
         mainCam.orthographicSize = Mathf.Lerp(mainCam.orthographicSize, size, moveT * 0.5f);
-        transform.position = Vector3.Lerp(transform.position, targetPos, moveT) + Vector3.up * (usePOI && currentPOI ? currentPOI.yCurve.Evaluate(moveT) : 0);
+        transform.position = Vector3.Lerp(transform.position, targetPos + Vector3.up * upOffset, moveT) + Vector3.up * (usePOI && currentPOI ? currentPOI.yCurve.Evaluate(moveT) : 0);
     }
 
     // Update is called once per frame

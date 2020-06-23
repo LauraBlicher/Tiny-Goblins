@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThoughtBubble : MonoBehaviour
 {
-    private List<Renderer> renderers = new List<Renderer>();
+    private Renderer[] renderers;
     public Renderer primeBubble;
     public List<Texture> images = new List<Texture>();
     public float fadeSpeedSeconds = 1f;
@@ -15,10 +15,11 @@ public class ThoughtBubble : MonoBehaviour
 
     void Awake()
     {
-        foreach (Transform child in transform)
-        {
-            renderers.Add(child.GetComponent<Renderer>());
-        }
+       // foreach (Transform child in transform)
+       // {
+       //     renderers.Add(child.GetComponent<Renderer>());
+       // }
+        renderers = GetComponentsInChildren<Renderer>();
     }
 
     void Update()

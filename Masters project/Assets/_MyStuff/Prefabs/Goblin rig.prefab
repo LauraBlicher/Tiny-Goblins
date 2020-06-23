@@ -258,10 +258,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thoughtPrefab: {fileID: 6977484026142020729, guid: c6b80af664e513e4b871c4114eb9e6e0,
     type: 3}
+  speechPrefab: {fileID: 3070224599063843522, guid: e8d55851e501c414e9a9e68af5d39fc3,
+    type: 3}
   joint: {fileID: 1973039409493291971}
   currentThought: {fileID: 0}
   thoughts:
   - {fileID: 11400000, guid: 791dbdce9b080b5409a8ba45331e079b, type: 2}
+  tail: {fileID: 0}
 --- !u!1 &1100925618067470784
 GameObject:
   m_ObjectHideFlags: 0
@@ -3097,6 +3100,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2560
   checkOffset: 0.42
+  transitioning: 0
+  transitionOnEnter: 0
 --- !u!1 &8383451535475540365
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThoughtCreator : MonoBehaviour
 {
     public GameObject thoughtPrefab;
+    public GameObject speechPrefab;
     private GameObject primaryBubble, firstBubble;
     private GameObject newBubble;
 
@@ -13,12 +14,24 @@ public class ThoughtCreator : MonoBehaviour
     public Thought currentThought;
     public List<Thought> thoughts = new List<Thought>();
 
+    private bool maintainTail = false;
+    public Transform tail;
+
+    public float speed = 2;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
             CreateThoughtBubble(0);
+            //CreateSpeechBubble(0);
         }
+
+        if (maintainTail && tail)
+        {
+            tail.position = transform.position;
+        }
+        
     }
 
     private void CreateThoughtBubble(int index)
@@ -34,9 +47,39 @@ public class ThoughtCreator : MonoBehaviour
         joint.distance = 0.5f;
         joint.enabled = true;
 
+        Vector2 randomDir = Random.insideUnitCircle * speed;
+        randomDir = new Vector2(randomDir.x, Mathf.Abs(randomDir.y));
+        primaryBubble.GetComponent<Rigidbody2D>().AddForce(randomDir, ForceMode2D.Impulse);
+
         currentThought = thoughts[index];
 
         ThoughtBubble bubble = newBubble.GetComponent<ThoughtBubble>();
+
+        bubble.timeBetweenImageChange = currentThought.timeBetweenImages;
+        bubble.repeat = currentThought.repeat;
+        bubble.images = currentThought.images;
+    }
+
+    private void CreateSpeechBubble(int index)
+    {
+        Destroy(newBubble);
+
+        newBubble = Instantiate(speechPrefab, transform.position, Quaternion.identity);
+
+        joint.connectedBody = newBubble.GetComponent<Rigidbody2D>();
+        joint.distance = 3f;
+        joint.enabled = true;
+
+        tail = newBubble.transform.GetChild(0).GetChild(1).GetChild(0);
+        maintainTail = true;
+
+        Vector2 randomDir = Random.insideUnitCircle * speed;
+        randomDir = new Vector2(randomDir.x, Mathf.Abs(randomDir.y));
+        newBubble.GetComponent<Rigidbody2D>().AddForce(randomDir, ForceMode2D.Impulse);
+
+        ThoughtBubble bubble = newBubble.GetComponent<ThoughtBubble>();
+
+        currentThought = thoughts[index];
 
         bubble.timeBetweenImageChange = currentThought.timeBetweenImages;
         bubble.repeat = currentThought.repeat;
