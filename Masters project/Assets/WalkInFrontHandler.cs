@@ -32,7 +32,8 @@ public class WalkInFrontHandler : MonoBehaviour
         }
 
         checkCol.enabled = isInFront;
-        dissolvePoint.isActive = !isInFront;
+        if (dissolvePoint)
+            dissolvePoint.isActive = !isInFront;
     }
 
     public void OnTriggerExit2D(Collider2D other)
