@@ -8,7 +8,8 @@ public class SceneLoader : MonoBehaviour
     public bool allowLoad = false;
     void Start()
     {
-        StartCoroutine(Load());
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByBuildIndex(0))
+            StartCoroutine(Load());
     }
 
     public void AllowLoad()

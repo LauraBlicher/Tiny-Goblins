@@ -7,7 +7,8 @@ public class FrogSounds : MonoBehaviour
     public bool active = true;
     public Animator anim;
     public AudioSource source;
-    public AudioClip jump, land, croak;
+    public AudioClip jump, land;
+    public List<AudioClip> croaks = new List<AudioClip>();
 
     public float minDelay, maxDelay;
 
@@ -19,7 +20,7 @@ public class FrogSounds : MonoBehaviour
     {
         isCroaking = true;
         
-        source.PlayOneShot(croak);
+        source.PlayOneShot(croaks[Random.Range(0, croaks.Count)]);
     }
     
     public void Jump()
