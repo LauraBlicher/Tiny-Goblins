@@ -88,6 +88,9 @@ public class FrogScript : MonoBehaviour
         }
         if (isMounted)
         {
+            if (Physics2D.GetIgnoreLayerCollision(gameObject.layer, 11))
+                Physics2D.IgnoreLayerCollision(gameObject.layer, 11, true);
+
             sounds.active = false;
             AnimationStateMachine();
             movementInput = canMove ? Input.GetAxis("Horizontal") : 0;
@@ -116,6 +119,7 @@ public class FrogScript : MonoBehaviour
             {
                 if (aiming && arc.validAim)
                 {
+                    isGrounded = false;
                     CameraController.mainCamController.frogCamOverride = false;
                     rb.gravityScale = 1;
                     canJump = false;
@@ -123,7 +127,7 @@ public class FrogScript : MonoBehaviour
                     arc.render = false;
                     rb.velocity = Vector3.zero;
                     rb.AddForce(aimDir * v, ForceMode2D.Impulse);
-                    isGrounded = false;
+                    
                     isJumping = true;
                     aiming = false;
                 }
@@ -161,6 +165,8 @@ public class FrogScript : MonoBehaviour
         }
         else
         {
+            if (!Physics2D.GetIgnoreLayerCollision(gameObject.layer, 11))
+                Physics2D.IgnoreLayerCollision(gameObject.layer, 11, false);
             sounds.active = true;
             transform.rotation = Quaternion.Euler(0, 0, 0);
             anim.SetTrigger("enterIdle");
@@ -260,7 +266,7 @@ public class FrogScript : MonoBehaviour
 
     public void JumpAngle()
     {
-        Debug.DrawLine(transform.position, (Vector2)transform.position + rb.velocity.normalized);
+        //Debug.DrawLine(transform.position, (Vector2)transform.position + rb.velocity.normalized);
         landDist = Vector3.Distance(transform.position, expectedLandingPoint);
         journey = landDist / jumpDistance;
         anim.SetFloat("Journey", journey);
@@ -391,7 +397,7 @@ public class FrogScript : MonoBehaviour
         //RaycastHit2D hit2 =
         //Physics2D.CapsuleCast(frogMidPoint, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
 
-        output = currentPosition.distToGroundPoint < maxHeight + .5f;//hit2.distance < minHeight / 2;
+        output = currentPosition.distToGroundPoint < maxHeight + .5f;// && journey <= 0.75f; //hit2.distance < minHeight / 2;
         return output;
     }
 

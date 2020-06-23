@@ -2058,12 +2058,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2560
   arc: {fileID: 4357475029661697953}
   rb: {fileID: 4357475029720961826}
   flipped: 0
   col: {fileID: 4357475029720961827}
-  velocityMin: 5
+  velocityMin: 10
   velocityMax: 20
   angleMin: 5
   angleMax: 60

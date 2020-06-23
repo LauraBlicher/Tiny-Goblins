@@ -43,6 +43,7 @@ public class CharacterController : MonoBehaviour
 
     [Header("Dependencies")]
     public LayerMask groundMask;
+    public LayerMask ignoreMask;
     private Collider2D col;
     public Animator anim;
     public Transform feet;
@@ -89,6 +90,7 @@ public class CharacterController : MonoBehaviour
         {
             theGoblin = this;
         }
+        Physics2D.IgnoreLayerCollision(gameObject.layer, 11, true);
     }
 
     // Start is called before the first frame update
