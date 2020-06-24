@@ -260,6 +260,8 @@ MonoBehaviour:
     type: 3}
   speechPrefab: {fileID: 3070224599063843522, guid: e8d55851e501c414e9a9e68af5d39fc3,
     type: 3}
+  currentNPC: {fileID: 0}
+  question: {fileID: 11400000, guid: 48a6d4cbf56742a47957e930e4662d1b, type: 2}
   joint: {fileID: 1973039409493291971}
   currentThought: {fileID: 0}
   thoughts:
@@ -3103,8 +3105,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2560
   checkOffset: 0.42
+  t1: 0
   transitioning: 0
   transitionOnEnter: 0
+  gGroup: {fileID: 0}
+  fGroup: {fileID: 0}
 --- !u!1 &8383451535475540365
 GameObject:
   m_ObjectHideFlags: 0

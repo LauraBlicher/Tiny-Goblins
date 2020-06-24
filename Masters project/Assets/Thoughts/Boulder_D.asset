@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
+  m_Name: Boulder_D
+  m_EditorClassIdentifier: 
+  images:
+  - {fileID: 2800000, guid: 336bf7066576dc540b49e7a3f1e6a893, type: 3}
+  - {fileID: 2800000, guid: 0e34fdd7e0b4d144999c4b35c7c4671c, type: 3}
+  - {fileID: 2800000, guid: 8a986e2d827d67945abd1d101685e9bb, type: 3}
+  - {fileID: 2800000, guid: 2f30078bf3fb16c49883b0eca311be78, type: 3}
+  - {fileID: 2800000, guid: 290043f3dff791a48b0c767ef3260cf3, type: 3}
+  - {fileID: 2800000, guid: 290043f3dff791a48b0c767ef3260cf3, type: 3}
+  - {fileID: 2800000, guid: 2eca0364a9f5f68479406e1a82c0ec98, type: 3}
+  - {fileID: 2800000, guid: d04eeaecb12b9d74f836aec6b4090a16, type: 3}
+  - {fileID: 2800000, guid: 66789ba07554b3f47a36d3580f1dcae9, type: 3}
+  - {fileID: 2800000, guid: 71400d8140ef0e84db870a9c6e08d0cf, type: 3}
+  timeBetweenImages: 0.75
+  repeat: 0
+  index: 9

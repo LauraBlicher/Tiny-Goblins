@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ThoughtBubble : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class ThoughtBubble : MonoBehaviour
     private float t = 0;
     private bool thoughtsStarted = false;
     public bool repeat = false;
+
+    public event Action onEnd;
 
     void Awake()
     {
@@ -67,7 +70,7 @@ public class ThoughtBubble : MonoBehaviour
             t = Mathf.Clamp01(t);
             yield return null;
         }
-
+        onEnd.Invoke();
         Destroy(gameObject);
     }
 }

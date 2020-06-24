@@ -13,6 +13,7 @@ TagManager:
   - Saddle
   - Transition
   - NoFly
+  - Interaction
   layers:
   - Default
   - TransparentFX
