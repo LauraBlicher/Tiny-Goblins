@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ThoughtCreator : MonoBehaviour
 {
@@ -60,6 +61,8 @@ public class ThoughtCreator : MonoBehaviour
         bubble.timeBetweenImageChange = currentThought.timeBetweenImages;
         bubble.repeat = currentThought.repeat;
         bubble.images = currentThought.images;
+
+        newBubble.GetComponent<SortingGroup>().sortingLayerName = transform.parent.GetComponent<SortingGroup>().sortingLayerName;
     }
 
     private void CreateSpeechBubble(int index)
@@ -86,5 +89,6 @@ public class ThoughtCreator : MonoBehaviour
         bubble.timeBetweenImageChange = currentThought.timeBetweenImages;
         bubble.repeat = currentThought.repeat;
         bubble.images = currentThought.images;
+        newBubble.GetComponent<SortingGroup>().sortingLayerName = transform.parent.GetComponent<SortingGroup>().sortingLayerName;
     }
 }

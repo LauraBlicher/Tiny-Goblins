@@ -485,6 +485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6977484026142020710}
   - component: {fileID: 6977484026142020711}
+  - component: {fileID: 4184597085120469150}
   m_Layer: 0
   m_Name: Bubbles
   m_TagString: Untagged
@@ -527,3 +528,14 @@ MonoBehaviour:
   fadeSpeedSeconds: 2
   timeBetweenImageChange: 1
   repeat: 0
+--- !u!210 &4184597085120469150
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6977484026142020729}
+  m_Enabled: 1
+  m_SortingLayerID: -1355791039
+  m_SortingLayer: 4
+  m_SortingOrder: 0

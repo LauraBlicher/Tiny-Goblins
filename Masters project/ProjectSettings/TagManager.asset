@@ -12,6 +12,7 @@ TagManager:
   - Feet
   - Saddle
   - Transition
+  - NoFly
   layers:
   - Default
   - TransparentFX

@@ -7,6 +7,8 @@ public class FrogScript : MonoBehaviour
 {
     public LayerMask groundMask;
 
+    public static FrogScript instance;
+
     public ArcRenderer arc;
     public Rigidbody2D rb;
 
@@ -55,6 +57,7 @@ public class FrogScript : MonoBehaviour
 
     void Awake()
     {
+        instance = this;
         onLanded += CharacterLanded;
     }
     // Start is called before the first frame update
@@ -73,7 +76,7 @@ public class FrogScript : MonoBehaviour
     void Update()
     {
         anim.SetBool("Mounted", isMounted);
-        frogMidPoint = col.bounds.center;
+        frogMidPoint = new Vector3(col.bounds.center.x, col.bounds.center.y, transform.position.z);
         if (rb.velocity.y < 0)
             CharacterLandedTrigger();
 
@@ -126,6 +129,12 @@ public class FrogScript : MonoBehaviour
                     anim.SetBool("Aiming", false);
                     arc.render = false;
                     rb.velocity = Vector3.zero;
+
+                    if (arc.transition)
+                    {
+                        CharacterController.theGoblin.GetComponent<TransitionHandler>().transitioning = true;
+                    }
+
                     rb.AddForce(aimDir * v, ForceMode2D.Impulse);
                     
                     isJumping = true;
@@ -299,7 +308,7 @@ public class FrogScript : MonoBehaviour
         }
         else if (currentPosition.distToGroundPoint < minHeight)
         {
-            transform.position -= currentPosition.dirToGroundPoint * Time.deltaTime;
+            transform.position -= currentPosition.dirToGroundPoint * 2 * Time.deltaTime;
         }
     }
 
@@ -382,6 +391,8 @@ public class FrogScript : MonoBehaviour
         isLanding = false;
         journey = 0;
         anim.SetFloat("Journey", 0);
+        CharacterController.theGoblin.GetComponent<TransitionHandler>().transitioning = false;
+        arc.transition = false;
         //startY = 0;
         //jumpHeight = 0;
     }
@@ -408,7 +419,7 @@ public class FrogScript : MonoBehaviour
         RaycastHit2D hit1 = Physics2D.CircleCast(frogMidPoint + transform.up, col.size.x/3, -transform.up, Mathf.Infinity, groundMask);
         if (hit1.collider)
         {
-            output = hit1.point;
+            output = (Vector3)hit1.point + (Vector3.forward * transform.position.z);
         }
 
         return output;

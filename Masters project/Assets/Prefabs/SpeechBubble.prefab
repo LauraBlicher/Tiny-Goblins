@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 3070224599063843521}
   - component: {fileID: 3070224599063843527}
   - component: {fileID: 1836440286995027524}
+  - component: {fileID: 4563797347129616151}
   m_Layer: 0
   m_Name: SpeechBubble
   m_TagString: Untagged
@@ -308,6 +309,17 @@ MonoBehaviour:
   fadeSpeedSeconds: 2
   timeBetweenImageChange: 1
   repeat: 0
+--- !u!210 &4563797347129616151
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3070224599063843522}
+  m_Enabled: 1
+  m_SortingLayerID: -1355791039
+  m_SortingLayer: 4
+  m_SortingOrder: 0
 --- !u!1 &3070224599541322582
 GameObject:
   m_ObjectHideFlags: 0

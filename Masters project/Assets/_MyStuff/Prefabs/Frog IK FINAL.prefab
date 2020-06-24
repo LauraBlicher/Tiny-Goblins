@@ -981,11 +981,17 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 512
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 2048
   hitPoint: {x: 0, y: 0, z: 0}
   avgPosition: {x: 0, y: 0, z: 0}
   aimDistance: 0
   validAim: 0
   mat: {fileID: 0}
+  transition: 0
+  transitionPoint: {x: 0, y: 0, z: 0}
+  transitionStart: {x: 0, y: 0, z: 0}
 --- !u!1 &4480937178789298974
 GameObject:
   m_ObjectHideFlags: 0
@@ -2101,11 +2107,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bigObject: 0
   cam: {fileID: 0}
   skins: []
   count: 0
   screenPos: {x: 0, y: 0}
   isVisible: 0
+  outOfBoundsSize: 0.5
 --- !u!1 &7024248000726937607
 GameObject:
   m_ObjectHideFlags: 0
