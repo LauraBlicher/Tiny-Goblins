@@ -163,11 +163,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659cc2eea07ff9f4ba11a81042a3244f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bigObject: 1
   cam: {fileID: 0}
   skins: []
   count: 0
   screenPos: {x: 0, y: 0}
   isVisible: 0
+  outOfBoundsSize: 1
 --- !u!1 &1851170590266490916
 GameObject:
   m_ObjectHideFlags: 0

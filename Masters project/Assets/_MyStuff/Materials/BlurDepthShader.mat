@@ -88,11 +88,11 @@ Material:
     - _Float1: 20.1
     - _Float2: 74.5
     - _Float3: 7.9
-    - _Float4: 6.8
+    - _Float4: 10.17
     - _Float5: 10.03
     - _Float6: 56.9
     - _Float7: 0.25
-    - _Float8: 0.55
+    - _Float8: 0.45
     - _Float9: 20
     - _GlossMapScale: 1
     - _Glossiness: 0.5
