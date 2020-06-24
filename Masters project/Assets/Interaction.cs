@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Interaction : MonoBehaviour
 {
+    public static bool angrySpokenTo = false;
+    public bool isAngry;
+    public bool isFred;
     public bool ready = false;
     private bool speaking = false;
     public bool done = false;
@@ -14,13 +17,14 @@ public class Interaction : MonoBehaviour
     public bool canBeAsked = true;
     public ThoughtCreator thoughts;
 
+    public bool isArea = false;
+
     int clipsIndex = 0;
 
     public Animator anim;
     public AudioSource source;
     public List<AudioClip> clips = new List<AudioClip>();
-
-    public Vector3 fredPose2;
+    public AudioClip fredUpbeat;
 
     public Vector2 dirToPlayer;
 
@@ -78,12 +82,28 @@ public class Interaction : MonoBehaviour
                     source.Play();
                     speaking = false;
                     transform.parent.localScale = new Vector3(0.5f, 0.5f, 1);
+                    if (isAngry)
+                        angrySpokenTo = true;
                 }
                 else
                 {
                     source.PlayOneShot(clips[clipsIndex]);
                 }
             }
+        }
+        if (angrySpokenTo && isFred)
+        {
+            //transform.parent.position = fredPose2;
+            anim.SetBool("SecondState", true);
+            canBeAsked = true;
+            firstLineSpoken = true;
+            faceOnInteract = false;
+            secondLineReady = true;
+        }
+        if (angrySpokenTo && isArea)
+        {
+            if (thoughts.thoughts.Count == 2)
+                thoughts.thoughts.RemoveAt(0);
         }
     }
 
@@ -97,10 +117,22 @@ public class Interaction : MonoBehaviour
                 source.Stop();
                 speaking = true;
                 //if (!hasSecondLine)
-                    canBeAsked = false;
+                canBeAsked = false;
             }
             else if (hasSecondLine && secondLineReady)
+            {
+                StartCoroutine(FredSitTalk());
                 thoughts.Speak(1);
+            }
         }
     }    
+
+    IEnumerator FredSitTalk()
+    {
+        source.PlayOneShot(fredUpbeat);
+        anim.SetFloat("Blend", 1);
+        canBeAsked = false;
+        yield return new WaitForSeconds(2f);
+        anim.SetFloat("Blend", 0);
+    }
 }

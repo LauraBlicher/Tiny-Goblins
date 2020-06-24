@@ -1970,6 +1970,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7954006b23f25ed4eae1997c0283ede4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAngry: 1
+  isFred: 0
   ready: 0
   done: 0
   faceOnInteract: 1
@@ -1987,9 +1989,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 9f62d99d12e0c3142a8fcacbc909cb16, type: 3}
   - {fileID: 8300000, guid: 5841a669cb0e9c44b855c28fe07d56c8, type: 3}
   - {fileID: 8300000, guid: 902e8d64f63d4f048b9eb5d72b8b1132, type: 3}
-  - {fileID: 8300000, guid: 9f62d99d12e0c3142a8fcacbc909cb16, type: 3}
-  - {fileID: 8300000, guid: 6a3828d37f48be1458b77022e57d1bed, type: 3}
-  fredPose2: {x: 0, y: 0, z: 0}
   dirToPlayer: {x: 0, y: 0}
 --- !u!114 &3453938235694375880
 MonoBehaviour:

@@ -3461,10 +3461,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7954006b23f25ed4eae1997c0283ede4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAngry: 0
+  isFred: 1
   ready: 0
   done: 0
   faceOnInteract: 1
-  hasSecondLine: 0
+  hasSecondLine: 1
   firstLineSpoken: 0
   secondLineReady: 0
   canBeAsked: 1
