@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class CharacterController : MonoBehaviour
 {
+    public bool isMenu = false;
     public float radius = 0.1f;
     private Rigidbody2D rb;
     private Vector2 oldPos, newPos;
@@ -105,6 +106,11 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (isMenu)
+        {
+            anim.SetBool("Sit", true);
+            return;
+        }
         AnimationStateMachine();
         if (!mountNearby)
             CheckForMounts();
