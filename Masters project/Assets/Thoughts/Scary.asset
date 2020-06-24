@@ -19,6 +19,7 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3625f4e00e2e3ff47a9db1bd10f19adc, type: 3}
   - {fileID: 2800000, guid: d07d708d5d597944daa7d87174c68476, type: 3}
   - {fileID: 2800000, guid: 3625f4e00e2e3ff47a9db1bd10f19adc, type: 3}
+  - {fileID: 2800000, guid: 2a8e1cdba89dbd04f807d9f826e95616, type: 3}
   timeBetweenImages: 0.5
   repeat: 0
   index: 14

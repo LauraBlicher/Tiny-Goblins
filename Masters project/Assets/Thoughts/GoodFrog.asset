@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   images:
   - {fileID: 2800000, guid: c753ab258b45f744ea5d9cbeb812fd00, type: 3}
-  timeBetweenImages: 2
+  - {fileID: 2800000, guid: f077974b44c82e5438aa53d777312c33, type: 3}
+  timeBetweenImages: 1
   repeat: 0
   index: 15
