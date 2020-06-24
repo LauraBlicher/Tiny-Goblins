@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5988711802493618105}
   - component: {fileID: 5988711802493618104}
+  - component: {fileID: 61483855636028628}
   m_Layer: 0
   m_Name: Music
   m_TagString: Untagged
@@ -128,6 +129,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &61483855636028628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5988711802493618106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048a190b7c7a0ec45a912d7214283093, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 5988711802493618104}
+  menu: {fileID: 8300000, guid: 1bc16ebf3a2796c419c2ecdec32cef7b, type: 3}
+  game: {fileID: 8300000, guid: 63156fa65c85bca43ab18061eb28c95d, type: 3}
 --- !u!1 &5988711803024255580
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,9 +192,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 35d6a8699babb4c4a99295da71975471, type: 2}
   masterVolume: 0
-  ambienceVolume: 0
-  sfxVolume: 0
-  musicVolume: 0
+  ambienceVolume: -7.5
+  sfxVolume: 10.4
+  musicVolume: -15
 --- !u!114 &5810738367275419843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,6 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 936a4e7b3e7cc2540a6d473817f11346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowLoad: 0
+  t: 0
+  tt: 0
 --- !u!1 &5988711803655616048
 GameObject:
   m_ObjectHideFlags: 0

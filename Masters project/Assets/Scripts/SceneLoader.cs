@@ -8,7 +8,9 @@ public class SceneLoader : MonoBehaviour
     public bool allowLoad = false;
     bool loading = false;
     AsyncOperation load;
-    float t = 0;
+    public float t = 0;
+    public float tt = 0;
+    bool faded = false;
     void Start()
     {
         
@@ -33,7 +35,15 @@ public class SceneLoader : MonoBehaviour
                 if (!load.isDone)
                 {
                     if (allowLoad)
-                        load.allowSceneActivation = true;
+                    {
+                        if (faded)
+                            load.allowSceneActivation = true;
+                        else
+                        {
+                            if (t - tt >= 2)
+                                faded = true;
+                        }
+                    }
                 }
             }
         }
@@ -42,6 +52,7 @@ public class SceneLoader : MonoBehaviour
 
     public void AllowLoad()
     {
+        tt = t;
         allowLoad = true;
     }
 
