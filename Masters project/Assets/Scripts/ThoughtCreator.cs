@@ -34,6 +34,7 @@ public class ThoughtCreator : MonoBehaviour
                 if (currentNPC.canBeAsked)
                 {
                     CreateSpeechBubble(question);
+                    StartCoroutine(Ask());
                 }
                 else
                 {
@@ -50,6 +51,13 @@ public class ThoughtCreator : MonoBehaviour
             tail.position = transform.position;
         }
         
+    }
+
+    IEnumerator Ask()
+    {
+        transform.parent.GetComponent<Animator>().SetFloat("Ask", 1);
+        yield return new WaitForSeconds(1f);
+        transform.parent.GetComponent<Animator>().SetFloat("Ask", 0);
     }
 
     public void Speak(int index)
