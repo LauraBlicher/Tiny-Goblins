@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
-  m_Name: Question
+  m_Name: WaterBad
   m_EditorClassIdentifier: 
   images:
-  - {fileID: 2800000, guid: 3a7f3cc168699e144be07d787fa7d4f8, type: 3}
-  timeBetweenImages: 2
+  - {fileID: 2800000, guid: 2a058f2848f92ce4db8aa9637a007c98, type: 3}
+  - {fileID: 2800000, guid: 02bf41dfc7ee1b74cb986c8eed94a012, type: 3}
+  timeBetweenImages: 0.5
   repeat: 1
-  index: 1
+  index: 4

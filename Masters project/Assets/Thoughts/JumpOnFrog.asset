@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
-  m_Name: Question
+  m_Name: JumpOnFrog
   m_EditorClassIdentifier: 
   images:
-  - {fileID: 2800000, guid: 3a7f3cc168699e144be07d787fa7d4f8, type: 3}
+  - {fileID: 2800000, guid: 4b66aeb477527964a87f8c56ed929684, type: 3}
+  - {fileID: 2800000, guid: a18f3f04e741928449eeda37d5886646, type: 3}
+  - {fileID: 2800000, guid: 341f751dcbfe4384bb94c47a0c1bfb5f, type: 3}
   timeBetweenImages: 2
-  repeat: 1
-  index: 1
+  repeat: 0
+  index: 5

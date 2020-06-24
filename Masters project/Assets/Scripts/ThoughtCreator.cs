@@ -25,8 +25,8 @@ public class ThoughtCreator : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            CreateThoughtBubble(index);
-            //CreateSpeechBubble(index);
+            CreateThoughtBubble(thoughtIndex);
+            //CreateSpeechBubble(thoughtIndex);
         }
 
         if (maintainTail && tail)

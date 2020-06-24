@@ -1271,12 +1271,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00febc91dfff34643895c7b8f2523cb1, type: 3}
---- !u!232 &394825141 stripped
-DistanceJoint2D:
-  m_CorrespondingSourceObject: {fileID: 1973039409493291971, guid: e0553e62350fc23419a9d33b2e1c69fa,
-    type: 3}
-  m_PrefabInstance: {fileID: 1660065180}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &416246544
 GameObject:
   m_ObjectHideFlags: 0
@@ -4715,28 +4709,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6007068327106664646, guid: e0553e62350fc23419a9d33b2e1c69fa,
-        type: 3}
-      propertyPath: thoughts.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6007068327106664646, guid: e0553e62350fc23419a9d33b2e1c69fa,
-        type: 3}
-      propertyPath: thoughtPrefab
-      value: 
-      objectReference: {fileID: 6977484026142020729, guid: c6b80af664e513e4b871c4114eb9e6e0,
-        type: 3}
-    - target: {fileID: 6007068327106664646, guid: e0553e62350fc23419a9d33b2e1c69fa,
-        type: 3}
-      propertyPath: joint
-      value: 
-      objectReference: {fileID: 394825141}
-    - target: {fileID: 6007068327106664646, guid: e0553e62350fc23419a9d33b2e1c69fa,
-        type: 3}
-      propertyPath: thoughts.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 791dbdce9b080b5409a8ba45331e079b,
-        type: 2}
     - target: {fileID: 6320851798801058493, guid: e0553e62350fc23419a9d33b2e1c69fa,
         type: 3}
       propertyPath: m_LocalRotation.x
