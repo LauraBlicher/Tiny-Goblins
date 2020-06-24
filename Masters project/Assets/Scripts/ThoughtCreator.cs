@@ -19,12 +19,14 @@ public class ThoughtCreator : MonoBehaviour
 
     public float speed = 2;
 
+    public int thoughtIndex = 0;
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
-            CreateThoughtBubble(0);
-            //CreateSpeechBubble(0);
+            CreateThoughtBubble(index);
+            //CreateSpeechBubble(index);
         }
 
         if (maintainTail && tail)
