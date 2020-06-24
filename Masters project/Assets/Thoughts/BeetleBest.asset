@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: BeetleBest
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 1
+  images:
+  - {fileID: 2800000, guid: 0cc0f3cb1f20239449515c230fb58910, type: 3}
+  - {fileID: 2800000, guid: 66789ba07554b3f47a36d3580f1dcae9, type: 3}
+  timeBetweenImages: 1.2
   repeat: 0
   index: 0

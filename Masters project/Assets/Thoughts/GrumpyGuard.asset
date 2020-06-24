@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: GrumpyGuard
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 1
+  images:
+  - {fileID: 2800000, guid: 5b5dbac0b1634854e87fdf2abaf3bc29, type: 3}
+  - {fileID: 2800000, guid: 5b5dbac0b1634854e87fdf2abaf3bc29, type: 3}
+  - {fileID: 2800000, guid: f5f4d8c180f9a144e9c3a57e50046d05, type: 3}
+  - {fileID: 2800000, guid: 6d06982d9ab7bc541b62f07c2a5bd6b5, type: 3}
+  - {fileID: 2800000, guid: f5f4d8c180f9a144e9c3a57e50046d05, type: 3}
+  - {fileID: 2800000, guid: 6d06982d9ab7bc541b62f07c2a5bd6b5, type: 3}
+  - {fileID: 2800000, guid: f5f4d8c180f9a144e9c3a57e50046d05, type: 3}
+  - {fileID: 2800000, guid: 6d06982d9ab7bc541b62f07c2a5bd6b5, type: 3}
+  - {fileID: 2800000, guid: 5b5dbac0b1634854e87fdf2abaf3bc29, type: 3}
+  - {fileID: 2800000, guid: 5b5dbac0b1634854e87fdf2abaf3bc29, type: 3}
+  timeBetweenImages: 0.5
   repeat: 0
-  index: 0
+  index: 13

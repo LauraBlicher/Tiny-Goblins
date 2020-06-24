@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: Boulder_B
   m_EditorClassIdentifier: 
-  images: []
+  images:
+  - {fileID: 2800000, guid: 0e34fdd7e0b4d144999c4b35c7c4671c, type: 3}
+  - {fileID: 2800000, guid: 8a986e2d827d67945abd1d101685e9bb, type: 3}
+  - {fileID: 2800000, guid: 2f30078bf3fb16c49883b0eca311be78, type: 3}
+  - {fileID: 2800000, guid: 290043f3dff791a48b0c767ef3260cf3, type: 3}
+  - {fileID: 2800000, guid: 290043f3dff791a48b0c767ef3260cf3, type: 3}
   timeBetweenImages: 1
   repeat: 0
-  index: 0
+  index: 9

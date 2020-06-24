@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: JumpGap
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 1
+  images:
+  - {fileID: 2800000, guid: 35694faa6e851194abf2697622c0ce35, type: 3}
+  - {fileID: 2800000, guid: c491325e4c5dd844bbf1fb1e8627eccf, type: 3}
+  - {fileID: 2800000, guid: 8fc31269c3cf20d45b30ac01fcd4187c, type: 3}
+  - {fileID: 2800000, guid: 51d7a67769fa27d42b074b9ae3fb1376, type: 3}
+  - {fileID: 2800000, guid: 51d7a67769fa27d42b074b9ae3fb1376, type: 3}
+  timeBetweenImages: 0.5
   repeat: 0
-  index: 0
+  index: 6

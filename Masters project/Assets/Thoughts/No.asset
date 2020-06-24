@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: No
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 2
-  repeat: 1
+  images:
+  - {fileID: 2800000, guid: d72efc046d4fcf4468ff7b03af748086, type: 3}
+  timeBetweenImages: 1.5
+  repeat: 0
   index: 2

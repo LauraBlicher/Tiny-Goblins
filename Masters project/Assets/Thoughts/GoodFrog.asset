@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: GoodFrog
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 1
+  images:
+  - {fileID: 2800000, guid: c753ab258b45f744ea5d9cbeb812fd00, type: 3}
+  timeBetweenImages: 2
   repeat: 0
-  index: 0
+  index: 15

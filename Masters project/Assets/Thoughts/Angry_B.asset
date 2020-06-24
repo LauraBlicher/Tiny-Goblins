@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: Angry_B
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 1
-  repeat: 0
-  index: 0
+  images:
+  - {fileID: 2800000, guid: 0841ee4d8b036da46a2325fb070eacf6, type: 3}
+  - {fileID: 2800000, guid: d4c7c3790e679164799fe711e77f078c, type: 3}
+  - {fileID: 2800000, guid: 75a031eea52355e4ea04f6b2c1400d91, type: 3}
+  - {fileID: 2800000, guid: 0841ee4d8b036da46a2325fb070eacf6, type: 3}
+  - {fileID: 2800000, guid: d4c7c3790e679164799fe711e77f078c, type: 3}
+  - {fileID: 2800000, guid: 75a031eea52355e4ea04f6b2c1400d91, type: 3}
+  timeBetweenImages: 0.5
+  repeat: 1
+  index: 12

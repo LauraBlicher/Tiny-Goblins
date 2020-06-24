@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63b6d063ae86b4e49898f79a90ec9322, type: 3}
   m_Name: Angry_A
   m_EditorClassIdentifier: 
-  images: []
-  timeBetweenImages: 1
-  repeat: 0
-  index: 0
+  images:
+  - {fileID: 2800000, guid: f45ea1b1d35460d44807a3044f9bf994, type: 3}
+  timeBetweenImages: 2
+  repeat: 1
+  index: 11
