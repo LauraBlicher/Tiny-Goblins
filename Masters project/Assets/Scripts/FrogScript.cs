@@ -20,6 +20,7 @@ public class FrogScript : MonoBehaviour
     public float angleMin, angleMax;
     public float scrollSpeed = 1f;
     public bool isGrounded;
+    public float additionalHeightForCheck = 0.5f;
     public bool isMounted = false;
     public float movementInput;
     public float jumpDistance;
@@ -298,17 +299,20 @@ public class FrogScript : MonoBehaviour
 
     public void MaintainHeight()
     {
-        if (currentPosition.distToGroundPoint > maxHeight + 0.5f)
+        if (currentPosition.distToGroundPoint > maxHeight + additionalHeightForCheck)
         {
             isGrounded = IsGrounded();
+            if (isGrounded)
+                rb.velocity = rb.velocity * 0.5f;
         }
         else if(currentPosition.distToGroundPoint > maxHeight)
         {
-            transform.position += currentPosition.dirToGroundPoint * Time.deltaTime;
+            transform.position += currentPosition.dirToGroundPoint *  Time.deltaTime;
         }
         else if (currentPosition.distToGroundPoint < minHeight)
         {
-            transform.position -= currentPosition.dirToGroundPoint * 2 * Time.deltaTime;
+            rb.velocity = Vector2.zero;
+            transform.position -= currentPosition.dirToGroundPoint *  Time.deltaTime;
         }
     }
 
@@ -408,7 +412,7 @@ public class FrogScript : MonoBehaviour
         //RaycastHit2D hit2 =
         //Physics2D.CapsuleCast(frogMidPoint, col.size, CapsuleDirection2D.Horizontal, 0, -transform.up, Mathf.Infinity, groundMask);
 
-        output = currentPosition.distToGroundPoint < maxHeight + .5f;// && journey <= 0.75f; //hit2.distance < minHeight / 2;
+        output = currentPosition.distToGroundPoint < maxHeight + additionalHeightForCheck;// && journey <= 0.75f; //hit2.distance < minHeight / 2;
         return output;
     }
 

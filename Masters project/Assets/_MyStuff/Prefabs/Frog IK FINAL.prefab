@@ -600,6 +600,7 @@ MonoBehaviour:
   secondLineReady: 0
   canBeAsked: 0
   thoughts: {fileID: 4196142837604609370}
+  isArea: 0
   anim: {fileID: 0}
   source: {fileID: 5561781589966128152}
   clips:
@@ -2233,6 +2234,7 @@ MonoBehaviour:
   angleMax: 60
   scrollSpeed: 1
   isGrounded: 0
+  additionalHeightForCheck: 1
   isMounted: 0
   movementInput: 0
   jumpDistance: 0
@@ -2242,8 +2244,8 @@ MonoBehaviour:
   currentHeight: 1
   groundAngle: 0
   groundAngleNew: 0
-  minHeight: 1
-  maxHeight: 1.1
+  minHeight: 0.9
+  maxHeight: 1.25
   currentAnimState: 0
   anim: {fileID: 0}
   expectedLandingPoint: {x: 0, y: 0, z: 0}
