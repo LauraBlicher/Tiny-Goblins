@@ -56,7 +56,7 @@ public class ThoughtCreator : MonoBehaviour
     IEnumerator Ask()
     {
         transform.parent.GetComponent<Animator>().SetFloat("Ask", 0.5f);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
         transform.parent.GetComponent<Animator>().SetFloat("Ask", 0);
     }
 
@@ -91,7 +91,7 @@ public class ThoughtCreator : MonoBehaviour
         bubble.repeat = currentThought.repeat;
         bubble.images = currentThought.images;
 
-        StartCoroutine(Delay(bubble.timeBetweenImageChange * bubble.images.Count));
+        StartCoroutine(Delay(bubble.timeBetweenImageChange * bubble.images.Count+1));
 
         if (newBubble.GetComponent<SortingGroup>())
             newBubble.GetComponent<SortingGroup>().sortingLayerName = transform.parent.GetComponent<SortingGroup>().sortingLayerName;
@@ -120,7 +120,7 @@ public class ThoughtCreator : MonoBehaviour
         bubble.repeat = thought.repeat;
         bubble.images = thought.images;
 
-        StartCoroutine(Delay(bubble.timeBetweenImageChange * bubble.images.Count));
+        StartCoroutine(Delay(bubble.timeBetweenImageChange * bubble.images.Count+1));
 
         if (transform.parent.GetComponent<SortingGroup>())
             newBubble.GetComponent<SortingGroup>().sortingLayerName = transform.parent.GetComponent<SortingGroup>().sortingLayerName;
