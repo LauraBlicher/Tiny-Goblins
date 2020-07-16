@@ -61,6 +61,7 @@ ScriptedImporter:
     maxTextureSizeSet: 0
     compressionQualitySet: 0
     textureFormatSet: 0
+    applyGammaDecoding: 0
   spriteImportData:
   - name: 
     originalName: 
@@ -93,7 +94,7 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 154
+      x: 304
       y: 4
       width: 142
       height: 126
@@ -107,7 +108,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 150, y: -8}
+    uvTransform: {x: 300, y: -8}
   - name: Head_Happy_open_big
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -137,7 +138,7 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
+      x: 304
       y: 140
       width: 142
       height: 125
@@ -151,7 +152,7 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 0, y: 127}
+    uvTransform: {x: 300, y: 127}
   - name: Head_Normal
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -159,8 +160,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 304
-      y: 4
+      x: 4
+      y: 140
       width: 142
       height: 126
     spriteID: a8e3f64f01a532044950dbf59e9f9f24
@@ -173,7 +174,51 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     parentGroupIndex: -1
-    uvTransform: {x: 300, y: -8}
+    uvTransform: {x: 0, y: 128}
+  - name: Head_OpenMouthSmall
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 154
+      y: 4
+      width: 142
+      height: 126
+    spriteID: 329fe3361f7229144baffd7b99be5b7a
+    internalID: 0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 150, y: -8}
+  - name: Head_OpenMouth
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 154
+      y: 140
+      width: 142
+      height: 125
+    spriteID: 882ae6edfbbfc73478beb56c9c6fc7a2
+    internalID: 0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: 150, y: 127}
   platformSettings: []
   mosaicLayers: 1
   documentPivot: {x: 0, y: 0}
@@ -193,13 +238,27 @@ ScriptedImporter:
   characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
+  - name: Head_OpenMouthSmall
+    spriteName: Head_OpenMouthSmall
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 329fe3361f7229144baffd7b99be5b7a
+    layerID: 20
+    mosaicPosition: {x: 154, y: 4}
+  - name: Head_OpenMouth
+    spriteName: Head_OpenMouth
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 882ae6edfbbfc73478beb56c9c6fc7a2
+    layerID: 16
+    mosaicPosition: {x: 154, y: 140}
   - name: Head_Sad
     spriteName: Head_Sad
     isGroup: 0
     parentIndex: -1
     spriteID: 6391dc90fb7d58d419209658abbdb944
     layerID: 7
-    mosaicPosition: {x: 154, y: 4}
+    mosaicPosition: {x: 304, y: 4}
   - name: Head_Happy_open_big
     spriteName: Head_Happy_open_big
     isGroup: 0
@@ -213,14 +272,14 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: 0de35c3a2c6202843bd985e43872554a
     layerID: 4
-    mosaicPosition: {x: 4, y: 140}
+    mosaicPosition: {x: 304, y: 140}
   - name: Head_Normal
     spriteName: Head_Normal
     isGroup: 0
     parentIndex: -1
     spriteID: a8e3f64f01a532044950dbf59e9f9f24
     layerID: 3
-    mosaicPosition: {x: 304, y: 4}
+    mosaicPosition: {x: 4, y: 140}
   characterData:
     bones: []
     parts: []

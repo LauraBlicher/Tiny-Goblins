@@ -61,6 +61,7 @@ ScriptedImporter:
     maxTextureSizeSet: 0
     compressionQualitySet: 0
     textureFormatSet: 0
+    applyGammaDecoding: 0
   spriteImportData:
   - name: 
     originalName: 
@@ -86,28 +87,6 @@ ScriptedImporter:
     uvTransform: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
-  - name: Fred_EyeNeutral
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 45
-      width: 21
-      height: 24
-    spriteID: fb907505ff8d3314ca69ef17917a0778
-    internalID: 0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -10, y: 29}
   - name: Fred_ClosedEye
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -196,6 +175,28 @@ ScriptedImporter:
     tessellationDetail: 0
     parentGroupIndex: -1
     uvTransform: {x: 22, y: -8}
+  - name: Fred_EyeNeutral
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 45
+      width: 21
+      height: 24
+    spriteID: e5136a006fe54974cb5993c0d2e81240
+    internalID: 0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    parentGroupIndex: -1
+    uvTransform: {x: -10, y: 29}
   platformSettings: []
   mosaicLayers: 1
   documentPivot: {x: 0, y: 0}
@@ -219,8 +220,8 @@ ScriptedImporter:
     spriteName: Fred_EyeNeutral
     isGroup: 0
     parentIndex: -1
-    spriteID: fb907505ff8d3314ca69ef17917a0778
-    layerID: 13
+    spriteID: e5136a006fe54974cb5993c0d2e81240
+    layerID: 14
     mosaicPosition: {x: 4, y: 45}
   - name: Fred_ClosedEye
     spriteName: Fred_ClosedEye
